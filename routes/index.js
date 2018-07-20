@@ -3,16 +3,16 @@ var router = express.Router();
 const api = require("../api");
 
 /* GET home page. */
-router.get("/", function(req, res, next) {
+router.get("/", function (req, res, next) {
   res.render("index", { title: "Express" });
 });
 
-router.get("/useradd", function(req, res, next) {
+router.get("/useradd", function (req, res, next) {
   res.render("useradd", { title: "Kullanici Ekle" });
 });
 
 // User Add
-router.post("/users", function(req, res, next) {
+router.post("/users", function (req, res, next) {
   api.apiCall(
     "/user",
     "POST",
@@ -26,8 +26,8 @@ router.post("/users", function(req, res, next) {
       authorities: [],
       rDate: Date.now()
     },
-    function(result) {
-      api.apiCall("/user", "GET", null, function(users) {
+    function (result) {
+      api.apiCall("/user", "GET", null, function (users) {
         let breadcrumb = [
           { route: "/", name: "Anasayfa" },
           { route: "/users", name: "Kullanıcılar" }
@@ -44,8 +44,8 @@ router.post("/users", function(req, res, next) {
 });
 
 // User List
-router.get("/users", function(req, res, next) {
-  api.apiCall("/user", "GET", null, function(users) {
+router.get("/users", function (req, res, next) {
+  api.apiCall("/user", "GET", null, function (users) {
     let breadcrumb = [
       { route: "/", name: "Anasayfa" },
       { route: "/users", name: "Kullanıcılar" }
@@ -60,9 +60,9 @@ router.get("/users", function(req, res, next) {
 });
 
 // User GetById
-router.get("/users/:userId", function(req, res, next) {
-  api.apiCall("/user", "GET", null, function(users) {
-    api.apiCall(`/user/${req.params.userId}`, "GET", null, function(user) {
+router.get("/users/:userId", function (req, res, next) {
+  api.apiCall("/user", "GET", null, function (users) {
+    api.apiCall(`/user/${req.params.userId}`, "GET", null, function (user) {
       let breadcrumb = [
         { route: "/", name: "Anasayfa" },
         { route: "/users", name: "Kullanıcılar" },
@@ -82,17 +82,18 @@ router.get("/users/:userId", function(req, res, next) {
 });
 
 // User Update
-router.post("/users/:userId", function(req, res, next) {
+router.post("/users/:userId", function (req, res, next) {
   api.apiCall(
     `/user/${req.params.userId}`,
     "PATCH",
     {
-      name: "ADMİNN",
-      authorities: [],
-      rDate: Date.now()
+      fName: req.body.fName,
+      lName: req.body.lName,
+      email: req.body.email,
+      username: req.body.email
     },
-    function(result) {
-      api.apiCall("/user", "GET", null, function(users) {
+    function (result) {
+      api.apiCall("/user", "GET", null, function (users) {
         let breadcrumb = [
           { route: "/", name: "Anasayfa" },
           { route: "/users", name: "Kullanıcılar" }
@@ -109,14 +110,14 @@ router.post("/users/:userId", function(req, res, next) {
 });
 
 // User Delete
-router.get("/users/delete/:userId", function(req, res, next) {
-  api.apiCall(`/users/${req.params.userId}`, "DELETE", null, function(result) {
+router.get("/users/delete/:userId", function (req, res, next) {
+  api.apiCall(`/users/${req.params.userId}`, "DELETE", null, function (result) {
     res.redirect("/users");
   });
 });
 
 // Authority Add
-router.post("/authorities", function(req, res, next) {
+router.post("/authorities", function (req, res, next) {
   api.apiCall(
     "/authority",
     "POST",
@@ -124,8 +125,8 @@ router.post("/authorities", function(req, res, next) {
       name: req.body.authorityName,
       rDate: Date.now()
     },
-    function(result) {
-      api.apiCall("/authority", "GET", null, function(authorities) {
+    function (result) {
+      api.apiCall("/authority", "GET", null, function (authorities) {
         let breadcrumb = [
           { route: "/", name: "Anasayfa" },
           { route: "/authorities", name: "Yetkiler" }
@@ -142,8 +143,8 @@ router.post("/authorities", function(req, res, next) {
 });
 
 // Authority List
-router.get("/authorities", function(req, res, next) {
-  api.apiCall("/authority", "GET", null, function(authorities) {
+router.get("/authorities", function (req, res, next) {
+  api.apiCall("/authority", "GET", null, function (authorities) {
     let breadcrumb = [
       { route: "/", name: "Anasayfa" },
       { route: "/authorities", name: "Yetkiler" }
@@ -158,9 +159,9 @@ router.get("/authorities", function(req, res, next) {
 });
 
 // Authority GetById
-router.get("/authorities/:authorityId", function(req, res, next) {
-  api.apiCall("/authority", "GET", null, function(authorities) {
-    api.apiCall(`/authority/${req.params.authorityId}`, "GET", null, function(
+router.get("/authorities/:authorityId", function (req, res, next) {
+  api.apiCall("/authority", "GET", null, function (authorities) {
+    api.apiCall(`/authority/${req.params.authorityId}`, "GET", null, function (
       authority
     ) {
       let breadcrumb = [
@@ -185,17 +186,15 @@ router.get("/authorities/:authorityId", function(req, res, next) {
 });
 
 // Authority Update
-router.post("/authorities/:authorityId", function(req, res, next) {
+router.post("/authorities/:authorityId", function (req, res, next) {
   api.apiCall(
     `/authority/${req.params.authorityId}`,
     "PATCH",
     {
-      name: "ADMİNN",
-      authorities: [],
-      rDate: Date.now()
+      name: req.body.authorityName
     },
-    function(result) {
-      api.apiCall("/authority", "GET", null, function(authorities) {
+    function (result) {
+      api.apiCall("/authority", "GET", null, function (authorities) {
         let breadcrumb = [
           { route: "/", name: "Anasayfa" },
           { route: "/authorities", name: "Yetkiler" }
@@ -212,19 +211,19 @@ router.post("/authorities/:authorityId", function(req, res, next) {
 });
 
 // Authority Delete
-router.get("/authorities/delete/:authorityId", function(req, res, next) {
+router.get("/authorities/delete/:authorityId", function (req, res, next) {
   api.apiCall(
     `/authorities/${req.params.authorityId}`,
     "DELETE",
     null,
-    function(result) {
+    function (result) {
       res.redirect("/authorities");
     }
   );
 });
 
 // Role Add
-router.post("/roles", function(req, res, next) {
+router.post("/roles", function (req, res, next) {
   api.apiCall(
     "/role",
     "POST",
@@ -233,8 +232,8 @@ router.post("/roles", function(req, res, next) {
       authorities: [],
       rDate: Date.now()
     },
-    function(result) {
-      api.apiCall("/role", "GET", null, function(roles) {
+    function (result) {
+      api.apiCall("/role", "GET", null, function (roles) {
         let breadcrumb = [
           { route: "/", name: "Anasayfa" },
           { route: "/roles", name: "Roller" }
@@ -251,8 +250,8 @@ router.post("/roles", function(req, res, next) {
 });
 
 // Role List
-router.get("/roles", function(req, res, next) {
-  api.apiCall("/role", "GET", null, function(roles) {
+router.get("/roles", function (req, res, next) {
+  api.apiCall("/role", "GET", null, function (roles) {
     let breadcrumb = [
       { route: "/", name: "Anasayfa" },
       { route: "/roles", name: "Roller" }
@@ -267,9 +266,9 @@ router.get("/roles", function(req, res, next) {
 });
 
 // Role GetById
-router.get("/roles/:roleId", function(req, res, next) {
-  api.apiCall("/role", "GET", null, function(roles) {
-    api.apiCall(`/role/${req.params.roleId}`, "GET", null, function(role) {
+router.get("/roles/:roleId", function (req, res, next) {
+  api.apiCall("/role", "GET", null, function (roles) {
+    api.apiCall(`/role/${req.params.roleId}`, "GET", null, function (role) {
       let breadcrumb = [
         { route: "/", name: "Anasayfa" },
         { route: "/roles", name: "Roller" },
@@ -289,17 +288,16 @@ router.get("/roles/:roleId", function(req, res, next) {
 });
 
 // Role Update
-router.post("/roles/:roleId", function(req, res, next) {
+router.post("/roles/:roleId", function (req, res, next) {
   api.apiCall(
     `/role/${req.params.roleId}`,
     "PATCH",
     {
-      name: "ADMİNN",
-      authorities: [],
-      rDate: Date.now()
+      name: req.body.roleName
     },
-    function(result) {
-      api.apiCall("/role", "GET", null, function(roles) {
+    function (result) {
+      console.log(result);
+      api.apiCall("/role", "GET", null, function (roles) {
         let breadcrumb = [
           { route: "/", name: "Anasayfa" },
           { route: "/roles", name: "Roller" }
@@ -316,14 +314,14 @@ router.post("/roles/:roleId", function(req, res, next) {
 });
 
 // Role Delete
-router.get("/roles/delete/:roleId", function(req, res, next) {
-  api.apiCall(`/role/${req.params.roleId}`, "DELETE", null, function(result) {
+router.get("/roles/delete/:roleId", function (req, res, next) {
+  api.apiCall(`/role/${req.params.roleId}`, "DELETE", null, function (result) {
     res.redirect("/roles");
   });
 });
 
 // Department Add
-router.post("/departments", function(req, res, next) {
+router.post("/departments", function (req, res, next) {
   api.apiCall(
     "/department",
     "POST",
@@ -331,8 +329,8 @@ router.post("/departments", function(req, res, next) {
       name: req.body.departmentName,
       rDate: Date.now()
     },
-    function(result) {
-      api.apiCall("/department", "GET", null, function(departments) {
+    function (result) {
+      api.apiCall("/department", "GET", null, function (departments) {
         let breadcrumb = [
           { route: "/", name: "Anasayfa" },
           { route: "/departments", name: "Departmanlar" }
@@ -349,8 +347,8 @@ router.post("/departments", function(req, res, next) {
 });
 
 // Department List
-router.get("/departments", function(req, res, next) {
-  api.apiCall("/department", "GET", null, function(departments) {
+router.get("/departments", function (req, res, next) {
+  api.apiCall("/department", "GET", null, function (departments) {
     let breadcrumb = [
       { route: "/", name: "Anasayfa" },
       { route: "/departments", name: "Departmanlar" }
@@ -365,9 +363,9 @@ router.get("/departments", function(req, res, next) {
 });
 
 // Department GetById
-router.get("/departments/:departmentId", function(req, res, next) {
-  api.apiCall("/department", "GET", null, function(departments) {
-    api.apiCall(`/department/${req.params.departmentId}`, "GET", null, function(
+router.get("/departments/:departmentId", function (req, res, next) {
+  api.apiCall("/department", "GET", null, function (departments) {
+    api.apiCall(`/department/${req.params.departmentId}`, "GET", null, function (
       department
     ) {
       let breadcrumb = [
@@ -389,17 +387,15 @@ router.get("/departments/:departmentId", function(req, res, next) {
 });
 
 // Department Update
-router.post("/Department/:departmentId", function(req, res, next) {
+router.post("/Departments/:departmentId", function (req, res, next) {
   api.apiCall(
     `/department/${req.params.departmentId}`,
     "PATCH",
     {
-      name: "ADMİNN",
-      authorities: [],
-      rDate: Date.now()
+      name: req.body.departmentName
     },
-    function(result) {
-      api.apiCall("/department", "GET", null, function(departments) {
+    function (result) {
+      api.apiCall("/department", "GET", null, function (departments) {
         let breadcrumb = [
           { route: "/", name: "Anasayfa" },
           { route: "/departments", name: "Departmanlar" }
@@ -416,19 +412,19 @@ router.post("/Department/:departmentId", function(req, res, next) {
 });
 
 // Department Delete
-router.get("/Department/delete/:departmentId", function(req, res, next) {
+router.get("/Department/delete/:departmentId", function (req, res, next) {
   api.apiCall(
     `/department/${req.params.departmentId}`,
     "DELETE",
     null,
-    function(result) {
+    function (result) {
       res.redirect("/Department");
     }
   );
 });
 
 // Document Type Add
-router.post("/documents/types", function(req, res, next) {
+router.post("/documents/types", function (req, res, next) {
   api.apiCall(
     "/document/type",
     "POST",
@@ -436,8 +432,8 @@ router.post("/documents/types", function(req, res, next) {
       name: req.body.typeName,
       rDate: Date.now()
     },
-    function(result) {
-      api.apiCall("/document/type", "GET", null, function(documenttypes) {
+    function (result) {
+      api.apiCall("/document/type", "GET", null, function (documenttypes) {
         let breadcrumb = [
           { route: "/", name: "Anasayfa" },
           { route: "/documents", name: "Dökümanlar" },
@@ -455,8 +451,8 @@ router.post("/documents/types", function(req, res, next) {
 });
 
 // Document Type  List
-router.get("/documents/types", function(req, res, next) {
-  api.apiCall("/document/type", "GET", null, function(documenttypes) {
+router.get("/documents/types", function (req, res, next) {
+  api.apiCall("/document/type", "GET", null, function (documenttypes) {
     let breadcrumb = [
       { route: "/", name: "Anasayfa" },
       { route: "/documents", name: "Dökümanlar" },
@@ -472,9 +468,9 @@ router.get("/documents/types", function(req, res, next) {
 });
 
 // Document Type  GetById
-router.get("/documents/types/:typeId", function(req, res, next) {
-  api.apiCall("/document/type", "GET", null, function(documenttypes) {
-    api.apiCall(`/document/type/${req.params.typeId}`, "GET", null, function(
+router.get("/documents/types/:typeId", function (req, res, next) {
+  api.apiCall("/document/type", "GET", null, function (documenttypes) {
+    api.apiCall(`/document/type/${req.params.typeId}`, "GET", null, function (
       documenttype
     ) {
       let breadcrumb = [
@@ -500,16 +496,15 @@ router.get("/documents/types/:typeId", function(req, res, next) {
 });
 
 // Document Type  Update
-router.post("/documents/types/:typeId", function(req, res, next) {
+router.post("/documents/types/:typeId", function (req, res, next) {
   api.apiCall(
     `/document/type/${req.params.typeId}`,
     "PATCH",
     {
-      name: "ADMİNN",
-      rDate: Date.now()
+      name: req.body.typeName
     },
-    function(result) {
-      api.apiCall("/document/type", "GET", null, function(documenttypes) {
+    function (result) {
+      api.apiCall("/document/type", "GET", null, function (documenttypes) {
         let breadcrumb = [
           { route: "/", name: "Anasayfa" },
           { route: "/documents", name: "Dökümanlar" },
@@ -527,8 +522,8 @@ router.post("/documents/types/:typeId", function(req, res, next) {
 });
 
 // Document Type  Delete
-router.get("/documents/types/delete/:typeId", function(req, res, next) {
-  api.apiCall(`/document/type/${req.params.typeId}`, "DELETE", null, function(
+router.get("/documents/types/delete/:typeId", function (req, res, next) {
+  api.apiCall(`/document/type/${req.params.typeId}`, "DELETE", null, function (
     result
   ) {
     res.redirect("/documenttypes");
@@ -536,7 +531,7 @@ router.get("/documents/types/delete/:typeId", function(req, res, next) {
 });
 
 // Document Add
-router.post("/documents", function(req, res, next) {
+router.post("/documents", function (req, res, next) {
   api.apiCall(
     "/document",
     "POST",
@@ -552,8 +547,8 @@ router.post("/documents", function(req, res, next) {
       status: 1,
       rDate: Date.now()
     },
-    function(result) {
-      api.apiCall("/document", "GET", null, function(documents) {
+    function (result) {
+      api.apiCall("/document", "GET", null, function (documents) {
         let breadcrumb = [
           { route: "/", name: "Anasayfa" },
           { route: "/documents", name: "Dökümanlar" }
@@ -570,8 +565,8 @@ router.post("/documents", function(req, res, next) {
 });
 
 // Document List
-router.get("/documents", function(req, res, next) {
-  api.apiCall("/document", "GET", null, function(documents) {
+router.get("/documents", function (req, res, next) {
+  api.apiCall("/document", "GET", null, function (documents) {
     let breadcrumb = [
       { route: "/", name: "Anasayfa" },
       { route: "/documents", name: "Dökümanlar" }
@@ -586,9 +581,9 @@ router.get("/documents", function(req, res, next) {
 });
 
 // Document GetById
-router.get("/documents/:documentId", function(req, res, next) {
-  api.apiCall("/document", "GET", null, function(documents) {
-    api.apiCall(`/document/${req.params.documentId}`, "GET", null, function(
+router.get("/documents/:documentId", function (req, res, next) {
+  api.apiCall("/document", "GET", null, function (documents) {
+    api.apiCall(`/document/${req.params.documentId}`, "GET", null, function (
       document
     ) {
       let breadcrumb = [
@@ -613,7 +608,7 @@ router.get("/documents/:documentId", function(req, res, next) {
 });
 
 // Document Update
-router.post("/documents/:documentId", function(req, res, next) {
+router.post("/documents/:documentId", function (req, res, next) {
   api.apiCall(
     `/document/${req.params.documentId}`,
     "PATCH",
@@ -621,8 +616,8 @@ router.post("/documents/:documentId", function(req, res, next) {
       name: "ADMİNN",
       rDate: Date.now()
     },
-    function(result) {
-      api.apiCall("/document", "GET", null, function(documents) {
+    function (result) {
+      api.apiCall("/document", "GET", null, function (documents) {
         let breadcrumb = [
           { route: "/", name: "Anasayfa" },
           { route: "/documents", name: "Dökümanlar" }
@@ -639,8 +634,8 @@ router.post("/documents/:documentId", function(req, res, next) {
 });
 
 // Document Delete
-router.get("/documents/delete/:documentId", function(req, res, next) {
-  api.apiCall(`/document/${req.params.documentId}`, "DELETE", null, function(
+router.get("/documents/delete/:documentId", function (req, res, next) {
+  api.apiCall(`/document/${req.params.documentId}`, "DELETE", null, function (
     result
   ) {
     res.redirect("/documents");

@@ -30,7 +30,7 @@ module.exports.apiCall = (path, method, params, cb) => {
         });
     });
 
-    if(method=='POST')
+    if(method!='GET')
         post_req.write(data);
 
     post_req.end();
