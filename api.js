@@ -11,7 +11,8 @@ module.exports.apiCall = (path, method, params, cb) => {
         path: path,
         method: method,
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbmFuZ29nQGdtYWlsLmNvbSIsInVzZXJJZCI6IjViNTE4ZDlkOTc4YzgwNjM0MGNhZmJlZiIsImlhdCI6MTUzMjA3MTM0OCwiZXhwIjoxNTMyMDc0OTQ4fQ.7Z8cq7PcuGonMAkUX6gVQ-ZjI2ZrqVRi6d7dohEBihI'
         }
     };
 

@@ -1,23 +1,32 @@
 <h1>{{title}}</h1>
 
-<table class="table table-hover">
-  <thead>
-    <tr>
-      <th scope="col">Rol Adi</th>
-      <th scope="col">Kayit Tarihi</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    {{# each roles }}
-    <tr>
-      <td scope="row">{{ this.name }}</td>
-      <td>{{ this.rDate }}</td>
-      <td></td>
-    </tr>
-    {{/ each }}
-  </tbody>
-</table>
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Rol Adi</th>
+        <th scope="col">Kayit Tarihi</th>
+        <th class="text-right">İşlem</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{# each roles }}
+      <tr>
+        <td scope="row">{{ this.name }}</td>
+        <td>{{ this.rDate }}</td>
+        <td>
+          <div class="btn-group btn-group-sm float-right" role="group" aria-label="İşlemler">
+            <a href="/roles/{{ this._id }}" class="btn btn-outline-success">
+              <i class="far fa-edit"></i> <span class="d-none d-sm-inline">Düzenle</span></a>
+            <a href="/roles/delete/{{ this._id }}" class="btn btn-outline-danger">
+              <i class="far fa-trash-alt"></i> <span class="d-none d-sm-inline">Sil</span></a>
+          </div>
+        </td>
+      </tr>
+      {{/ each }}
+    </tbody>
+  </table>
+</div>
 
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
@@ -50,3 +59,32 @@
     </div>
   </div>
 </div>
+
+{{#if edit}}
+<!-- Modal Edit -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalTitle">{{editTitle}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="POST" action="/roles/{{ role._id }}">
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label for="roleName">Rol Adi</label>
+            <input type="text" class="form-control" id="roleName" name="roleName" value="{{ role.name }}" placeholder="Rol adi giriniz.">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+          <button type="submit" class="btn btn-primary">Kaydet</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{{/if}}

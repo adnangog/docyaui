@@ -1,0 +1,130 @@
+<h1>{{title}}</h1>
+
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Ad</th>
+        <th scope="col">Soyad</th>
+        <th scope="col">Email</th>
+        <th scope="col">Kayıt Tarihi</th>
+        <th scope="col">Durum</th>
+        <th class="text-right">İşlem</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{# each users }}
+      <tr>
+        <td scope="row">{{ this.fName }}</td>
+        <td>{{ this.lName }}</td>
+        <td>{{ this.email }}</td>
+        <td>{{ this.rDate }}</td>
+        <td>{{ this.statu }}</td>
+        <td>
+          <div class="btn-group btn-group-sm float-right" role="group" aria-label="İşlemler">
+            <a href="/users/{{ this._id }}" class="btn btn-outline-success">
+              <i class="far fa-edit"></i>
+              <span class="d-none d-sm-inline">Düzenle</span>
+            </a>
+            <a href="/users/delete/{{ this._id }}" class="btn btn-outline-danger">
+              <i class="far fa-trash-alt"></i>
+              <span class="d-none d-sm-inline">Sil</span>
+            </a>
+          </div>
+        </td>
+      </tr>
+      {{/ each }}
+    </tbody>
+  </table>
+</div>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+  {{addTitle}}
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">{{addTitle}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="POST" action="/users">
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="roleName">Adı</label>
+              <input type="text" class="form-control" id="fName" name="fName" placeholder="Adı giriniz.">
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="roleName">Soyadı</label>
+              <input type="text" class="form-control" id="lName" name="lName" placeholder="Soyadı giriniz.">
+            </div>
+          </div>
+          
+            <div class="form-group">
+              <label for="roleName">Email</label>
+              <input type="email" class="form-control" id="email" name="email" placeholder="Email giriniz.">
+            </div>
+
+            <div class="form-group">
+              <label for="roleName">Şifre</label>
+              <input type="password" class="form-control" id="password" name="password" placeholder="Şifre giriniz.">
+            </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+          <button type="submit" class="btn btn-primary">Kaydet</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{{#if edit}}
+<!-- Modal Edit -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalTitle">{{editTitle}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="POST" action="/users/{{ user._id }}">
+        <div class="modal-body">
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="roleName">Adı</label>
+              <input type="text" class="form-control" id="fName" name="fName" value="{{user.fName}}" placeholder="Adı giriniz.">
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="roleName">Soyadı</label>
+              <input type="text" class="form-control" id="lName" name="lName" value="{{user.lName}}" placeholder="Soyadı giriniz.">
+            </div>
+          </div>
+
+          <div class="form-group">
+              <label for="roleName">Email</label>
+              <input type="email" class="form-control" id="email" name="email" value="{{user.email}}" placeholder="Email giriniz.">
+            </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+          <button type="submit" class="btn btn-primary">Kaydet</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{{/if}}
