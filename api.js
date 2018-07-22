@@ -1,9 +1,9 @@
 const http = require('http');
 
-module.exports.apiCall = (path, method, params, cb) => {
+module.exports.apiCall = (token, path, method, params, cb) => {
 
     const apiUrl = 'localhost';
-    var data = JSON.stringify(params);
+    const data = JSON.stringify(params);
 
     const options = {
         host: apiUrl,
@@ -12,19 +12,19 @@ module.exports.apiCall = (path, method, params, cb) => {
         method: method,
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbmFuZ29nQGdtYWlsLmNvbSIsInVzZXJJZCI6IjViNTE4ZDlkOTc4YzgwNjM0MGNhZmJlZiIsImlhdCI6MTUzMjA3MTM0OCwiZXhwIjoxNTMyMDc0OTQ4fQ.7Z8cq7PcuGonMAkUX6gVQ-ZjI2ZrqVRi6d7dohEBihI'
+            'Authorization': `Bearer ${token}`
         }
     };
 
-    var post_req = http.request(options, function (res) {
+    let post_req = http.request(options, (res) => {
         res.setEncoding('utf8');
         let body = '';
 
-        res.on('data', function (chunk) {
+        res.on('data', (chunk) => {
             body += chunk;
         });
 
-        res.on('end', function () {
+        res.on('end', () => {
             let result = JSON.parse(body);
             cb(result);
         });

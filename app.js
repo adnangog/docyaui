@@ -1,36 +1,58 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var expressHbs = require('express-handlebars');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const logger = require('morgan');
+const expressHbs = require('express-handlebars');
+const hbHelpers = require('./helpers/handlebars.js');
+const expressValidator = require('express-validator');
+const expressSession = require('express-session');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const indexRouter = require('./routes/index');
+const loginRouter = require('./routes/login');
+const checkAuth = require("./middleware/checkAuth");
 
-var app = express();
+const app = express();
 
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'));
-app.engine('.hbs', expressHbs({defaultLayout: 'layout', extname: '.hbs'}))
+app.engine('.hbs', expressHbs({
+  defaultLayout: 'layout', extname: '.hbs', helpers: {
+    if_equal: function (a, b, opts) {
+      console.log(a, b);
+      if (a == b) {
+        return opts.fn(this)
+      } else {
+        return opts.inverse(this)
+      }
+    }
+  }
+}))
 app.set('view engine', '.hbs');
 
 app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(expressValidator());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(expressSession({
+  secret: 'dumer',
+  resave: false,
+  saveUninitialized: false
+}));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/login', loginRouter);
+app.use('/', checkAuth, indexRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
