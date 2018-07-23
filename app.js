@@ -5,7 +5,6 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 const expressHbs = require('express-handlebars');
-const hbHelpers = require('./helpers/handlebars.js');
 const expressValidator = require('express-validator');
 const expressSession = require('express-session');
 

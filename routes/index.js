@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const api = require("../api");
+const helper = require("../helpers/index");
 const async = require("async");
 
 /* GET home page. */
@@ -12,7 +13,7 @@ router.get("/", (req, res, next) => {
 router.post("/users", (req, res, next) => {
   api.apiCall(
     req.session.token,
-    "/user",
+    "/user/add",
     "POST",
     {
       fName: req.body.fName,
@@ -33,8 +34,8 @@ router.post("/users", (req, res, next) => {
         res.render("users", {
           title: "Kullanıcılar",
           addTitle: "Kullanıcı Ekle",
-          users: users,
-          breadcrumb: breadcrumb
+          users,
+          breadcrumb
         });
       });
     }
@@ -43,34 +44,52 @@ router.post("/users", (req, res, next) => {
 
 // User List
 router.get("/users", (req, res, next) => {
-  api.apiCall(req.session.token, "/user", "GET", null, (users) => {
+  api.apiCall(req.session.token, "/user", "POST", {
+    page: parseInt(req.query.page) || 0,
+    limit: parseInt(req.query.limit) || 1
+  }, (users) => {
     let breadcrumb = [
       { route: "/", name: "Anasayfa" },
       { route: "/users", name: "Kullanıcılar" }
     ];
-    res.render("users", {
-      title: "Kullanıcılar",
-      addTitle: "Kullanıcı Ekle",
-      users: users,
-      breadcrumb: breadcrumb
-    });
+
+    let page = parseInt(req.query.page)|| 0;
+    let limit = req.query.limit || 1;
+    let total = users.info && users.info[0].count;
+
+    helper.paging(page, limit, total, "users", (paging) => {
+      res.render("users", {
+        title: "Kullanıcılar",
+        addTitle: "Kullanıcı Ekle",
+        users: users.data,
+        breadcrumb,
+        paging,
+        messageType:req.query.messageType,
+        message:req.query.message
+      });
+    })
+
+
   });
 });
 
 // User GetById
 router.get("/users/:userId", (req, res, next) => {
   async.parallel([
-    (callback)=>{
-      api.apiCall(req.session.token, "/user", "GET", null, (result) => {
+    (callback) => {
+      api.apiCall(req.session.token, "/user", "POST", {
+        page:parseInt(req.query.page)|| 0,
+        limit:req.query.limit || 1
+      }, (result) => {
         callback(null, result);
       });
     },
-    (callback)=>{
+    (callback) => {
       api.apiCall(req.session.token, `/user/${req.params.userId}`, "GET", null, (result) => {
         callback(null, result);
       });
     },
-    (callback)=>{
+    (callback) => {
       api.apiCall(req.session.token, `/role`, "GET", null, (result) => {
         callback(null, result);
       });
@@ -82,18 +101,24 @@ router.get("/users/:userId", (req, res, next) => {
         { route: "/users", name: "Kullanıcılar" },
         { route: `/users/${req.params.userId}`, name: "Kullanıcı Düzenle" }
       ];
+
+      let page = parseInt(req.query.page)|| 0;
+      let limit = req.query.limit || 1;
+      let total = results[0].info && results[0].info[0].count;
+
+    helper.paging(page, limit, total, "users", (paging) => {
       res.render("users", {
         title: "Kullanıcılar",
         addTitle: "Kullanıcı Ekle",
         editTitle: "Kullanıcı Düzenle",
         edit: true,
-        breadcrumb: breadcrumb,
-        users: results[0],
+        users: results[0].data,
         user: results[1],
-        roles: results[2]
+        roles: results[2],
+        breadcrumb,
+        paging
       });
-      // Results here will be an array results returned from the database.
-      // You can manipulate the results here before returning to the view.
+    })
     });
 });
 
@@ -111,18 +136,10 @@ router.post("/users/:userId", (req, res, next) => {
       role: req.body.role
     },
     function (result) {
-      api.apiCall(req.session.token, "/user", "GET", null, (users) => {
-        let breadcrumb = [
-          { route: "/", name: "Anasayfa" },
-          { route: "/users", name: "Kullanıcılar" }
-        ];
-        res.render("users", {
-          title: "Kullanıcılar",
-          addTitle: "Kullanıcı Ekle",
-          users: users,
-          breadcrumb: breadcrumb
-        });
-      });
+      let opt="";
+      if(result.nModified>0)
+        opt="?messageType=1&message=İşlem Başarılı";
+      res.redirect(`/users${opt}`);
     }
   );
 });
@@ -154,7 +171,7 @@ router.post("/authorities", (req, res, next) => {
           title: "Yetkiler",
           addTitle: "Yetki Ekle",
           authorities: authorities,
-          breadcrumb: breadcrumb
+          breadcrumb
         });
       });
     }
@@ -172,7 +189,7 @@ router.get("/authorities", (req, res, next) => {
       title: "Yetkiler",
       addTitle: "Yetki Ekle",
       authorities: authorities.messageType == 0 ? [] : authorities,
-      breadcrumb: breadcrumb
+      breadcrumb
     });
   });
 });
@@ -198,7 +215,7 @@ router.get("/authorities/:authorityId", (req, res, next) => {
         authorities: authorities,
         edit: true,
         authority: authority,
-        breadcrumb: breadcrumb
+        breadcrumb
       });
     });
   });
@@ -223,7 +240,7 @@ router.post("/authorities/:authorityId", (req, res, next) => {
           title: "Yetkiler",
           addTitle: "Yetki Ekle",
           authorities: authorities,
-          breadcrumb: breadcrumb
+          breadcrumb
         });
       });
     }
@@ -264,7 +281,7 @@ router.post("/roles", (req, res, next) => {
           title: "Roller",
           addTitle: "Rol Ekle",
           roles: roles,
-          breadcrumb: breadcrumb
+          breadcrumb
         });
       });
     }
@@ -282,7 +299,7 @@ router.get("/roles", (req, res, next) => {
       title: "Roller",
       addTitle: "Rol Ekle",
       roles: roles,
-      breadcrumb: breadcrumb
+      breadcrumb
     });
   });
 });
@@ -303,7 +320,7 @@ router.get("/roles/:roleId", (req, res, next) => {
         roles: roles,
         edit: true,
         role: role,
-        breadcrumb: breadcrumb
+        breadcrumb
       });
     });
   });
@@ -328,7 +345,7 @@ router.post("/roles/:roleId", (req, res, next) => {
           title: "Roller",
           addTitle: "Rol Ekle",
           roles: roles,
-          breadcrumb: breadcrumb
+          breadcrumb
         });
       });
     }
@@ -362,7 +379,7 @@ router.post("/departments", (req, res, next) => {
           title: "Departmanlar",
           addTitle: "Departman Ekle",
           departments: departments,
-          breadcrumb: breadcrumb
+          breadcrumb
         });
       });
     }
@@ -380,7 +397,7 @@ router.get("/departments", (req, res, next) => {
       title: "Departmanlar",
       addTitle: "Departman Ekle",
       departments: departments,
-      breadcrumb: breadcrumb
+      breadcrumb
     });
   });
 });
@@ -403,7 +420,7 @@ router.get("/departments/:departmentId", (req, res, next) => {
         departments: departments,
         edit: true,
         department: department,
-        breadcrumb: breadcrumb
+        breadcrumb
       });
     });
   });
@@ -428,7 +445,7 @@ router.post("/Departments/:departmentId", (req, res, next) => {
           title: "Departmanlar",
           addTitle: "Departman Ekle",
           departments: departments,
-          breadcrumb: breadcrumb
+          breadcrumb
         });
       });
     }
@@ -469,7 +486,7 @@ router.post("/documents/types", (req, res, next) => {
           title: "Döküman Tipleri",
           addTitle: "Döküman Tipi Ekle",
           documenttypes: documenttypes,
-          breadcrumb: breadcrumb
+          breadcrumb
         });
       });
     }
@@ -488,7 +505,7 @@ router.get("/documents/types", (req, res, next) => {
       title: "Döküman Tipleri",
       addTitle: "Döküman Tipi Ekle",
       documenttypes: documenttypes,
-      breadcrumb: breadcrumb
+      breadcrumb
     });
   });
 });
@@ -515,7 +532,7 @@ router.get("/documents/types/:typeId", (req, res, next) => {
         documenttypes: documenttypes,
         edit: true,
         documenttype: documenttype,
-        breadcrumb: breadcrumb
+        breadcrumb
       });
     });
   });
@@ -541,7 +558,7 @@ router.post("/documents/types/:typeId", (req, res, next) => {
           title: "Döküman Tipleri",
           addTitle: "Döküman Tipi Ekle",
           documenttypes: documenttypes,
-          breadcrumb: breadcrumb
+          breadcrumb
         });
       });
     }
@@ -585,7 +602,7 @@ router.post("/documents", (req, res, next) => {
           title: "Dökümanlar",
           addTitle: "Döküman Ekle",
           documents: documents,
-          breadcrumb: breadcrumb
+          breadcrumb
         });
       });
     }
@@ -603,7 +620,7 @@ router.get("/documents", (req, res, next) => {
       title: "Dökümanlar",
       addTitle: "Döküman Ekle",
       documents: documents,
-      breadcrumb: breadcrumb
+      breadcrumb
     });
   });
 });
@@ -629,7 +646,7 @@ router.get("/documents/:documentId", (req, res, next) => {
         documents: documents,
         edit: true,
         document: document,
-        breadcrumb: breadcrumb
+        breadcrumb
       });
     });
   });
@@ -655,7 +672,7 @@ router.post("/documents/:documentId", (req, res, next) => {
           title: "Dökümanlar",
           addTitle: "Döküman Ekle",
           documents: documents,
-          breadcrumb: breadcrumb
+          breadcrumb
         });
       });
     }
@@ -691,7 +708,7 @@ router.post("/cards", (req, res, next) => {
           title: "Dosya Kartları",
           addTitle: "Dosya Kartı Ekle",
           cards: cards,
-          breadcrumb: breadcrumb
+          breadcrumb
         });
       });
     }
@@ -709,7 +726,7 @@ router.get("/cards", (req, res, next) => {
       title: "Dosya Kartları",
       addTitle: "Dosya Kartı Ekle",
       cards: cards.messageType == 0 ? [] : cards,
-      breadcrumb: breadcrumb
+      breadcrumb
     });
   });
 });
@@ -735,7 +752,7 @@ router.get("/cards/:cardId", (req, res, next) => {
         cards: cards,
         edit: true,
         card: card,
-        breadcrumb: breadcrumb
+        breadcrumb
       });
     });
   });
@@ -760,7 +777,7 @@ router.post("/cards/:cardId", (req, res, next) => {
           title: "Dosya Kartları",
           addTitle: "Dosya Kartı Ekle",
           cards: cards,
-          breadcrumb: breadcrumb
+          breadcrumb
         });
       });
     }
@@ -805,7 +822,7 @@ router.post("/folders", (req, res, next) => {
           title: "Klasörler",
           addTitle: "Klasör Ekle",
           folders: folders,
-          breadcrumb: breadcrumb
+          breadcrumb
         });
       });
     }
@@ -823,7 +840,7 @@ router.get("/folders", (req, res, next) => {
       title: "Klasörler",
       addTitle: "Klasör Ekle",
       folders: folders.messageType == 0 ? [] : folders,
-      breadcrumb: breadcrumb
+      breadcrumb
     });
   });
 });
@@ -849,7 +866,7 @@ router.get("/folders/:folderId", (req, res, next) => {
         folders: folders,
         edit: true,
         folder: folder,
-        breadcrumb: breadcrumb
+        breadcrumb
       });
     });
   });
@@ -877,7 +894,7 @@ router.post("/folders/:folderId", (req, res, next) => {
           title: "Klasörler",
           addTitle: "Klasör Ekle",
           folders: folders,
-          breadcrumb: breadcrumb
+          breadcrumb
         });
       });
     }
