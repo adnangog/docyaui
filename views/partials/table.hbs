@@ -1,0 +1,40 @@
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead class="thead-dark">
+      {{# each data.header }}
+      <tr>
+        {{# each this }} {{#if_equal @index 0}}
+        {{else}}
+        <th scope="col">{{ this }}</th>
+        {{/if_equal}} {{/ each }}
+        <th class="text-right">İşlem</th>
+      </tr>
+      {{/ each }}
+    </thead>
+    <tbody>
+      {{# each data.data }}
+      <tr>
+        {{# each this }} {{#if_equal @index 0}}
+        {{else}}
+        <td scope="row">{{ this }}</td>
+        {{/if_equal}} {{/ each }}
+        <td>
+            {{# each this }} {{#if_equal @index 0}}
+          <div class="btn-group btn-group-sm float-right" role="group" aria-label="İşlemler">
+            <a href="/{{ ../../../route }}/{{ this }}" class="btn btn-outline-success">
+              <i class="far fa-edit"></i>
+              <span class="d-none d-sm-inline">Düzenle</span>
+            </a>
+            <a href="/{{ ../../../route }}/delete/{{ this }}" class="btn btn-outline-danger">
+              <i class="far fa-trash-alt"></i>
+              <span class="d-none d-sm-inline">Sil</span>
+            </a>
+          </div>
+          {{/if_equal}} {{/ each }}
+        </td>
+      </tr>
+      {{/ each }}
+    </tbody>
+  </table>
+</div>
+{{> paging}}

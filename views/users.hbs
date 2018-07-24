@@ -2,45 +2,7 @@
 
 {{> alert}}
 
-<div class="table-responsive">
-  <table class="table table-striped">
-    <thead class="thead-dark">
-      <tr>
-        <th scope="col">Ad</th>
-        <th scope="col">Soyad</th>
-        <th scope="col">Email</th>
-        <th scope="col">Kayıt Tarihi</th>
-        <th scope="col">Durum</th>
-        <th class="text-right">İşlem</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{# each users }}
-      <tr>
-        <td scope="row">{{ this.fName }}</td>
-        <td>{{ this.lName }}</td>
-        <td>{{ this.email }}</td>
-        <td>{{ this.rDate }}</td>
-        <td>{{ this.statu }}</td>
-        <td>
-          <div class="btn-group btn-group-sm float-right" role="group" aria-label="İşlemler">
-            <a href="/users/{{ this._id }}" class="btn btn-outline-success">
-              <i class="far fa-edit"></i>
-              <span class="d-none d-sm-inline">Düzenle</span>
-            </a>
-            <a href="/users/delete/{{ this._id }}" class="btn btn-outline-danger">
-              <i class="far fa-trash-alt"></i>
-              <span class="d-none d-sm-inline">Sil</span>
-            </a>
-          </div>
-        </td>
-      </tr>
-      {{/ each }}
-    </tbody>
-  </table>
-</div>
-
-{{> paging}}
+{{> table}}
 
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">

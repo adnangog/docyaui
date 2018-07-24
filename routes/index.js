@@ -47,7 +47,7 @@ router.get("/users", (req, res, next) => {
   api.apiCall(req.session.token, "/user", "POST", {
     page: parseInt(req.query.page) || 0,
     limit: parseInt(req.query.limit) || 1
-  }, (users) => {
+  }, (data) => {
     let breadcrumb = [
       { route: "/", name: "Anasayfa" },
       { route: "/users", name: "Kullanıcılar" }
@@ -55,15 +55,16 @@ router.get("/users", (req, res, next) => {
 
     let page = parseInt(req.query.page)|| 0;
     let limit = req.query.limit || 1;
-    let total = users.info && users.info[0].count;
+    let total = data.count;
 
     helper.paging(page, limit, total, "users", (paging) => {
       res.render("users", {
         title: "Kullanıcılar",
         addTitle: "Kullanıcı Ekle",
-        users: users.data,
+        data,
         breadcrumb,
         paging,
+        route:"users",
         messageType:req.query.messageType,
         message:req.query.message
       });

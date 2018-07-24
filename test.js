@@ -10,7 +10,7 @@ let coreData = {
             "Id",
             "Ad Soyad",
             "Meslek",
-            "Sehir",
+            "Şehir",
             "Kodu",
             "Tarih",
             "Ücret"
