@@ -19,7 +19,6 @@ const app = express();
 app.engine('.hbs', expressHbs({
   defaultLayout: 'layout', extname: '.hbs', helpers: {
     if_equal: function (a, b, opts) {
-      console.log(a, b);
       if (a == b) {
         return opts.fn(this)
       } else {

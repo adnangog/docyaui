@@ -97,6 +97,7 @@ router.get("/users/:userId", (req, res, next) => {
     }
   ],
     (err, results) => {
+      
       let breadcrumb = [
         { route: "/", name: "Anasayfa" },
         { route: "/users", name: "Kullanıcılar" },
@@ -107,13 +108,14 @@ router.get("/users/:userId", (req, res, next) => {
       let limit = req.query.limit || 1;
       let total = results[0].info && results[0].info[0].count;
 
+
     helper.paging(page, limit, total, "users", (paging) => {
       res.render("users", {
         title: "Kullanıcılar",
         addTitle: "Kullanıcı Ekle",
         editTitle: "Kullanıcı Düzenle",
         edit: true,
-        users: results[0].data,
+        data: results[0].data,
         user: results[1],
         roles: results[2],
         breadcrumb,
@@ -148,6 +150,7 @@ router.post("/users/:userId", (req, res, next) => {
 // User Delete
 router.get("/users/delete/:userId", (req, res, next) => {
   api.apiCall(req.session.token, `/user/${req.params.userId}`, "DELETE", null, (result) => {
+    console.log(result)
     res.redirect("/users");
   });
 });
@@ -181,26 +184,47 @@ router.post("/authorities", (req, res, next) => {
 
 // Authority List
 router.get("/authorities", (req, res, next) => {
-  api.apiCall(req.session.token, "/authority", "GET", null, (authorities) => {
+  api.apiCall(req.session.token, "/authority", "POST", {
+    page: parseInt(req.query.page) || 0,
+    limit: parseInt(req.query.limit) || 1
+  }, (data) => {
     let breadcrumb = [
       { route: "/", name: "Anasayfa" },
       { route: "/authorities", name: "Yetkiler" }
     ];
-    res.render("authorities", {
-      title: "Yetkiler",
-      addTitle: "Yetki Ekle",
-      authorities: authorities.messageType == 0 ? [] : authorities,
-      breadcrumb
-    });
+    let page = parseInt(req.query.page)|| 0;
+    let limit = req.query.limit || 1;
+    let total = data.count;
+
+    helper.paging(page, limit, total, "authorities", (paging) => {
+      res.render("authorities", {
+        title: "Yetkiler",
+        addTitle: "Yetki Ekle",
+        data,
+        breadcrumb,
+        paging,
+        route:"authorities",
+        messageType:req.query.messageType,
+        message:req.query.message
+      });
+    })
   });
 });
 
 // Authority GetById
 router.get("/authorities/:authorityId", (req, res, next) => {
-  api.apiCall(req.session.token, "/authority", "GET", null, (authorities) => {
+  api.apiCall(req.session.token, "/authority", "POST", {
+    page:parseInt(req.query.page)|| 0,
+    limit:req.query.limit || 1
+  }, (data) => {
     api.apiCall(req.session.token, `/authority/${req.params.authorityId}`, "GET", null, (
       authority
     ) => {
+      let page = parseInt(req.query.page)|| 0;
+    let limit = req.query.limit || 1;
+    let total = data.count;
+
+    helper.paging(page, limit, total, "authorities", (paging) => {
       let breadcrumb = [
         { route: "/", name: "Anasayfa" },
         { route: "/authorities", name: "Yetkiler" },
@@ -213,11 +237,17 @@ router.get("/authorities/:authorityId", (req, res, next) => {
         title: "Yetkiler",
         addTitle: "Yetki Ekle",
         editTitle: "Yetki Düzenle",
-        authorities: authorities,
         edit: true,
-        authority: authority,
-        breadcrumb
+        data,
+        authority,
+        breadcrumb,
+        paging,
+        route:"authorities",
+        messageType:req.query.messageType,
+        message:req.query.message
       });
+    })
+      
     });
   });
 });
@@ -232,18 +262,10 @@ router.post("/authorities/:authorityId", (req, res, next) => {
       name: req.body.authorityName
     },
     (result) => {
-      api.apiCall(req.session.token, "/authority", "GET", null, (authorities) => {
-        let breadcrumb = [
-          { route: "/", name: "Anasayfa" },
-          { route: "/authorities", name: "Yetkiler" }
-        ];
-        res.render("authorities", {
-          title: "Yetkiler",
-          addTitle: "Yetki Ekle",
-          authorities: authorities,
-          breadcrumb
-        });
-      });
+      let opt="";
+      if(result.nModified>0)
+        opt="?messageType=1&message=İşlem Başarılı";
+      res.redirect(`/authorities${opt}`);
     }
   );
 });
