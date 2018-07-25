@@ -9,6 +9,13 @@ const expressValidator = require('express-validator');
 const expressSession = require('express-session');
 
 const indexRouter = require('./routes/index');
+const authorityRouter = require('./routes/authority');
+const cardRouter = require('./routes/card');
+const departmentRouter = require('./routes/department');
+const documentRouter = require('./routes/document');
+const folderRouter = require('./routes/folder');
+const roleRouter = require('./routes/role');
+const userRouter = require('./routes/user');
 const loginRouter = require('./routes/login');
 const checkAuth = require("./middleware/checkAuth");
 
@@ -43,6 +50,13 @@ app.use(expressSession({
 
 app.use('/login', loginRouter);
 app.use('/', checkAuth, indexRouter);
+app.use('/authorities', checkAuth, authorityRouter);
+app.use('/cards', checkAuth, cardRouter);
+app.use('/departments', checkAuth, departmentRouter);
+app.use('/documents', checkAuth, documentRouter);
+app.use('/folders', checkAuth, folderRouter);
+app.use('/roles', checkAuth, roleRouter);
+app.use('/users', checkAuth, userRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

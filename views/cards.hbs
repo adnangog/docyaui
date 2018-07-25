@@ -1,32 +1,7 @@
 <h1>{{title}}</h1>
-<div class="table-responsive">
-<table class="table table-hover">
-  <thead  class="thead-dark">
-    <tr>
-      <th scope="col">Dosya Kartı</th>
-      <th scope="col">Kayıt Tarihi</th>
-      <th class="text-right">İşlem</th>
-    </tr>
-  </thead>
-  <tbody>
-    {{# each cards }}
-    <tr>
-      <td scope="row">{{ this.name }}</td>
-      <td>{{ this.rDate }}</td>
-      <td>
-          <div class="btn-group btn-group-sm float-right" role="group" aria-label="İşlemler">
-            <a href="/cards/{{ this._id }}" class="btn btn-outline-success">
-              <i class="far fa-edit"></i> <span class="d-none d-sm-inline">Düzenle</span></a>
-            <a href="/cards/delete/{{ this._id }}" class="btn btn-outline-danger">
-              <i class="far fa-trash-alt"></i> <span class="d-none d-sm-inline">Sil</span></a>
-          </div>
-        </td>
-    </tr>
-    {{/ each }}
-  </tbody>
-</table>
-</div>
+{{> alert}}
 
+{{> table}}
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
   {{addTitle}}
