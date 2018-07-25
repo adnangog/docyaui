@@ -30,37 +30,61 @@ router.post("/", (req, res, next) => {
 
 // Folder List
 router.get("/", (req, res, next) => {
-  api.apiCall(
-    req.session.token,
-    "/folder",
-    "POST",
-    {
-      page: parseInt(req.query.page) || 0,
-      limit: parseInt(req.query.limit) || 1
+  async.parallel([
+    (callback) => {
+      api.apiCall(
+        req.session.token,
+        "/folder",
+        "POST",
+        {
+          page: parseInt(req.query.page) || 0,
+          limit: parseInt(req.query.limit) || 1
+        }, (result) => {
+          callback(null, result);
+        }
+      );
     },
-    data => {
-      let breadcrumb = [
-        { route: "/", name: "Anasayfa" },
-        { route: "/folders", name: "Klasörler" }
-      ];
-      let page = parseInt(req.query.page) || 0;
-      let limit = req.query.limit || 1;
-      let total = data.count;
-
-      helper.paging(page, limit, total, "folders", paging => {
-        res.render("folders", {
-          title: "Klasörler",
-          addTitle: "Klasör Ekle",
-          data,
-          breadcrumb,
-          paging,
-          route: "folders",
-          messageType: req.query.messageType,
-          message: req.query.message
-        });
+    (callback) => {
+      api.apiCall(req.session.token, `/user`, "POST", {
+        page: parseInt(req.query.page) || 0,
+        limit: parseInt(req.query.limit) || 100
+      }, (result) => {
+        callback(null, result);
+      });
+    },
+    (callback) => {
+      api.apiCall(req.session.token, `/card`, "POST", {
+        page: parseInt(req.query.page) || 0,
+        limit: parseInt(req.query.limit) || 100
+      }, (result) => {
+        callback(null, result);
       });
     }
-  );
+  ],
+    (err, results) => {
+
+      let breadcrumb = [
+        { route: "/", name: "Anasayfa" },
+        { route: "/users", name: "Klasörler" }
+      ];
+
+      let page = parseInt(req.query.page)|| 0;
+      let limit = req.query.limit || 1;
+      let total = results[0].info && results[0].info[0].count;
+
+
+    helper.paging(page, limit, total, "folders", (paging) => {
+      res.render("folders", {
+        title: "Klasörler",
+        addTitle: "Klasör Ekle",
+        data: results[0].data,
+        users: results[1].data,
+        cards: results[2].data,
+        breadcrumb,
+        paging
+      });
+    })
+    });
 });
 
 // Folder GetById
