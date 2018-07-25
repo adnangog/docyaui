@@ -78,7 +78,10 @@ router.post("/", (req, res, next) => {
         });
       },
       (callback) => {
-        api.apiCall(req.session.token, `/role`, "GET", null, (result) => {
+        api.apiCall(req.session.token, `/role`, "POST", {
+          page:parseInt(req.query.page)|| 0,
+          limit:req.query.limit || 100
+        }, (result) => {
           callback(null, result);
         });
       }
@@ -104,7 +107,7 @@ router.post("/", (req, res, next) => {
           edit: true,
           data: results[0].data,
           user: results[1],
-          roles: results[2],
+          roles: results[2].data,
           breadcrumb,
           paging
         });

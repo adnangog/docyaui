@@ -38,7 +38,7 @@ router.get("/", (req, res, next) => {
         "POST",
         {
           page: parseInt(req.query.page) || 0,
-          limit: parseInt(req.query.limit) || 1
+          limit: parseInt(req.query.limit) || 100
         }, (result) => {
           callback(null, result);
         }
@@ -62,7 +62,6 @@ router.get("/", (req, res, next) => {
     }
   ],
     (err, results) => {
-
       let breadcrumb = [
         { route: "/", name: "Anasayfa" },
         { route: "/users", name: "Klasörler" }
@@ -77,7 +76,8 @@ router.get("/", (req, res, next) => {
       res.render("folders", {
         title: "Klasörler",
         addTitle: "Klasör Ekle",
-        data: results[0].data,
+        route: "folders",
+        data: results[0],
         users: results[1].data,
         cards: results[2].data,
         breadcrumb,

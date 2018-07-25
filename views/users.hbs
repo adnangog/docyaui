@@ -87,10 +87,10 @@
           <div class="form-group">
             <label for="roleName">Rol</label>
             <select class="form-control" id="role" name="role">
-              {{# each roles }} {{#if_equal ../user.role this._id}}
-              <option value="{{ this._id }}" selected="selected">{{ this.name }}</option>
+              {{# each roles }} {{#if_equal ../user.role this.[0] }}
+              <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
               {{else}}
-              <option value="{{ this._id }}">{{ this.name }}</option>
+              <option value="{{ this.[0] }}">{{ this.[1] }}</option>
               {{/if_equal}} {{/ each}}
             </select>
           </div>
