@@ -15,7 +15,7 @@ router.post("/", (req, res, next) => {
       description: req.body.description,
       parent: req.body.parent,
       card: req.body.card,
-      user: req.body.user,
+      user: req.session.userId,
       authSet: null,
       rDate: Date.now()
     },
@@ -32,34 +32,24 @@ router.post("/", (req, res, next) => {
 router.get("/", (req, res, next) => {
   async.parallel([
     (callback) => {
-      api.apiCall(
-        req.session.token,
-        "/folder",
-        "POST",
-        {
-          page: parseInt(req.query.page) || 0,
-          limit: parseInt(req.query.limit) || 100
-        }, (result) => {
+      api.apiCall( req.session.token, "/folder", "POST", req.body.pagelimit, (result) => {
           callback(null, result);
         }
       );
     },
     (callback) => {
-      api.apiCall(req.session.token, `/user`, "POST", {
-        page: parseInt(req.query.page) || 0,
-        limit: parseInt(req.query.limit) || 100
-      }, (result) => {
-        callback(null, result);
-      });
-    },
-    (callback) => {
-      api.apiCall(req.session.token, `/card`, "POST", {
-        page: parseInt(req.query.page) || 0,
-        limit: parseInt(req.query.limit) || 100
-      }, (result) => {
+      api.apiCall(req.session.token, `/card`, "POST", req.body.pagelimit, (result) => {
         callback(null, result);
       });
     }
+    // ,(callback) => {
+    //   api.apiCall(req.session.token, `/authsets`, "POST", {
+    //     page: parseInt(req.query.page) || 0,
+    //     limit: parseInt(req.query.limit) || 100
+    //   }, (result) => {
+    //     callback(null, result);
+    //   });
+    // }
   ],
     (err, results) => {
       let breadcrumb = [
@@ -67,19 +57,17 @@ router.get("/", (req, res, next) => {
         { route: "/users", name: "Klasörler" }
       ];
 
-      let page = parseInt(req.query.page)|| 0;
-      let limit = req.query.limit || 1;
       let total = results[0].info && results[0].info[0].count;
 
 
-    helper.paging(page, limit, total, "folders", (paging) => {
+    helper.paging(req.body.page, req.body.limit, total, "folders", (paging) => {
       res.render("folders", {
         title: "Klasörler",
         addTitle: "Klasör Ekle",
         route: "folders",
         data: results[0],
-        users: results[1].data,
-        cards: results[2].data,
+        cards: results[1].data,
+        // authSets: results[2].data,
         breadcrumb,
         paging
       });
@@ -89,26 +77,17 @@ router.get("/", (req, res, next) => {
 
 // Folder GetById
 router.get("/:folderId", (req, res, next) => {
-  api.apiCall(
-    req.session.token,
-    "/folder",
-    "POST",
-    {
-      page: parseInt(req.query.page) || 0,
-      limit: parseInt(req.query.limit) || 1
-    },
-    data => {
+  api.apiCall( req.session.token, "/folder", "POST", req.body.pagelimit, data => {
       api.apiCall(
         req.session.token,
         `/folder/${req.params.folderId}`,
         "GET",
         null,
         folder => {
-          let page = parseInt(req.query.page) || 0;
-          let limit = req.query.limit || 1;
+
           let total = data.count;
 
-          helper.paging(page, limit, total, "folders", paging => {
+          helper.paging(req.body.page, req.body.limit, total, "folders", paging => {
             let breadcrumb = [
               { route: "/", name: "Anasayfa" },
               { route: "/folders", name: "Klasörler" },
@@ -144,8 +123,10 @@ router.post("/:folderId", (req, res, next) => {
     {
       name: req.body.name,
       description: req.body.description,
+      parent: req.body.parent,
+      card: req.body.card,
+      user: req.session.userId,
       authSet: null,
-      card: "5b54e836db7f91048cb5ae2b"
     },
     result => {
       let opt = "";

@@ -25,19 +25,14 @@ router.post("/", (req, res, next) => {
 
 // Authority List
 router.get("/", (req, res, next) => {
-  api.apiCall(req.session.token, "/authority", "POST", {
-    page: parseInt(req.query.page) || 0,
-    limit: parseInt(req.query.limit) || 1
-  }, (data) => {
+  api.apiCall(req.session.token, "/authority", "POST", req.body.pagelimit, (data) => {
     let breadcrumb = [
       { route: "/", name: "Anasayfa" },
       { route: "/authorities", name: "Yetkiler" }
     ];
-    let page = parseInt(req.query.page) || 0;
-    let limit = req.query.limit || 1;
     let total = data.count;
 
-    helper.paging(page, limit, total, "authorities", (paging) => {
+    helper.paging(req.body.page, req.body.limit, total, "authorities", (paging) => {
       res.render("authorities", {
         title: "Yetkiler",
         addTitle: "Yetki Ekle",
@@ -54,18 +49,13 @@ router.get("/", (req, res, next) => {
 
 // Authority GetById
 router.get("/:authorityId", (req, res, next) => {
-  api.apiCall(req.session.token, "/authority", "POST", {
-    page: parseInt(req.query.page) || 0,
-    limit: req.query.limit || 1
-  }, (data) => {
+  api.apiCall(req.session.token, "/authority", "POST", req.body.pagelimit, (data) => {
     api.apiCall(req.session.token, `/authority/${req.params.authorityId}`, "GET", null, (
       authority
     ) => {
-      let page = parseInt(req.query.page) || 0;
-      let limit = req.query.limit || 1;
       let total = data.count;
 
-      helper.paging(page, limit, total, "authorities", (paging) => {
+      helper.paging(req.body.page, req.body.limit, total, "authorities", (paging) => {
         let breadcrumb = [
           { route: "/", name: "Anasayfa" },
           { route: "/authorities", name: "Yetkiler" },
@@ -111,15 +101,9 @@ router.post("/:authorityId", (req, res, next) => {
 
 // Authority Delete
 router.get("/delete/:authorityId", (req, res, next) => {
-  api.apiCall(
-    req.session.token,
-    `/authorities/${req.params.authorityId}`,
-    "DELETE",
-    null,
-    (result) => {
-      res.redirect("/authorities");
-    }
-  );
+  next();
+  res.redirect("/authorities");
+  
 });
 
 module.exports = router;

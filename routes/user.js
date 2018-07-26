@@ -31,20 +31,15 @@ router.post("/", (req, res, next) => {
   
   // User List
   router.get("/", (req, res, next) => {
-    api.apiCall(req.session.token, "/user", "POST", {
-      page: parseInt(req.query.page) || 0,
-      limit: parseInt(req.query.limit) || 1
-    }, (data) => {
+    api.apiCall(req.session.token, "/user", "POST", req.body.pagelimit, (data) => {
       let breadcrumb = [
         { route: "/", name: "Anasayfa" },
         { route: "/users", name: "Kullanıcılar" }
       ];
   
-      let page = parseInt(req.query.page)|| 0;
-      let limit = req.query.limit || 1;
       let total = data.count;
   
-      helper.paging(page, limit, total, "users", (paging) => {
+      helper.paging(req.body.page, req.body.limit, total, "users", (paging) => {
         res.render("users", {
           title: "Kullanıcılar",
           addTitle: "Kullanıcı Ekle",
@@ -65,10 +60,7 @@ router.post("/", (req, res, next) => {
   router.get("/:userId", (req, res, next) => {
     async.parallel([
       (callback) => {
-        api.apiCall(req.session.token, "/user", "POST", {
-          page:parseInt(req.query.page)|| 0,
-          limit:req.query.limit || 1
-        }, (result) => {
+        api.apiCall(req.session.token, "/user", "POST", req.body.pagelimit, (result) => {
           callback(null, result);
         });
       },
@@ -78,10 +70,7 @@ router.post("/", (req, res, next) => {
         });
       },
       (callback) => {
-        api.apiCall(req.session.token, `/role`, "POST", {
-          page:parseInt(req.query.page)|| 0,
-          limit:req.query.limit || 100
-        }, (result) => {
+        api.apiCall(req.session.token, `/role`, "POST", req.body.pagelimit, (result) => {
           callback(null, result);
         });
       }
@@ -94,12 +83,9 @@ router.post("/", (req, res, next) => {
           { route: `/users/${req.params.userId}`, name: "Kullanıcı Düzenle" }
         ];
   
-        let page = parseInt(req.query.page)|| 0;
-        let limit = req.query.limit || 1;
         let total = results[0].info && results[0].info[0].count;
   
-  
-      helper.paging(page, limit, total, "users", (paging) => {
+      helper.paging(req.body.page, req.body.limit, total, "users", (paging) => {
         res.render("users", {
           title: "Kullanıcılar",
           addTitle: "Kullanıcı Ekle",
@@ -140,7 +126,6 @@ router.post("/", (req, res, next) => {
   // User Delete
   router.get("/delete/:userId", (req, res, next) => {
     api.apiCall(req.session.token, `/user/${req.params.userId}`, "DELETE", null, (result) => {
-      console.log(result)
       res.redirect("/users");
     });
   });

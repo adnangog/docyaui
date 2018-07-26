@@ -27,22 +27,15 @@ router.post("/", (req, res, next) => {
 router.get("/", (req, res, next) => {
   api.apiCall(
     req.session.token,
-    "/department",
-    "POST",
-    {
-      page: parseInt(req.query.page) || 0,
-      limit: parseInt(req.query.limit) || 1
-    },
-    data => {
+    "/department", "POST", req.body.pagelimit, data => {
       let breadcrumb = [
         { route: "/", name: "Anasayfa" },
         { route: "/departments", name: "Departmanlar" }
       ];
-      let page = parseInt(req.query.page) || 0;
-      let limit = req.query.limit || 1;
+
       let total = data.count;
 
-      helper.paging(page, limit, total, "departments", paging => {
+      helper.paging(req.body.page, req.body.limit, total, "departments", paging => {
         res.render("departments", {
           title: "Departmanlar",
           addTitle: "Departman Ekle",
@@ -60,21 +53,17 @@ router.get("/", (req, res, next) => {
 
 // Department GetById
 router.get("/:departmentId", (req, res, next) => {
-  api.apiCall(req.session.token, "/department", "POST", {
-    page: parseInt(req.query.page) || 0,
-    limit: req.query.limit || 1
-  }, data => {
+  api.apiCall(req.session.token, "/department", "POST", req.body.pagelimit, data => {
     api.apiCall(
       req.session.token,
       `/department/${req.params.departmentId}`,
       "GET",
       null,
       department => {
-        let page = parseInt(req.query.page) || 0;
-        let limit = req.query.limit || 1;
+
         let total = data.count;
 
-        helper.paging(page, limit, total, "departments", (paging) => {
+        helper.paging(req.body.page, req.body.limit, total, "departments", (paging) => {
           let breadcrumb = [
             { route: "/", name: "Anasayfa" },
             { route: "/departments", name: "Departmanlar" },
@@ -110,24 +99,10 @@ router.post("/:departmentId", (req, res, next) => {
       name: req.body.departmentName
     },
     result => {
-      api.apiCall(
-        req.session.token,
-        "/department",
-        "GET",
-        null,
-        departments => {
-          let breadcrumb = [
-            { route: "/", name: "Anasayfa" },
-            { route: "/departments", name: "Departmanlar" }
-          ];
-          res.render("departments", {
-            title: "Departmanlar",
-            addTitle: "Departman Ekle",
-            departments: departments,
-            breadcrumb
-          });
-        }
-      );
+      let opt = "";
+      if (result.nModified > 0)
+        opt = "?messageType=1&message=İşlem Başarılı";
+      res.redirect(`/departments${opt}`);
     }
   );
 });
@@ -140,7 +115,7 @@ router.get("/delete/:departmentId", (req, res, next) => {
     "DELETE",
     null,
     result => {
-      res.redirect("/Department");
+      res.redirect("/departments");
     }
   );
 });

@@ -18,6 +18,7 @@ const roleRouter = require('./routes/role');
 const userRouter = require('./routes/user');
 const loginRouter = require('./routes/login');
 const checkAuth = require("./middleware/checkAuth");
+const pagelimit = require("./middleware/pagelimit");
 
 const app = express();
 
@@ -47,6 +48,8 @@ app.use(expressSession({
   resave: false,
   saveUninitialized: false
 }));
+
+app.use(pagelimit); // for table
 
 app.use('/login', loginRouter);
 app.use('/', checkAuth, indexRouter);

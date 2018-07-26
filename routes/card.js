@@ -25,19 +25,14 @@ router.post("/", (req, res, next) => {
 
 // Card List
 router.get("/", (req, res, next) => {
-  api.apiCall(req.session.token, "/card", "POST", {
-    page: parseInt(req.query.page) || 0,
-    limit: parseInt(req.query.limit) || 1
-  }, (data) => {
+  api.apiCall(req.session.token, "/card", "POST", req.body.pagelimit, (data) => {
     let breadcrumb = [
       { route: "/", name: "Anasayfa" },
       { route: "/cards", name: "Dosya Kartları" }
     ];
-    let page = parseInt(req.query.page) || 0;
-    let limit = req.query.limit || 1;
     let total = data.count || 0;
 
-    helper.paging(page, limit, total, "cards", (paging) => {
+    helper.paging(req.body.page, req.body.limit, total, "cards", (paging) => {
       res.render("cards", {
         title: "Dosya Kartları",
         addTitle: "Dosya Kartı Ekle",
@@ -54,7 +49,7 @@ router.get("/", (req, res, next) => {
 
 // Card GetById
 router.get("/:cardId", (req, res, next) => {
-  api.apiCall(req.session.token, "/card", "POST", {}, (data) => {
+  api.apiCall(req.session.token, "/card", "POST", req.body.pagelimit, (data) => {
     api.apiCall(req.session.token, `/card/${req.params.cardId}`, "GET", null, (
       card
     ) => {
@@ -66,13 +61,10 @@ router.get("/:cardId", (req, res, next) => {
           name: "Dosya Kartı"
         }
       ];
-
-      let page = parseInt(req.query.page) || 0;
-      let limit = req.query.limit || 1;
+      
       let total = data.count;
 
-
-      helper.paging(page, limit, total, "cards", (paging) => {
+      helper.paging(req.body.page, req.body.limit, total, "cards", (paging) => {
         res.render("cards", {
           title: "Dosya Kartları",
           addTitle: "Dosya Kartı Ekle",

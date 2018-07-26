@@ -14,74 +14,91 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalCenterTitle">{{addTitle}}</h5>
+        <h5 class="modal-title" id="exampleModalCenterTitle">{{#if edit}}{{editTitle}}{{else}}{{addTitle}}{{/if}}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form method="POST" action="/users">
-        <div class="modal-body">
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="roleName">Adı</label>
-              <input type="text" class="form-control" id="fName" name="fName" placeholder="Adı giriniz.">
-            </div>
-
-            <div class="form-group col-md-6">
-              <label for="roleName">Soyadı</label>
-              <input type="text" class="form-control" id="lName" name="lName" placeholder="Soyadı giriniz.">
-            </div>
-          </div>
-          
-            <div class="form-group">
-              <label for="roleName">Email</label>
-              <input type="email" class="form-control" id="email" name="email" placeholder="Email giriniz.">
-            </div>
-
-            <div class="form-group">
-              <label for="roleName">Şifre</label>
-              <input type="password" class="form-control" id="password" name="password" placeholder="Şifre giriniz.">
-            </div>
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
-          <button type="submit" class="btn btn-primary">Kaydet</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-{{#if edit}}
-<!-- Modal Edit -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editModalTitle">{{editTitle}}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form method="POST" action="/users/{{ user._id }}">
+      <form method="POST" action="{{#if edit}}/documents/{{ document._id }}{{else}}/documents{{/if}}">
         <div class="modal-body">
 
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="roleName">Döküman Adı</label>
-              <input type="text" class="form-control" id="fName" name="fName" value="{{user.fName}}" placeholder="Adı giriniz.">
-            </div>
-
-            <div class="form-group col-md-6">
-              <label for="roleName">Soyadı</label>
-              <input type="text" class="form-control" id="lName" name="lName" value="{{user.lName}}" placeholder="Soyadı giriniz.">
-            </div>
-          </div>
+          <div class="custom-file">
+          <input type="file" class="custom-file-input" id="file" name="file">
+          <label class="custom-file-label" for="customFile">Dosya seçin</label>
+        </div>
 
           <div class="form-group">
-              <label for="roleName">Email</label>
-              <input type="email" class="form-control" id="email" name="email" value="{{user.email}}" placeholder="Email giriniz.">
+              <label for="roleName">Döküman Adı</label>
+              <input type="text" class="form-control" id="name" name="name" placeholder="Döküman Adı" value="{{ document.name }}">
+            </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="roleName">Departman</label>
+              <select class="form-control" id="department" name="department">
+              <option>Lütfen Seçin</option>
+              {{# each departments }} {{#if_equal ../document.department this.[0] }}
+              <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
+              {{else}}
+              <option value="{{ this.[0] }}">{{ this.[1] }}</option>
+              {{/if_equal}} {{/ each}}
+            </select>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="roleName">Döküman Tipi</label>
+              <select class="form-control" id="type" name="type">
+              <option>Lütfen Seçin</option>
+              {{# each types }} {{#if_equal ../document.type this.[0] }}
+              <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
+              {{else}}
+              <option value="{{ this.[0] }}">{{ this.[1] }}</option>
+              {{/if_equal}} {{/ each}}
+            </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="roleName">Kart</label>
+              <select class="form-control" id="card" name="card">
+              <option>Lütfen Seçin</option>
+              {{# each cards }} {{#if_equal ../document.card this.[0] }}
+              <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
+              {{else}}
+              <option value="{{ this.[0] }}">{{ this.[1] }}</option>
+              {{/if_equal}} {{/ each}}
+            </select>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="roleName">Klasör</label>
+              <select class="form-control" id="folder" name="folder">
+              <option>Lütfen Seçin</option>
+              {{# each folders }} {{#if_equal ../document.folder this.[0] }}
+              <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
+              {{else}}
+              <option value="{{ this.[0] }}">{{ this.[1] }}</option>
+              {{/if_equal}} {{/ each}}
+            </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="roleName">Başlangıç Tarihi</label>
+              <input type="text" class="form-control" id="publishFirstDate" name="publishFirstDate" placeholder="Başlangıç Tarihi"  value="{{ document.publishFirstDate }}">
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="roleName">Bitiş Tarihi</label>
+              <input type="text" class="form-control" id="publishEndDate" name="publishEndDate" placeholder="Bitiş Tarihi"  value="{{ document.publishEndDate }}">
+            </div>
+          </div>
+
+            <div class="form-group">
+              <label for="roleName">Açıklama</label>
+              <textarea class="form-control" id="description" name="description" placeholder="Açıklama giriniz." rows="3">{{ document.description }}</textarea>
             </div>
 
         </div>
@@ -93,4 +110,3 @@
     </div>
   </div>
 </div>
-{{/if}}

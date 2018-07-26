@@ -26,19 +26,15 @@ router.post("/", (req, res, next) => {
 
 // Role List
 router.get("/", (req, res, next) => {
-  api.apiCall(req.session.token, "/role", "POST", {
-    page: parseInt(req.query.page) || 0,
-    limit: parseInt(req.query.limit) || 1
-  }, (data) => {
+  api.apiCall(req.session.token, "/role", "POST", req.body.pagelimit, (data) => {
     let breadcrumb = [
       { route: "/", name: "Anasayfa" },
       { route: "/roles", name: "Roller" }
     ];
-    let page = parseInt(req.query.page) || 0;
-    let limit = req.query.limit || 1;
+
     let total = data.count;
 
-    helper.paging(page, limit, total, "roles", (paging) => {
+    helper.paging(req.body.page, req.body.limit, total, "roles", (paging) => {
       res.render("roles", {
         title: "Roller",
         addTitle: "Rol Ekle",
@@ -55,16 +51,12 @@ router.get("/", (req, res, next) => {
 
 // Role GetById
 router.get("/:roleId", (req, res, next) => {
-  api.apiCall(req.session.token, "/role", "POST", {
-    page: parseInt(req.query.page) || 0,
-    limit: parseInt(req.query.limit) || 1
-  }, (data) => {
+  api.apiCall(req.session.token, "/role", "POST", req.body.pagelimit, (data) => {
     api.apiCall(req.session.token, `/role/${req.params.roleId}`, "GET", null, (role) => {
-      let page = parseInt(req.query.page) || 0;
-      let limit = req.query.limit || 1;
+
       let total = data.count;
 
-      helper.paging(page, limit, total, "roles", (paging) => {
+      helper.paging(req.body.page, req.body.limit, total, "roles", (paging) => {
         let breadcrumb = [
           { route: "/", name: "Anasayfa" },
           { route: "/roles", name: "Roller" },

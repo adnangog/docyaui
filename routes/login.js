@@ -18,13 +18,13 @@ router.post("/", (req, res, next) => {
   let errors = req.validationErrors();
 
   req.session.email = req.body.loginEmail;
-        req.session.password = req.body.loginPassword;
+  req.session.password = req.body.loginPassword;
 
-  if (errors){
+  if (errors) {
     req.session.errors = errors;
     req.session.success = false;
     res.redirect('/login');
-  }else{
+  } else {
     req.session.success = true;
   }
 
@@ -42,7 +42,9 @@ router.post("/", (req, res, next) => {
         req.session.success = false;
         res.redirect('/login');
       } else {
-        req.session.token=result.token;
+        req.session.token = result.token;
+        req.session.userId = result.userId;
+        req.session.userName = result.userName;
         res.redirect('/');
       }
     }

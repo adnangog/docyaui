@@ -26,31 +26,23 @@ router.post("/types", (req, res, next) => {
 // Document Type  List
 router.get("/types", (req, res, next) => {
   api.apiCall(
-    req.session.token,
-    "/document/type",
-    "POST",
-    {
-      page: parseInt(req.query.page) || 0,
-      limit: parseInt(req.query.limit) || 1
-    },
-    data => {
+    req.session.token, "/document/type", "POST", req.body.pagelimit, data => {
       let breadcrumb = [
         { route: "/", name: "Anasayfa" },
         { route: "/documents", name: "Dökümanlar" },
         { route: "/documents/types", name: "Döküman Tipleri" }
       ];
-      let page = parseInt(req.query.page) || 0;
-      let limit = req.query.limit || 1;
+
       let total = data.count;
 
-      helper.paging(page, limit, total, "/documents/types", paging => {
+      helper.paging(req.body.page, req.body.limit, total, "../documents/types", paging => {
         res.render("documenttypes", {
           title: "Döküman Tipleri",
           addTitle: "Döküman Tipi Ekle",
           data,
           breadcrumb,
           paging,
-          route: "/documents/types",
+          route: "../documents/types",
           messageType: req.query.messageType,
           message: req.query.message
         });
@@ -62,30 +54,28 @@ router.get("/types", (req, res, next) => {
 // Document Type  GetById
 router.get("/types/:typeId", (req, res, next) => {
   api.apiCall(
-    req.session.token,
-    "/document/type",
-    "POST",
-    {
-      page: parseInt(req.query.page) || 0,
-      limit: req.query.limit || 1
-    },
-    data => {
+    req.session.token, "/document/type", "POST", req.body.pagelimit, data => {
       api.apiCall(
         req.session.token,
         `/document/type/${req.params.typeId}`,
         "GET",
         null,
         function(documenttype) {
-          helper.paging(page, limit, total, "/documents/types", paging => {
-            let breadcrumb = [
-              { route: "/", name: "Anasayfa" },
-              { route: "/documents", name: "Dökümanlar" },
-              { route: "/documents/types", name: "Döküman Tipleri" },
-              {
-                route: `/documents/types/${req.params.typeId}`,
-                name: "Döküman Tipi Düzenle"
-              }
-            ];
+
+          let breadcrumb = [
+            { route: "/", name: "Anasayfa" },
+            { route: "/documents", name: "Dökümanlar" },
+            { route: "/documents/types", name: "Döküman Tipleri" },
+            {
+              route: `/documents/types/${req.params.typeId}`,
+              name: "Döküman Tipi Düzenle"
+            }
+          ];
+
+          let total = data.count;
+
+          helper.paging(req.body.page, req.body.limit, total, "../documents/types", paging => {
+            
             res.render("documenttypes", {
               title: "Döküman Tipleri",
               addTitle: "Döküman Tipi Ekle",
@@ -95,7 +85,7 @@ router.get("/types/:typeId", (req, res, next) => {
               documenttype,
               breadcrumb,
               paging,
-              route: "/documents/types"
+              route: "../documents/types"
             });
           });
         }
@@ -143,80 +133,94 @@ router.post("/", (req, res, next) => {
     {
       name: req.body.name,
       type: req.body.type,
-      publishFirstDate: req.body.publishFirstDate || null,
-      publishEndDate: req.body.publishEndDate || null,
-      department: req.body.department || null,
-      user: req.body.user,
+      rDate: Date.now(),
+      publishFirstDate: req.body.publishFirstDate,
+      publishEndDate: req.body.publishEndDate,
+      department: req.body.department,
+      user: req.session.userId,
+      folder: req.body.folder,
+      card: req.body.card,
+      authSet:null,
       description: req.body.description,
       file: req.body.file,
-      status: 1,
-      rDate: Date.now()
+      status: 1
     },
     result => {
-      api.apiCall(req.session.token, "/document", "GET", null, documents => {
-        let breadcrumb = [
-          { route: "/", name: "Anasayfa" },
-          { route: "/documents", name: "Dökümanlar" }
-        ];
-        res.render("documents", {
-          title: "Dökümanlar",
-          addTitle: "Döküman Ekle",
-          documents: documents,
-          breadcrumb
-        });
-      });
+      let opt = "";
+      if (result.messageType == 1)
+        opt = "?messageType=1&message=Kayıt Eklendi";
+      res.redirect(`/documents${opt}`);
     }
   );
 });
 
 // Document List
 router.get("/", (req, res, next) => {
-  api.apiCall(
-    req.session.token,
-    "/document",
-    "POST",
-    {
-      page: parseInt(req.query.page) || 0,
-      limit: req.query.limit || 1
+  async.parallel([
+    (callback) => {
+      api.apiCall( req.session.token, "/document", "POST", req.body.pagelimit, (result) => {
+          callback(null, result);
+        }
+      );
     },
-    data => {
+    (callback) => {
+      api.apiCall(req.session.token, `/card`, "POST", req.body.pagelimit, (result) => {
+        callback(null, result);
+      });
+    },
+    (callback) => {
+      api.apiCall(req.session.token, `/document/type`, "POST", req.body.pagelimit, (result) => {
+        callback(null, result);
+      });
+    },
+    (callback) => {
+      api.apiCall(req.session.token, `/department`, "POST", req.body.pagelimit, (result) => {
+        callback(null, result);
+      });
+    },
+    (callback) => {
+      api.apiCall(req.session.token, `/folder`, "POST", req.body.pagelimit, (result) => {
+        callback(null, result);
+      });
+    }
+  ],
+    (err, results) => {
       let breadcrumb = [
         { route: "/", name: "Anasayfa" },
         { route: "/documents", name: "Dökümanlar" }
       ];
-      let page = parseInt(req.query.page) || 0;
-      let limit = req.query.limit || 1;
-      let total = data.count;
 
-      helper.paging(page, limit, total, "/documents", paging => {
-        res.render("documents", {
-          title: "Dökümanlar",
-          addTitle: "Döküman Ekle",
-          data,
-          breadcrumb,
-          paging,
-          route: "/documents",
-          messageType: req.query.messageType,
-          message: req.query.message
-        });
+      let total = results[0].info && results[0].info[0].count;
+
+
+    helper.paging(req.body.page, req.body.limit, total, "documents", (paging) => {
+      res.render("documents", {
+        title: "Dökümanlar",
+        addTitle: "Döküman Ekle",
+        route: "documents",
+        data: results[0],
+        cards: results[1].data,
+        types: results[2].data,
+        departments: results[3].data,
+        folders: results[4].data,
+        breadcrumb,
+        paging
       });
-    }
-  );
+    })
+    });
 });
 
 // Document GetById
 router.get("/:documentId", (req, res, next) => {
-  api.apiCall(req.session.token, "/document", "POST", {
-    page: parseInt(req.query.page) || 0,
-    limit: parseInt(req.query.limit) || 1
-  }, documents => {
+  api.apiCall(req.session.token, "/document", "POST", req.body.pagelimit, data => {
     api.apiCall(
       req.session.token,
       `/document/${req.params.documentId}`,
       "GET",
       null,
       document => {
-        helper.paging(page, limit, total, "/documents", paging => {
+
+        helper.paging(req.body.page, req.body.limit, data.count, "/documents", paging => {
           let breadcrumb = [
             { route: "/", name: "Anasayfa" },
             { route: "/documents", name: "Dökümanlar" },
