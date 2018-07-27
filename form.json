@@ -1,0 +1,32 @@
+{
+    "_id":"5b5b164746a35a2b28e13d9e",
+    "name":"TEKLİFLER",
+    "fields": [
+        {
+            "label":"Müşteri Adı",
+            "type":"text",
+            "field":"musteriAdi",
+            "sort":0,
+            "isRequired":true
+        },
+        {
+            "label":"Teklif No",
+            "type":"text",
+            "field":"teklifNo",
+            "sort":1,
+            "isRequired":true
+        },
+        {
+            "label":"Teklif Tarihi",
+            "type":"date",
+            "field":"teklifTarihi",
+            "sort":2
+        },
+        {
+            "label":"Açıklamalar",
+            "type":"textarea",
+            "field":"aciklamalar",
+            "sort":3
+        }
+    ]
+}

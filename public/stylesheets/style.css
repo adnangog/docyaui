@@ -1,3 +1,6 @@
 table.table tbody tr td {
     white-space: nowrap;
 }
+.form-group {
+    position: relative; /* for datetimepicker */
+}

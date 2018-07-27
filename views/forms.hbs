@@ -1,0 +1,29 @@
+<h1>{{data.name}}</h1>
+
+<div>
+  <form method="POST" action="/forms">
+    {{# each data.fields }}
+
+    <div class="form-group">
+      <label for="{{ this.field }}">{{ this.label }}</label>
+
+      {{#if_equal this.type "text"}}
+      <input type="text" class="form-control" id="dForm_{{ this.field }}" name="dForm_{{ this.field }}" placeholder="{{ this.label }} giriniz."> 
+      {{/if_equal}}
+
+      {{#if_equal this.type "date"}}
+      <input type="text" data-datetimepicker class="form-control" id="dForm_{{ this.field }}" name="dForm_{{ this.field }}" placeholder="{{ this.label }} giriniz."> 
+      {{/if_equal}}
+
+      {{#if_equal this.type "textarea"}}
+      <textarea class="form-control" id="dForm_{{ this.field }}" name="dForm_{{ this.field }}" placeholder="{{ this.label }} giriniz." rows="3"></textarea>
+      {{/if_equal}}
+    </div>
+
+    {{/ each }}
+
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">Kaydet</button>
+    </div>
+  </form>
+</div>

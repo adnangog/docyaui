@@ -16,6 +16,7 @@ const documentRouter = require('./routes/document');
 const folderRouter = require('./routes/folder');
 const roleRouter = require('./routes/role');
 const userRouter = require('./routes/user');
+const formRouter = require('./routes/form');
 const loginRouter = require('./routes/login');
 const checkAuth = require("./middleware/checkAuth");
 const pagelimit = require("./middleware/pagelimit");
@@ -60,6 +61,7 @@ app.use('/documents', checkAuth, documentRouter);
 app.use('/folders', checkAuth, folderRouter);
 app.use('/roles', checkAuth, roleRouter);
 app.use('/users', checkAuth, userRouter);
+app.use('/forms', checkAuth, formRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
