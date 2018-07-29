@@ -12,6 +12,10 @@ router.post("/", (req, res, next) => {
     "POST",
     {
       name: req.body.name,
+      authSet:[],
+      user:req.session.userId,
+      type:req.body.type,
+      form:req.body.form,
       rDate: Date.now()
     },
     (result) => {
@@ -28,14 +32,14 @@ router.get("/", (req, res, next) => {
   api.apiCall(req.session.token, "/card", "POST", req.body.pagelimit, (data) => {
     let breadcrumb = [
       { route: "/", name: "Anasayfa" },
-      { route: "/cards", name: "Dosya Kartları" }
+      { route: "/cards", name: "Kart Taslakları" }
     ];
     let total = data.count || 0;
 
     helper.paging(req.body.page, req.body.limit, total, "cards", (paging) => {
       res.render("cards", {
-        title: "Dosya Kartları",
-        addTitle: "Dosya Kartı Ekle",
+        title: "Kart Taslakları",
+        addTitle: "Kart Taslağı Ekle",
         data,
         breadcrumb,
         paging,
@@ -55,10 +59,10 @@ router.get("/:cardId", (req, res, next) => {
     ) => {
       let breadcrumb = [
         { route: "/", name: "Anasayfa" },
-        { route: "/cards", name: "Dosya Kartları" },
+        { route: "/cards", name: "Kart Taslakları" },
         {
           route: `/cards/${req.params.cardId}`,
-          name: "Dosya Kartı"
+          name: "Kart Taslakları"
         }
       ];
       
@@ -66,9 +70,9 @@ router.get("/:cardId", (req, res, next) => {
 
       helper.paging(req.body.page, req.body.limit, total, "cards", (paging) => {
         res.render("cards", {
-          title: "Dosya Kartları",
-          addTitle: "Dosya Kartı Ekle",
-          editTitle: "Dosya Kartı Düzenle",
+          title: "Kart Taslakları",
+          addTitle: "Kart Taslağı Ekle",
+          editTitle: "Kart Taslağı Düzenle",
           edit: true,
           route: "cards",
           data,

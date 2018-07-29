@@ -1,3 +1,4 @@
+<div class="light-theme">
 <h1>{{title}}</h1>
 {{> alert}}
 
@@ -24,6 +25,30 @@
             <label for="name">Adı</label>
             <input type="text" class="form-control" id="name" name="name" placeholder="Dosya kartı adı giriniz.">
           </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="roleName">Kart Tipi</label>
+              <select class="form-control" id="type" name="type">
+              <option>Lütfen Seçin</option>
+              <option value="1" {{#if_equal card.type 1 }}selected="selected"{{/if_equal}}>Dosya Kartı</option>
+              <option value="1" {{#if_equal card.type 2 }}selected="selected"{{/if_equal}}>Kabinet</option>
+            </select>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="roleName">Form</label>
+              <select class="form-control" id="folder" name="folder">
+              <option>Lütfen Seçin</option>
+              {{# each forms }} {{#if_equal ../card.form this.[0] }}
+              <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
+              {{else}}
+              <option value="{{ this.[0] }}">{{ this.[1] }}</option>
+              {{/if_equal}} {{/ each}}
+            </select>
+            </div>
+          </div>
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
@@ -62,3 +87,4 @@
   </div>
 </div>
 {{/if}}
+</div>

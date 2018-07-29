@@ -1,3 +1,28 @@
+
+{{#if isForm}}
+<div class="table-responsive">
+  <table class="table table-sm table-striped">
+    <thead class="thead-dark">
+      {{# each data.header }}
+      <tr>
+        {{# each this }}
+        <th scope="col">{{ this }}</th>
+        {{/ each }}
+      </tr>
+      {{/ each }}
+    </thead>
+    <tbody>
+      {{# each data.data }}
+      <tr>
+        {{# each this }}
+        <td scope="row">{{ this }}</td>
+        {{/ each }}
+      </tr>
+      {{/ each }}
+    </tbody>
+  </table>
+</div>
+{{ else }}
 <div class="table-responsive">
   <table class="table table-striped">
     <thead class="thead-dark">
@@ -37,4 +62,4 @@
     </tbody>
   </table>
 </div>
-{{> paging}}
+{{/if }}

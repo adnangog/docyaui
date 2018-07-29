@@ -1,5 +1,41 @@
+body {
+    background-color: #f1f1f1;
+}
+.container-fluid {
+    padding: 15px !important;
+}
+.breadcrumb {
+    margin: 0;
+    background-color: #555;
+    border-radius: 0;
+}
+.breadcrumb a {
+    color:#fff;
+}
+.breadcrumb-item.active {
+    color: #ddd;
+}
+.light-theme {
+    background-color: #fff;
+    border: 3px solid #f1f1f1;
+    margin: 0 !important;
+    padding: 15px;
+}
+.doc-title {
+    background-color: #555;
+    color: #fff;
+    margin: -15px -15px 15px -15px;
+    padding: 5px 15px;
+}
+.max-height-div {
+    max-height: 221px;
+    overflow-y: auto;
+}
 table.table tbody tr td {
     white-space: nowrap;
+}
+.table-top {
+    background-color:#f2f2f2;
 }
 .form-group {
     position: relative; /* for datetimepicker */

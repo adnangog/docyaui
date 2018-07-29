@@ -5,9 +5,8 @@
     <div class="card">
       <h3 class="card-header">{{title}}</h3>
       <div class="card-body">
-        {{#if success}}
-        {{else}}
-        <div class="alert alert-danger" role="alert">
+        {{#if error}}
+                <div class="alert alert-danger" role="alert">
           {{ message }}
           {{# each errors }}
           {{ this.msg }}
