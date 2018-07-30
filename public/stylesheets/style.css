@@ -40,3 +40,6 @@ table.table tbody tr td {
 .form-group {
     position: relative; /* for datetimepicker */
 }
+a.btn-success, a.btn-danger {
+    color:#fff !important;
+}
