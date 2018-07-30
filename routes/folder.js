@@ -32,9 +32,9 @@ router.post("/", (req, res, next) => {
 router.get("/", (req, res, next) => {
   async.parallel([
     (callback) => {
-      api.apiCall( req.session.token, "/folder", "POST", req.body.pagelimit, (result) => {
-          callback(null, result);
-        }
+      api.apiCall(req.session.token, "/folder", "POST", req.body.pagelimit, (result) => {
+        callback(null, result);
+      }
       );
     },
     (callback) => {
@@ -42,14 +42,6 @@ router.get("/", (req, res, next) => {
         callback(null, result);
       });
     }
-    // ,(callback) => {
-    //   api.apiCall(req.session.token, `/authsets`, "POST", {
-    //     page: parseInt(req.query.page) || 0,
-    //     limit: parseInt(req.query.limit) || 100
-    //   }, (result) => {
-    //     callback(null, result);
-    //   });
-    // }
   ],
     (err, results) => {
       let breadcrumb = [
@@ -60,58 +52,73 @@ router.get("/", (req, res, next) => {
       let total = results[0].info && results[0].info[0].count;
 
 
-    helper.paging(req.body.page, req.body.limit, total, "folders", (paging) => {
-      res.render("folders", {
-        title: "Klasörler",
-        addTitle: "Klasör Ekle",
-        route: "folders",
-        data: results[0],
-        cards: results[1].data,
-        // authSets: results[2].data,
-        breadcrumb,
-        paging
-      });
-    })
+      helper.paging(req.body.page, req.body.limit, total, "folders", (paging) => {
+        res.render("folders", {
+          title: "Klasörler",
+          addTitle: "Klasör Ekle",
+          route: "folders",
+          data: results[0],
+          cards: results[1].data,
+          // authSets: results[2].data,
+          breadcrumb,
+          paging
+        });
+      })
     });
 });
 
 // Folder GetById
 router.get("/:folderId", (req, res, next) => {
-  api.apiCall( req.session.token, "/folder", "POST", req.body.pagelimit, data => {
-      api.apiCall(
-        req.session.token,
-        `/folder/${req.params.folderId}`,
-        "GET",
-        null,
-        folder => {
-
-          let total = data.count;
-
-          helper.paging(req.body.page, req.body.limit, total, "folders", paging => {
-            let breadcrumb = [
-              { route: "/", name: "Anasayfa" },
-              { route: "/folders", name: "Klasörler" },
-              {
-                route: `/folders/${req.params.folderId}`,
-                name: "Klasör"
-              }
-            ];
-            res.render("folders", {
-              title: "Klasörler",
-              addTitle: "Klasör Ekle",
-              editTitle: "Klasör Düzenle",
-              edit: true,
-              data,
-              folder,
-              breadcrumb,
-              paging,
-              route: "folders"
-            });
-          });
-        }
+  async.parallel([
+    (callback) => {
+      api.apiCall(req.session.token, "/folder", "POST", req.body.pagelimit, (result) => {
+        callback(null, result);
+      }
       );
+    },
+    (callback) => {
+      api.apiCall(req.session.token, `/folder/${req.params.folderId}`, "GET", null, result => {
+        callback(null, result);
+      }
+      );
+    },
+    (callback) => {
+      api.apiCall(req.session.token, `/card`, "POST", req.body.pagelimit, (result) => {
+        callback(null, result);
+      });
     }
-  );
+  ],
+    (err, results) => {
+
+      let total = results[0].info && results[0].info[0].count;;
+
+      let breadcrumb = [
+        { route: "/", name: "Anasayfa" },
+        { route: "/folders", name: "Klasörler" },
+        {
+          route: `/folders/${req.params.folderId}`,
+          name: "Klasör Düzenle"
+        }
+      ];
+
+      helper.paging(req.body.page, req.body.limit, total, "folders", paging => {
+        res.render("folders", {
+          title: "Klasörler",
+          addTitle: "Klasör Ekle",
+          editTitle: "Klasör Düzenle",
+          edit: true,
+          data: results[0],
+          cards: results[2].data,
+          folder: results[1],
+          breadcrumb,
+          paging,
+          route: "folders"
+        });
+      });
+    });
+});
+router.get("/:folderId", (req, res, next) => {
+
 });
 
 // Folder Update

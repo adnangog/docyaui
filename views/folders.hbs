@@ -5,32 +5,34 @@
 
 {{> table}}
 
+ {{#unless edit}}
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
   {{addTitle}}
 </button>
+{{/unless}}
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalCenterTitle">{{addTitle}}</h5>
+        <h5 class="modal-title" id="exampleModalCenterTitle">{{#if edit}}{{editTitle}}{{else}}{{addTitle}}{{/if}}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form method="POST" action="/folders">
+      <form method="POST" action="{{#if edit}}/folders/{{ user._id }}{{else}}/folders{{/if}}">
         <div class="modal-body">
 
-          <div class="form-group">
+           <div class="form-group">
             <label for="name">Adı</label>
-            <input type="text" class="form-control" id="name" name="name" placeholder="Klasör Adı giriniz.">
+            <input type="text" class="form-control" id="name" name="name" value="{{ folder.name }}" placeholder="Klasör Adı giriniz.">
           </div>
 
           <div class="form-group">
             <label for="description">Açıklama</label>
-            <textarea class="form-control" id="description" name="description" placeholder="Açıklama giriniz." rows="3"></textarea>
+            <textarea class="form-control" id="description" name="description" placeholder="Açıklama giriniz." rows="3">{{ folder.description }}</textarea>
           </div>
 
           <div class="form-row">
@@ -38,7 +40,7 @@
             <label for="roleName">Üst Klasör</label>
             <select class="form-control" id="parent" name="parent">
               <option>Lütfen Seçin</option>
-              {{# each data.data }} {{#if_equal ../user.card this.[0] }}
+              {{# each data.data }} {{#if_equal ../folder.parent this.[0] }}
               <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
               {{else}}
               <option value="{{ this.[0] }}">{{ this.[1] }}</option>
@@ -50,7 +52,7 @@
             <label for="roleName">Kart</label>
             <select class="form-control" id="card" name="card">
               <option>Lütfen Seçin</option>
-              {{# each cards }} {{#if_equal ../user.card this.[0] }}
+              {{# each cards }} {{#if_equal ../folder.card this.[0] }}
               <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
               {{else}}
               <option value="{{ this.[0] }}">{{ this.[1] }}</option>
@@ -71,38 +73,4 @@
     </div>
   </div>
 </div>
-
-{{#if edit}}
-<!-- Modal Edit -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editModalTitle">{{editTitle}}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form method="POST" action="/folders/{{ folder._id }}">
-        <div class="modal-body">
-
-          <div class="form-group">
-            <label for="name">Adı</label>
-            <input type="text" class="form-control" id="name" name="name" value="{{ folder.name }}" placeholder="Klasör Adı giriniz.">
-          </div>
-
-          <div class="form-group">
-            <label for="description">Açıklama</label>
-            <textarea class="form-control" id="description" name="description" placeholder="Açıklama giriniz." rows="3">{{ folder.description }}</textarea>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
-          <button type="submit" class="btn btn-primary">Kaydet</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-{{/if}}
 </div>

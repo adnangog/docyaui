@@ -4,6 +4,22 @@ const api = require("../api");
 const helper = require("../helpers/index");
 const async = require("async");
 
+// Form GetById
+router.get("/create", (req, res, next) => {
+  let breadcrumb = [
+    { route: "/", name: "Anasayfa" },
+    { route: "/forms", name: "Formlar" },
+    {
+      route: `/forms/create}`,
+      name: "Form Oluştur"
+    }
+  ];
+  res.render("create", {
+    breadcrumb,
+    route: "forms/create",
+  });
+});
+
 // Form Add
 router.post("/", (req, res, next) => {
 

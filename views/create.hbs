@@ -1,0 +1,42 @@
+<style>
+        .droppable-active {
+            background-color: #ffe !important;
+        }
+
+        .tools a {
+            cursor: pointer;
+            font-size: 80%;
+        }
+
+        .form-body .col-md-6,
+        .form-body .col-md-12 {
+            min-height: 400px;
+        }
+
+        .draggable {
+            cursor: move;
+        }
+
+        .tools {
+            float: right;
+        }
+    </style>
+ <div>
+        <div>
+            <div class="row">
+                <div class="col-md-3" style="padding: 0px 30px 30px 30px; background-color: #fff;">
+                    <h3>Elemanlar</h3>
+                    <form role="form" id="HedefForm"></form>
+                </div>
+                <div class="col-md-9">
+                    <div style="background-color: #fff; padding: 20px;">
+                        <div class="text-muted empty-form text-center" style="font-size: 24px;">Eklemek istediğiniz form elamanını buraya sürükleyin</div>
+                        <div class="row form-body">
+                            <div class="col-md-12 droppable sortable">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
