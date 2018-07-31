@@ -152,7 +152,7 @@
                 }
 
                 if (itemBlockHtml != null) {
-                    itemBlockHtml.append($("<p class='help-block'>"+elm.help+"</p>"));
+                    itemBlockHtml.append($("<small id='emailHelp' class='form-text text-muted'>"+elm.help+"</small>"));
                     itemBlockHtml.appendTo($("#HedefDiv"));
                 }
             });
@@ -214,12 +214,12 @@
             Docya.FormCreator.clearModal();
 
             if (obj.control == "textbox") {
-                $("#defaultValueControl").removeClass("hidden");
+                $("#defaultValueControl").removeClass("d-none");
             }
 
             if (obj.control == "dropdown") {
-                $("#defOptionsControl").removeClass("hidden");
-                $("#optionDiv").removeClass("hidden");
+                $("#defOptionsControl").removeClass("d-none");
+                $("#optionDiv").removeClass("d-none");
             }
 
             $("#labelControl").val(obj.label);
@@ -227,15 +227,15 @@
 
             if (obj.isDynamic === true) {
                 $("#isDynamicControl").prop('checked', true);
-                $("#urlControl").parents(".form-group").removeClass("hidden");
+                $("#urlControl").parents(".form-group").removeClass("d-none");
                 $("#urlControl").val(obj.url);
             }
 
             if (obj.isFiltering === true) {
                 $("#isFilteringControl").prop('checked', true);
-                $("#filterTypeControl").parents(".form-group").removeClass("hidden");
+                $("#filterTypeControl").parents(".form-group").removeClass("d-none");
                 $("#filterTypeControl").val(obj.filterType);
-                $("#filterMinLengthControl").parents(".form-group").removeClass("hidden");
+                $("#filterMinLengthControl").parents(".form-group").removeClass("d-none");
                 $("#filterMinLengthControl").val(obj.filterMinLength);
             }
 
@@ -254,25 +254,29 @@
                 $("#defaultValueControl").val(obj.defaultValue);
             }
 
+            if (obj.help != "") {
+                $("#helpControl").val(obj.help);
+            }
+
         },
         clearModal: function () {
 
-            $("#defaultValueControl").addClass("hidden");
-            $("#defOptionsControl").addClass("hidden");
-            $("#optionDiv").addClass("hidden");
+            $("#defaultValueControl").addClass("d-none");
+            $("#defOptionsControl").addClass("d-none");
+            $("#optionDiv").addClass("d-none");
 
 
             $("#labelControl").val("");
             $("#placeholderControl").val("");
 
             $("#isDynamicControl").prop('checked', false);
-            $("#urlControl").parents(".form-group").addClass("hidden");
+            $("#urlControl").parents(".form-group").addClass("d-none");
             $("#urlControl").val("");
 
             $("#isFilteringControl").prop('checked', false);
-            $("#filterTypeControl").parents(".form-group").addClass("hidden");
+            $("#filterTypeControl").parents(".form-group").addClass("d-none");
             $("#filterTypeControl").val("");
-            $("#filterMinLengthControl").parents(".form-group").addClass("hidden");
+            $("#filterMinLengthControl").parents(".form-group").addClass("d-none");
             $("#filterMinLengthControl").val("");
 
             $("#isRequiredControl").prop('checked', false);
@@ -281,6 +285,7 @@
             $("#defOptionsControl").html("");
 
             $("#defaultValueControl").val("");
+            $("#helpControl").val("");
 
         },
         initClickEdit: function () {
@@ -372,6 +377,16 @@
 
             });
         },
+        initDefaultValueControl: function () {
+            $("body").on("blur", "#helpControl", function (e) {
+                var elm = $(this);
+                var obj = Docya.FormCreator.OutputJSON[Docya.FormCreator.SelectedIndex];
+
+                obj.help = elm.val();
+                Docya.FormCreator.initCreateForm();
+
+            });
+        },
         initCBControl: function () {
             $("body").on("change", "input:checkbox", function (e) {
                 var elm = $(this);
@@ -383,19 +398,19 @@
 
                 if (id === "isDynamic") {
                     if (elm.is(':checked'))
-                        $("#urlControl").parents(".form-group").removeClass("hidden");
+                        $("#urlControl").parents(".form-group").removeClass("d-none");
                     else
-                        $("#urlControl").parents(".form-group").addClass("hidden");
+                        $("#urlControl").parents(".form-group").addClass("d-none");
                 }
 
                 if (id === "isFiltering") {
                     if (elm.is(':checked')){
-                        $("#filterTypeControl").parents(".form-group").removeClass("hidden");
-                        $("#filterMinLengthControl").parents(".form-group").removeClass("hidden");
+                        $("#filterTypeControl").parents(".form-group").removeClass("d-none");
+                        $("#filterMinLengthControl").parents(".form-group").removeClass("d-none");
                     }
                     else{
-                        $("#filterTypeControl").parents(".form-group").addClass("hidden");
-                        $("#filterMinLengthControl").parents(".form-group").addClass("hidden");
+                        $("#filterTypeControl").parents(".form-group").addClass("d-none");
+                        $("#filterMinLengthControl").parents(".form-group").addClass("d-none");
                     }
                 }
 
@@ -411,6 +426,7 @@
             this.initUrlControl();
             this.initFilterMinLengthControl();
             this.initDefaultValueControl();
+            this.initHelpControl();
             this.initCBControl();
         },
         init: function () {
