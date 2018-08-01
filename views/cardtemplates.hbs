@@ -1,0 +1,64 @@
+<div class="light-theme">
+<h1>{{title}}</h1>
+{{> alert}}
+
+{{> table}}
+
+ {{#unless edit}}
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+  {{addTitle}}
+</button>
+{{/unless}}
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">{{#if edit}}{{editTitle}}{{else}}{{addTitle}}{{/if}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="POST" action="{{#if edit}}/cardtemplates/{{ cardtemplate._id }}{{else}}/cardtemplates{{/if}}">
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label for="name">Adı</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ cardtemplate.name }}" placeholder="Dosya kartı adı giriniz.">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="roleName">Kart Tipi</label>
+              <select class="form-control" id="type" name="type">
+              <option>Lütfen Seçin</option>
+              <option value="1" {{#if_equal ../cardtemplate.type "1" }}selected="selected"{{/if_equal}}>Dosya Kartı</option>
+              <option value="1" {{#if_equal ../cardtemplate.type "2" }}selected="selected"{{/if_equal}}>Kabinet</option>
+            </select>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="roleName">Form</label>
+              <select class="form-control" id="folder" name="folder">
+              <option>Lütfen Seçin</option>
+              {{# each forms }} {{#if_equal ../cardtemplate.form this.[0] }}
+              <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
+              {{else}}
+              <option value="{{ this.[0] }}">{{ this.[1] }}</option>
+              {{/if_equal}} {{/ each}}
+            </select>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+          <button type="submit" class="btn btn-primary">Kaydet</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>

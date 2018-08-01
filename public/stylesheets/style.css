@@ -43,3 +43,59 @@ table.table tbody tr td {
 a.btn-success, a.btn-danger {
     color:#fff !important;
 }
+
+.tab-content {
+    border: 1px solid #ddd;
+    border-top:none;
+    padding:10px;
+  }
+  .option-edit {
+    background-color:#f2f2f2;
+    border:1px solid #ccc;
+    margin:2px;
+    position:relative;
+    z-index:1;
+    border-radius: 4px;
+    padding:4px 12px;
+  }
+  .option-edit.selected {
+    background-color:#ccc;
+  }
+  .option-edit-btn-delete {
+    position:absolute;
+    right:0;
+    top:0;
+    bottom: 0;
+    background-color:#dc3545;
+    z-index:2;
+    color:#fff;
+    font-size: 14px;
+    font-weight: normal;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    border: 1px solid transparent;
+    padding:3px 12px;
+  }
+  .option-edit-btn-edit {
+    position:absolute;
+    right:55px;
+    top:0;
+    background-color:#449d44;
+    z-index:2;
+    color:#fff;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: normal;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    border: 1px solid transparent;
+    padding:3px 12px;
+  }

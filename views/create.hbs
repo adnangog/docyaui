@@ -9,7 +9,7 @@
     }
 
     .form-body .col-md-6,
-    .form-body .col-md-12 {
+    .form-body .droppable {
         min-height: 400px;
     }
 
@@ -21,25 +21,37 @@
         float: right;
     }
 </style>
-<div>
-    <div>
+
+    <div style="padding:0 15px;">
         <div class="row">
-            <div class="col-md-3" style="padding: 0px 30px 30px 30px; background-color: #fff;">
-                <h3>Elemanlar</h3>
-                <form role="form" id="HedefForm"></form>
+            <div class="col-md-3" style="padding: 20px; background-color: #fff;">
+                <h3>Form Elemanları</h3>
+                <div id="HedefForm"></div>
             </div>
-            <div class="col-md-9">
-                <div style="background-color: #fff; padding: 20px;">
-                    <div class="text-muted empty-form text-center" style="font-size: 24px;">Eklemek istediğiniz form elamanını buraya sürükleyin</div>
+            
+            <div class="col-md-9" style="background-color: #fff; padding: 20px; border-left:10px solid #f2f2f2;">
+                <form method="POST" id="createForm" action="{{#if edit}}/forms/{{ form._id }}{{else}}/forms/add{{/if}}">
+                <div class="form-group row bg-light" style="padding:10px 0; margin:0; margin-bottom:15px;">
+                    <label for="formName" class="col-sm-2 col-form-label">Form Adı : </label>
+                    <div class="col-sm-10">
+                    <input type="text" class="form-control" id="formName" name="formName" placeholder="Form Adı">
+                    <input type="hidden" id="fields" name="fields" value="{{form.fields}}">
+                    </div>
+                </div>
+                    <div class="text-muted empty-form text-center">Formunuzu oluşturmak için sol tarafta görmüş olduğunuz form elemanlarından kullanmak istediklerinizi aşağıya sürükleyip bırakın. <br>Daha sonra düzenle butonu yardımıyla eklemiş olduğunuz form elemanlarını istediğiniz gibi özelleştirebilirsiniz.</div>
                     <div class="row form-body">
                         <div class="col-md-12 droppable sortable" id="HedefDiv">
                         </div>
                     </div>
-                </div>
+                    <div class="col-md-12 text-right">
+                        <button type="submit" id="btnSaveForm" class="btn btn-success">Formu Kaydet</button>
+                    </div>
+                    </form>
             </div>
+            
         </div>
     </div>
-</div>
+
 
 
 <!-- Modal -->
@@ -71,7 +83,7 @@
                     </ul>
 
                     <!-- Tab panes -->
-                    <div class="tab-content" style="border:1px solid #ddd; border-top: transparent; padding: 10px;">
+                    <div class="tab-content">
                             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                             <div class="form-group">
                                 <div>
@@ -143,8 +155,20 @@
 
                                 </div>
 
-                                <input type="text" id="addOptionControl" class="form-control" value="" placeholder="yeni option eklemek için tıklayın." />
-                                <button class="btn" id="addOptionBtnControl">+</button>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="addOptionControlVal">Adı</label>
+                                    <input type="text" id="addOptionControl" class="form-control" value="" placeholder="Seçenek adı" />
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label for="addOptionControlVal">Değer</label>
+                                    <input type="text" id="addOptionControlVal" class="form-control" value="" placeholder="Seçenek değeri" />
+                                    </div>
+                                </div>
+
+                                
+                                <button class="btn btn-success" id="addOptionBtnControl"><i class="fas fa-plus"></i></button>
                             </div>
                         </div>
                             <div class="tab-pane fade" id="messages" role="tabpanel" aria-labelledby="messages-tab">
@@ -161,7 +185,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tamam</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Tamam</button>
                 </div>
             </div>
         </div>

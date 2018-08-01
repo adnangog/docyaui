@@ -10,7 +10,7 @@
                 "type": "text",
                 "label": "Textbox",
                 "placeholder": "Açıklama.",
-                "help":"Düzenle butonuna tıklayarak form elamnını ihtiyaç duyduğunuz şekilde ayarlayabilirsiniz.",
+                "help": "Düzenle butonuna tıklayarak form elamnını ihtiyaç duyduğunuz şekilde ayarlayabilirsiniz.",
                 "isRequired": true,
                 "isDynamic": false,
                 "url": "",
@@ -24,7 +24,7 @@
                 "control": "dropdown",
                 "label": "Selectbox",
                 "placeholder": "Lütfen seçiniz.",
-                "help":"Düzenle butonuna tıklayarak form elamnını ihtiyaç duyduğunuz şekilde ayarlayabilirsiniz.",
+                "help": "Düzenle butonuna tıklayarak form elamnını ihtiyaç duyduğunuz şekilde ayarlayabilirsiniz.",
                 "isDynamic": true,
                 "url": "http://www.google.com",
                 "isFiltering": true,
@@ -123,7 +123,7 @@
                     placeholder = elm.placeholder
                 }
 
-                itemBlockHtml = $('<div class="form-group draggable dropped" data-index=' + i + '><label for="' + (elm.type + i) + '">' + label + '</label><p class="tools"><a class="edit-link btn btn-success btn-sm">Düzenle<a> <a class="remove-link btn btn-danger btn-sm">Kaldır</a></p></div>');
+                itemBlockHtml = $('<div class="form-group draggable dropped" data-index=' + i + '><label for="' + (elm.type + i) + '">' + label + '</label><p class="tools"><a class="edit-link btn btn-secondary text-white btn-sm">Düzenle<a> <a class="remove-link btn btn-danger btn-sm">Kaldır</a></p></div>');
 
 
                 switch (elm.control) {
@@ -141,7 +141,9 @@
                         elmHtml.append("<option>" + placeholder + "</option>");
 
                         for (var i = 0; i < elm.options.length; i++) {
-                            elmHtml.append("<option value='" + elm.options[i].val + "'>" + elm.options[i].option + "</option>");
+                            var ek = elm.options[i].val === elm.defaultValue ? " selected='selected'" : "";
+
+                            elmHtml.append("<option value='" + elm.options[i].val + "' "+ek+" >" + elm.options[i].option + "</option>");
                         }
 
                         itemBlockHtml.append(elmHtml);
@@ -152,7 +154,7 @@
                 }
 
                 if (itemBlockHtml != null) {
-                    itemBlockHtml.append($("<small id='emailHelp' class='form-text text-muted'>"+elm.help+"</small>"));
+                    itemBlockHtml.append($("<small id='emailHelp' class='form-text text-muted'>" + elm.help + "</small>"));
                     itemBlockHtml.appendTo($("#HedefDiv"));
                 }
             });
@@ -174,6 +176,13 @@
 
                         var index = $el.attr("data-index");
                         var obj = Object.assign({}, Docya.FormCreator.InputJSON[index]);
+
+                        var isExist = Docya.FormCreator.OutputJSON.filter(item => item.control === obj.control && item.type === obj.type);
+
+                        if(isExist.length>0){
+                            obj.label = obj.label + (isExist.length+1);
+                        }
+
                         Docya.FormCreator.OutputJSON.push(obj);
 
                         Docya.FormCreator.OutputJSON.map((x, l) => {
@@ -188,12 +197,10 @@
                 }
             }).sortable({
                 update: function (event, ui) {
-                    console.log('update: ' + ui.item.index())
                     Docya.FormCreator.FinalIndex = ui.item.index();
                     Docya.FormCreator.reSortItems();
                 },
                 start: function (event, ui) {
-                    console.log('start: ' + ui.item.index())
                     Docya.FormCreator.StartIndex = ui.item.index();
                 }
             });
@@ -244,9 +251,10 @@
             }
 
             if (obj.hasOwnProperty('options')) {
-                obj.options.map(o => {
-                    $("#optionsControl").append("<div class='option-edit' data-value='" + o.val + "'>" + o.option + "<div class='option-edit-btn-delete'>Sil</div> </div>");
-                    $("#defOptionsControl").append("<div class='option-edit' data-value='" + o.val + "'>" + o.option + "<div class='option-edit-btn-delete'>Seç</div> </div>");
+                obj.options.map((o, i) => {
+                    var ek = o.val === obj.defaultValue ? "  <span class='badge badge-danger'>Default</span>" : "";
+                    $("#optionsControl").append("<div class='option-edit' data-index='" + i + "'>" + o.option + "<div class='option-edit-btn-delete' data-option-delete><i class='fas fa-times'></i> Sil</div> </div>");
+                    $("#defOptionsControl").append("<div class='option-edit' data-value='" + o.val + "'>" + o.option + ek + "<div class='option-edit-btn-delete' data-option-select><i class='fas fa-check'></i> Seç</div> </div>");
                 });
             }
 
@@ -377,7 +385,7 @@
 
             });
         },
-        initDefaultValueControl: function () {
+        initHelpControl: function () {
             $("body").on("blur", "#helpControl", function (e) {
                 var elm = $(this);
                 var obj = Docya.FormCreator.OutputJSON[Docya.FormCreator.SelectedIndex];
@@ -404,15 +412,105 @@
                 }
 
                 if (id === "isFiltering") {
-                    if (elm.is(':checked')){
+                    if (elm.is(':checked')) {
                         $("#filterTypeControl").parents(".form-group").removeClass("d-none");
                         $("#filterMinLengthControl").parents(".form-group").removeClass("d-none");
                     }
-                    else{
+                    else {
                         $("#filterTypeControl").parents(".form-group").addClass("d-none");
                         $("#filterMinLengthControl").parents(".form-group").addClass("d-none");
                     }
                 }
+
+            });
+        },
+        initOptionDelete: function () {
+            $("body").on("click", "[data-option-delete]", function () {
+                var elm = $(this);
+                var parent = elm.parent();
+                var obj = Docya.FormCreator.OutputJSON[Docya.FormCreator.SelectedIndex];
+
+                obj.options.splice(parent.attr("data-index"), 1);
+
+                $("#optionsControl").html("");
+                $("#defOptionsControl").html("");
+
+                obj.options.map((o, i) => {
+                    var ek = o.val === obj.defaultValue ? "  <span class='badge badge-danger'>Default</span>" : "";
+                    $("#optionsControl").append("<div class='option-edit' data-index='" + i + "'>" + o.option + "<div class='option-edit-btn-delete' data-option-delete><i class='fas fa-times'></i> Sil</div> </div>");
+                    $("#defOptionsControl").append("<div class='option-edit' data-value='" + o.val + "'>" + o.option + ek + "<div class='option-edit-btn-delete' data-option-select><i class='fas fa-check'></i> Seç</div> </div>");
+                });
+
+                Docya.FormCreator.initCreateForm();
+
+            });
+        },
+        initOptionSelect: function () {
+            $("body").on("click", "[data-option-select]", function () {
+                var elm = $(this);
+                var parent = elm.parent();
+                var obj = Docya.FormCreator.OutputJSON[Docya.FormCreator.SelectedIndex];
+
+                obj.defaultValue = parent.attr("data-value");
+
+                $("#defOptionsControl").html("");
+
+                obj.options.map((o, i) => {
+                    var ek = o.val === parent.attr("data-value") ? "  <span class='badge badge-danger'>Default</span>" : "";
+                    $("#defOptionsControl").append("<div class='option-edit' data-value='" + o.val + "'>" + o.option + ek + "<div class='option-edit-btn-delete' data-option-select><i class='fas fa-check'></i> Seç</div> </div>");
+                });
+
+                Docya.FormCreator.initCreateForm();
+
+            });
+        },
+        initOptionAdd: function () {
+            $("body").on("click", "#addOptionBtnControl", function () {
+                var elm = $(this);
+                var label = $("#addOptionControl").val();
+                var val = $("#addOptionControlVal").val();
+                var obj = Docya.FormCreator.OutputJSON[Docya.FormCreator.SelectedIndex];
+
+                if (label.length > 0) {
+                    var isExist = obj.options.filter(option => option.option === label || option.val === val);
+                    if (isExist.length > 0) {
+                        alert("Bu seçenek mevcut!");
+                    } else {
+                        obj.options.push({ option: label, val: val != "" ? val : label });
+
+                        $("#optionsControl").html("");
+                        $("#defOptionsControl").html("");
+
+                        obj.options.map((o, i) => {
+                            var ek = o.val === obj.defaultValue ? "  <span class='badge badge-danger'>Default</span>" : "";
+                            $("#optionsControl").append("<div class='option-edit' data-index='" + i + "'>" + o.option + "<div class='option-edit-btn-delete' data-option-delete><i class='fas fa-times'></i> Sil</div> </div>");
+                            $("#defOptionsControl").append("<div class='option-edit' data-value='" + o.val + "'>" + o.option + ek + "<div class='option-edit-btn-delete' data-option-select><i class='fas fa-check'></i> Seç</div> </div>");
+                        });
+
+                        Docya.FormCreator.initCreateForm();
+                    }
+                }
+
+            });
+        },
+        initBtnSave: function () {
+            $("body").on("click", "#btnSaveForm", function (e) {
+                e.preventDefault();
+
+                if($("#formName").val()==""){
+                    alert("Lütfen form adı girin.");
+                    return false;
+                }
+
+                if(Docya.FormCreator.OutputJSON.length===0){
+                    alert("Lütfen en az bir tane form elemanı oluşturun.");
+                    return false;
+                }
+
+                $("#fields").val(Docya.FormCreator.OutputJSON);
+
+                $("#createForm").submit();
+                return true;
 
             });
         },
@@ -428,6 +526,10 @@
             this.initDefaultValueControl();
             this.initHelpControl();
             this.initCBControl();
+            this.initOptionDelete();
+            this.initOptionSelect();
+            this.initOptionAdd();
+            this.initBtnSave();
         },
         init: function () {
             this.initElements();
