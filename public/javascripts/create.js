@@ -3,7 +3,7 @@
         w.Docya = {};
 
     w.Docya.FormCreator = {
-        OutputJSON: [],
+        OutputJSON: JSON.parse($("#fields").val()),
         InputJSON: [
             {
                 "control": "textbox",
@@ -111,6 +111,9 @@
             }
 
             this.OutputJSON.sort(compare).map(function (elm, i) {
+                if(i===0)
+                    $(".empty-form").remove();
+                    
                 var label = elm.control;
 
                 if (elm.hasOwnProperty('label')) {
@@ -507,7 +510,7 @@
                     return false;
                 }
 
-                $("#fields").val(Docya.FormCreator.OutputJSON);
+                $("#fields").val(JSON.stringify(Docya.FormCreator.OutputJSON));
 
                 $("#createForm").submit();
                 return true;
@@ -539,6 +542,7 @@
 
     $(document).ready(function () {
         w.Docya.FormCreator.init();
+        w.Docya.FormCreator.initCreateForm();
 
     });
 

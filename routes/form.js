@@ -17,6 +17,7 @@ router.get("/add", (req, res, next) => {
   res.render("create", {
     breadcrumb,
     route: "forms/create",
+    fields:"[]"
   });
 });
 
@@ -28,7 +29,7 @@ router.post("/add", (req, res, next) => {
     "POST",
     {
       name: req.body.formName,
-      fields : req.body.fields,
+      fields : JSON.parse(req.body.fields),
       user: req.session.userId,
       rDate: Date.now()
     },
@@ -82,6 +83,7 @@ router.get("/:formId", (req, res, next) => {
       res.render("create", {
         edit: true,
         form,
+        fields: JSON.stringify(form.fields),
         breadcrumb
       });
 
@@ -108,7 +110,6 @@ router.post("/:formId", (req, res, next) => {
 
 // Form Delete
 router.get("/delete/:formId", (req, res, next) => {
-  next();
   res.redirect("/forms");
 
 });

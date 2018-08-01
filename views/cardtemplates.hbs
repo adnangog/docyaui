@@ -31,11 +31,11 @@
 
           <div class="form-row">
             <div class="form-group col-md-6">
-              <label for="roleName">Kart Tipi</label>
+              <label for="roleName">Kart Tipi </label>
               <select class="form-control" id="type" name="type">
               <option>Lütfen Seçin</option>
-              <option value="1" {{#if_equal ../cardtemplate.type "1" }}selected="selected"{{/if_equal}}>Dosya Kartı</option>
-              <option value="1" {{#if_equal ../cardtemplate.type "2" }}selected="selected"{{/if_equal}}>Kabinet</option>
+              <option value="1" {{#if_equal cardtemplate.type 1 }}selected="selected"{{/if_equal}}>Dosya Kartı</option>
+              <option value="1" {{#if_equal cardtemplate.type 2 }}selected="selected"{{/if_equal}}>Kabinet</option>
             </select>
             </div>
 

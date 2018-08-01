@@ -65,7 +65,6 @@ router.get("/:cardId", (req, res, next) => {
           name: "Kart Taslakları"
         }
       ];
-      
       let total = data.count;
 
       helper.paging(req.body.page, req.body.limit, total, "cardtemplates", (paging) => {
@@ -92,7 +91,10 @@ router.post("/:cardId", (req, res, next) => {
     `/cardtemplate/${req.params.cardId}`,
     "PATCH",
     {
-      name: req.body.name
+      name: req.body.name,
+      authSet:null,
+      type:req.body.type,
+      form:req.body.form
     },
     (result) => {
       let opt = "";
