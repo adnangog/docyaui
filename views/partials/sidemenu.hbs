@@ -1,0 +1,116 @@
+<div class="nav-side-menu">
+  <div class="toggler" data-menutoggle>
+    <i class="fas fa-angle-double-left"></i>
+  </div>
+  <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+
+  <div class="menu-list">
+
+    <ul id="menu-content" class="menu-content collapse out">
+      <li data-toggle="collapse" data-target="#definations" class="collapsed">
+        <a href="#">
+          <i class="fa fa-gift fa-lg"></i> Tanımlamalar
+          <span class="arrow"></span>
+        </a>
+        <i class="far fa-plus-square"></i>
+      </li>
+      <ul class="sub-menu collapse" id="definations">
+        <li>
+          <a href="/users"><i class="fas fa-users"></i> Kullanıcılar</a>
+        </li>
+        <li>
+          <a href="/authorities"><i class="fas fa-unlock-alt"></i> Yetkiler</a>
+        </li>
+        <li>
+          <a href="/roles"><i class="fas fa-project-diagram"></i> Roller</a>
+        </li>
+        <li>
+          <a href="/folders"><i class="fas fa-folder-open"></i> Klasörler</a>
+        </li>
+        <li>
+          <a href="/departments"><i class="fas fa-vector-square"></i> Departmanlar</a>
+        </li>
+        <li>
+          <a href="/documents/types"><i class="fas fa-file-invoice"></i> Döküman Tipleri</a>
+        </li>
+        <li>
+          <a href="/documents"><i class="fas fa-file-invoice"></i> Dökümanlar</a>
+        </li>
+        <li>
+          <a href="/forms"><i class="fas fa-file-alt"></i> Formlar</a>
+        </li>
+        <li>
+          <a href="/cardtemplates"><i class="fas fa-archive"></i> Kart Taslakları</a>
+        </li>
+      </ul>
+      <li data-toggle="collapse" data-target="#documents" class="collapsed">
+        <a href="#">
+          <i class="fa fa-gift fa-lg"></i> Dökümanlarım
+          <span class="arrow"></span>
+        </a>
+        <i class="far fa-plus-square"></i>
+      </li>
+      <ul class="sub-menu collapse" id="documents">
+        {{# each menucards}}
+        <li>
+          <a href="#">{{this.name}}</a>
+        </li>
+        {{/ each}}
+      </ul>
+      <li data-toggle="collapse" data-target="#folderCards" class="collapsed active">
+        <a href="#">
+          <i class="fa fa-gift fa-lg"></i> Dosya Kartları
+          <span class="arrow"></span>
+        </a>
+        <i class="far fa-plus-square"></i>
+      </li>
+      <ul class="sub-menu collapse" id="folderCards">
+        {{# each menucards}}
+        <li>
+          <a href="#">{{this.name}}</a>
+        </li>
+        {{/ each}}
+      </ul>
+
+
+      <li data-toggle="collapse" data-target="#cabinets" class="collapsed">
+        <a href="#">
+          <i class="fa fa-globe fa-lg"></i> Kabinetler
+          <span class="arrow"></span>
+        </a>
+        <i class="far fa-plus-square"></i>
+      </li>
+      <ul class="sub-menu collapse" id="cabinets">
+        <li>New Service 1</li>
+        <li>New Service 2</li>
+        <li>New Service 3</li>
+      </ul>
+
+
+      <li data-toggle="collapse" data-target="#new" class="collapsed">
+        <a href="#">
+          <i class="fa fa-car fa-lg"></i> New
+          <span class="arrow"></span>
+        </a>
+      </li>
+      <ul class="sub-menu collapse" id="new">
+        <li>New New 1</li>
+        <li>New New 2</li>
+        <li>New New 3</li>
+      </ul>
+
+
+      <li>
+        <a href="#">
+          <i class="fa fa-user fa-lg"></i> Profile
+        </a>
+      </li>
+
+      <li>
+        <a href="#">
+          <i class="fa fa-users fa-lg"></i> Users
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

@@ -38,7 +38,7 @@ router.get("/", (req, res, next) => {
       res.render("roles", {
         title: "Roller",
         addTitle: "Rol Ekle",
-        data,
+        data: total === undefined ? false : data,
         breadcrumb,
         paging,
         route: "roles",

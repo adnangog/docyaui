@@ -56,7 +56,7 @@ router.get("/", (req, res, next) => {
       res.render("forms", {
         title: "Formlar",
         addTitle: "Form Ekle",
-        data,
+        data: total === undefined ? false : data,
         breadcrumb,
         paging,
         route: "forms",
@@ -97,7 +97,8 @@ router.post("/:formId", (req, res, next) => {
     `/form/${req.params.formId}`,
     "PATCH",
     {
-      name: req.body.formName
+      name: req.body.formName,
+      fields : JSON.parse(req.body.fields)
     },
     (result) => {
       let opt = "";

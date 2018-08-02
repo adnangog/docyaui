@@ -43,7 +43,7 @@ router.post("/", (req, res, next) => {
         res.render("users", {
           title: "Kullanıcılar",
           addTitle: "Kullanıcı Ekle",
-          data,
+          data: total === undefined ? false : data,
           breadcrumb,
           paging,
           route:"users",

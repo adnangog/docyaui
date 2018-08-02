@@ -1,5 +1,6 @@
 {{#if breadcrumb}}
-<nav aria-label="breadcrumb">
+<nav aria-label="breadcrumb" style="position:relative; z-index:1;">
+    <div class="toggle-right" data-menutoggle><i class="fas fa-angle-double-right"></i></div>
     <ol class="breadcrumb">
         {{# each breadcrumb }} {{#if @last}}
         <li class="breadcrumb-item active" aria-current="page">{{ this.name }}</li>

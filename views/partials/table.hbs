@@ -1,4 +1,9 @@
 
+{{#unless data}}
+<div class="alert alert-danger" role="alert">
+  Upps! Maalesef burada hiçbir şey yok :(
+</div>
+{{else}}
 {{#if isForm}}
 <div class="table-responsive">
   <table class="table table-sm table-striped">
@@ -63,3 +68,4 @@
   </table>
 </div>
 {{/if }}
+{{/unless}}

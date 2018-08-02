@@ -12,10 +12,10 @@ router.post("/", (req, res, next) => {
     "POST",
     {
       name: req.body.name,
-      authSet:null,
-      user:req.session.userId,
-      type:req.body.type,
-      form:req.body.form,
+      authSet: null,
+      user: req.session.userId,
+      type: req.body.type,
+      form: req.body.form,
       rDate: Date.now()
     },
     (result) => {
@@ -29,72 +29,98 @@ router.post("/", (req, res, next) => {
 
 // Card List
 router.get("/", (req, res, next) => {
-  api.apiCall(req.session.token, "/cardtemplate", "POST", req.body.pagelimit, (data) => {
-    let breadcrumb = [
-      { route: "/", name: "Anasayfa" },
-      { route: "/cardtemplates", name: "Kart Taslakları" }
-    ];
-    let total = data.count || 0;
-
-    helper.paging(req.body.page, req.body.limit, total, "cardtemplates", (paging) => {
-      res.render("cardtemplates", {
-        title: "Kart Taslakları",
-        addTitle: "Kart Taslağı Ekle",
-        data,
-        breadcrumb,
-        paging,
-        route: "cardtemplates",
-        messageType: req.query.messageType,
-        message: req.query.message
+  async.parallel([
+    (callback) => {
+      api.apiCall(req.session.token, "/cardtemplate", "POST", req.body.pagelimit, (result) => {
+        callback(null, result);
       });
-    })
-  });
+    },
+    (callback) => {
+      api.apiCall(req.session.token, `/form`, "POST", req.body.pagelimit, (result) => {
+        callback(null, result);
+      });
+    }
+  ],
+    (err, results) => {
+
+      let breadcrumb = [
+        { route: "/", name: "Anasayfa" },
+        { route: "/cardtemplates", name: "Kart Taslakları" }
+      ];
+
+      let total = results[0].count;
+
+      helper.paging(req.body.page, req.body.limit, total, "cardtemplates", (paging) => {
+        res.render("cardtemplates", {
+          title: "Kart Taslakları",
+          addTitle: "Kart Taslağı Ekle",
+          route: "cardtemplates",
+          data: total === undefined ? false : results[0],
+          forms: results[1].data,
+          breadcrumb,
+          paging
+        });
+      })
+    });
 });
 
 // Card GetById
-router.get("/:cardId", (req, res, next) => {
-  api.apiCall(req.session.token, "/cardtemplate", "POST", req.body.pagelimit, (data) => {
-    api.apiCall(req.session.token, `/cardtemplate/${req.params.cardId}`, "GET", null, (
-      cardtemplate
-    ) => {
+router.get("/:cardtemplateId", (req, res, next) => {
+  async.parallel([
+    (callback) => {
+      api.apiCall(req.session.token, "/cardtemplate", "POST", req.body.pagelimit, (result) => {
+        callback(null, result);
+      });
+    },
+    (callback) => {
+      api.apiCall(req.session.token, `/cardtemplate/${req.params.cardtemplateId}`, "GET", null, (result) => {
+        callback(null, result);
+      });
+    },
+    (callback) => {
+      api.apiCall(req.session.token, `/form`, "POST", req.body.pagelimit, (result) => {
+        callback(null, result);
+      });
+    }
+  ],
+    (err, results) => {
+
       let breadcrumb = [
         { route: "/", name: "Anasayfa" },
         { route: "/cardtemplates", name: "Kart Taslakları" },
-        {
-          route: `/cardtemplates/${req.params.cardId}`,
-          name: "Kart Taslakları"
-        }
+        { route: `/cardtemplates/${req.params.cardtemplateId}`, name: "Kart Taslakları"}
       ];
-      let total = data.count;
+
+      let total = results[0].info && results[0].info[0].count;
 
       helper.paging(req.body.page, req.body.limit, total, "cardtemplates", (paging) => {
         res.render("cardtemplates", {
           title: "Kart Taslakları",
           addTitle: "Kart Taslağı Ekle",
           editTitle: "Kart Taslağı Düzenle",
-          edit: true,
           route: "cardtemplates",
-          data,
-          cardtemplate,
+          edit: true,
+          data: results[0],
+          cardtemplate: results[1],
+          forms: results[2].data,
           breadcrumb,
           paging
         });
       })
     });
-  });
 });
 
 // Card Update
-router.post("/:cardId", (req, res, next) => {
+router.post("/:cardtemplateId", (req, res, next) => {
   api.apiCall(
     req.session.token,
-    `/cardtemplate/${req.params.cardId}`,
+    `/cardtemplate/${req.params.cardtemplateId}`,
     "PATCH",
     {
       name: req.body.name,
-      authSet:null,
-      type:req.body.type,
-      form:req.body.form
+      authSet: null,
+      type: req.body.type,
+      form: req.body.form
     },
     (result) => {
       let opt = "";

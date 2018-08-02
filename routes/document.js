@@ -39,7 +39,7 @@ router.get("/types", (req, res, next) => {
         res.render("documenttypes", {
           title: "Döküman Tipleri",
           addTitle: "Döküman Tipi Ekle",
-          data,
+          data: total === undefined ? false : data,
           breadcrumb,
           paging,
           route: "../documents/types",
@@ -190,7 +190,7 @@ router.get("/", (req, res, next) => {
         { route: "/documents", name: "Dökümanlar" }
       ];
 
-      let total = results[0].info && results[0].info[0].count;
+      let total = results[0].count;
 
 
     helper.paging(req.body.page, req.body.limit, total, "documents", (paging) => {
@@ -198,7 +198,7 @@ router.get("/", (req, res, next) => {
         title: "Dökümanlar",
         addTitle: "Döküman Ekle",
         route: "documents",
-        data: results[0],
+        data: total === undefined ? false : results[0],
         cards: results[1].data,
         types: results[2].data,
         departments: results[3].data,

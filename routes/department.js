@@ -39,7 +39,7 @@ router.get("/", (req, res, next) => {
         res.render("departments", {
           title: "Departmanlar",
           addTitle: "Departman Ekle",
-          data,
+          data: total === undefined ? false : data,
           breadcrumb,
           paging,
           route: "departments",

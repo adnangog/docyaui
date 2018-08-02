@@ -21,6 +21,7 @@ const formRouter = require('./routes/form');
 const loginRouter = require('./routes/login');
 const checkAuth = require("./middleware/checkAuth");
 const pagelimit = require("./middleware/pagelimit");
+const addmenu = require("./middleware/addMenu");
 
 const app = express();
 
@@ -52,6 +53,8 @@ app.use(expressSession({
 }));
 
 app.use(pagelimit); // for table
+
+app.use(addmenu); // side menu add
 
 app.use('/login', loginRouter);
 app.use('/', checkAuth, indexRouter);

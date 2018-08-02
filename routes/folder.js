@@ -49,7 +49,7 @@ router.get("/", (req, res, next) => {
         { route: "/users", name: "Klasörler" }
       ];
 
-      let total = results[0].info && results[0].info[0].count;
+      let total = results[0].count;
 
 
       helper.paging(req.body.page, req.body.limit, total, "folders", (paging) => {
@@ -57,7 +57,7 @@ router.get("/", (req, res, next) => {
           title: "Klasörler",
           addTitle: "Klasör Ekle",
           route: "folders",
-          data: results[0],
+          data: total === undefined ? false : results[0],
           cards: results[1].data,
           // authSets: results[2].data,
           breadcrumb,
