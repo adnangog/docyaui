@@ -1,11 +1,19 @@
 body {
     background-color: #f1f1f1;
 }
+.headerz {
+  position: fixed;
+  top:0;
+  left:0;
+  right: 0;
+  z-index: 9;
+}
 .container-fluid {
     padding: 15px !important;
 }
 .breadcrumb {
     margin: 0;
+    margin-top: 56px;
     background-color: #555;
     border-radius: 0;
     -webkit-transition: padding 0.2s; /* Safari */

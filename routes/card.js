@@ -634,7 +634,7 @@ router.get("/", (req, res, next) => {
     }
   ];
 
-  res.render("forms", {
+  res.render("cards", {
     title: "Form",
     addTitle: "Yetki Ekle",
     formData,
