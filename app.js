@@ -7,6 +7,7 @@ const logger = require('morgan');
 const expressHbs = require('express-handlebars');
 const expressValidator = require('express-validator');
 const expressSession = require('express-session');
+const helper = require("./helpers/index");
 
 const indexRouter = require('./routes/index');
 const authorityRouter = require('./routes/authority');
@@ -35,6 +36,9 @@ app.engine('.hbs', expressHbs({
       } else {
         return opts.inverse(this)
       }
+    },
+    cFormName: function (value, prefix) {
+      return prefix+helper.slugify(value);
     }
   }
 }))

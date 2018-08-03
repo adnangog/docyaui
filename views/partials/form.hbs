@@ -1,0 +1,38 @@
+<form method="POST" action="/cards">
+  <div class="form-group">
+    <label for="name">Dosya Kart Adı</label>
+    <input type="text" class="form-control" id="name" name="name" value="{{ cardTemplate.name }}" placeholder="Dosya kart adı giriniz.">
+  </div>
+
+  {{# each cardTemplate.form.fields }}
+
+  <div class="form-group">
+    <label for="{{ this.field }}">{{ this.label }}</label>
+    {{#if_equal this.control "textbox"}} {{#if_equal this.type "text"}}
+    <input type="text" class="form-control" id="{{cFormName this.label ../prefix}}" name="{{cFormName this.label ../prefix}}" placeholder="{{ this.placeholder }}"> {{/if_equal}} {{#if_equal this.type "date"}}
+    <input type="text" data-datetimepicker class="form-control" id="{{cFormName this.label ../prefix}}" name="{{cFormName this.label ../prefix}}"
+      placeholder="{{ this.placeholder }}"> {{/if_equal}} {{/if_equal}} {{#if_equal this.control "textarea"}}
+    <textarea class="form-control" id="{{cFormName this.label ../prefix}}" name="{{cFormName this.label ../prefix}}" placeholder="{{ this.placeholder }}"
+      rows="3"></textarea> {{/if_equal}} {{#if_equal this.control "dropdown"}}
+    <select class="form-control" id="{{cFormName this.label ../prefix}}" name="{{cFormName this.label ../prefix}}">
+      <option>{{ this.placeholder }}</option>
+      {{# each this.options }} {{#if_equal "secilen" this }}
+      <option value="{{ this.val }}" selected="selected">{{ this.option }}</option>
+      {{else}}
+      <option value="{{ this.val }}">{{ this.option }}</option>
+      {{/if_equal}} {{/ each}}
+    </select>
+    {{/if_equal}}
+
+  </div>
+
+  {{/ each }}
+
+  <input type="hidden" name="cardId" id="cardId" value="{{cardTemplate._id}}">
+  <input type="hidden" name="type" id="type" value="{{cardTemplate.type}}">
+  <input type="hidden" name="form" id="form" value="{{cardTemplate.form._id}}">
+
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+  </div>
+</form>
