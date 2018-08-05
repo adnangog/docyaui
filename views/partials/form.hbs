@@ -9,11 +9,11 @@
   <div class="form-group">
     <label for="{{ this.field }}">{{ this.label }}</label>
     {{#if_equal this.control "textbox"}} {{#if_equal this.type "text"}}
-    <input type="text" class="form-control" id="{{cFormName this.label ../prefix}}" name="{{cFormName this.label ../prefix}}" placeholder="{{ this.placeholder }}"> {{/if_equal}} {{#if_equal this.type "date"}}
-    <input type="text" data-datetimepicker class="form-control" id="{{cFormName this.label ../prefix}}" name="{{cFormName this.label ../prefix}}"
+    <input type="text" value="{{getObjectVal ../card.fields.[0] this.label}}" class="form-control" id="{{cFormName this.label ../prefix}}" name="{{cFormName this.label ../prefix}}" placeholder="{{ this.placeholder }}"> {{/if_equal}} {{#if_equal this.type "date"}}
+    <input type="text" value="{{getObjectVal ../card.fields.[0] this.label}}" data-datetimepicker class="form-control" id="{{cFormName this.label ../prefix}}" name="{{cFormName this.label ../prefix}}"
       placeholder="{{ this.placeholder }}"> {{/if_equal}} {{/if_equal}} {{#if_equal this.control "textarea"}}
     <textarea class="form-control" id="{{cFormName this.label ../prefix}}" name="{{cFormName this.label ../prefix}}" placeholder="{{ this.placeholder }}"
-      rows="3"></textarea> {{/if_equal}} {{#if_equal this.control "dropdown"}}
+      rows="3">{{getObjectVal ../card.fields.[0] this.label}}</textarea> {{/if_equal}} {{#if_equal this.control "dropdown"}}
     <select class="form-control" id="{{cFormName this.label ../prefix}}" name="{{cFormName this.label ../prefix}}">
       <option>{{ this.placeholder }}</option>
       {{# each this.options }} {{#if_equal "secilen" this }}

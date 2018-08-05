@@ -39,6 +39,9 @@ app.engine('.hbs', expressHbs({
     },
     cFormName: function (value, prefix) {
       return prefix+helper.slugify(value);
+    },
+    getObjectVal: function (obj, key) {
+      return obj && obj[helper.slugify(key)];
     }
   }
 }))
