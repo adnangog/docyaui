@@ -25,6 +25,11 @@ router.get("/:cardTemplateId/:cardId", (req, res, next) => {
       api.apiCall(req.session.token, `/card/${req.params.cardId}`, "GET", null, (result) => {
         callback(null, result);
       });
+    },
+    (callback) => {
+      api.apiCall(req.session.token, `/folder/card/${req.params.cardId}`, "GET", null, (result) => {
+        callback(null, result);
+      });
     }
   ],
     (err, results) => {
@@ -46,6 +51,7 @@ router.get("/:cardTemplateId/:cardId", (req, res, next) => {
           data: total === undefined ? false : results[0],
           cardTemplate: results[1],
           card: results[2],
+          folders: results[3],
           breadcrumb,
           paging,
           edit: true

@@ -11,6 +11,12 @@ body {
 .container-fluid {
     padding: 15px !important;
 }
+.table-responsive {
+  border:1px solid #ccc;
+}
+.table {
+  margin-bottom: 0;
+}
 .breadcrumb {
     margin: 0;
     margin-top: 56px;
@@ -46,7 +52,7 @@ body {
     margin: -15px -15px 15px -15px;
     padding: 5px 15px;
 }
-.max-height-div {
+.max-height-div .table-responsive {
     max-height: 221px;
     overflow-y: auto;
 }
