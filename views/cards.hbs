@@ -1,7 +1,7 @@
 <div class="row" style="margin:0;">
   <div class="col-md-12 light-theme">
     <div class="table-top col-md-12">
-      <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#exampleModalCenter">
+      <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#cardModal">
         <i class="far fa-file"></i>
       </button>
       <button type="button" class="btn btn-warning btn-sm">
@@ -40,8 +40,8 @@
 </div>
 <div class="row" style="margin:0;">
   <div class="col-md-5 light-theme ">
-    <div class="doc-title">Yeni Kart Oluştur</div>
-    {{>form prefix="dForm_"}}
+    <div class="doc-title">Form</div>
+    {{>form formType="edit"}}
   </div>
   <div class="col-md-2 light-theme">
     <div class="doc-title">Belgeler</div>
@@ -67,7 +67,7 @@
 {{/if}}
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="cardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -77,7 +77,7 @@
         </button>
       </div>
       <div class="modal-body">
-      {{>form prefix="duForm_"}}
+      {{>form formType="add"}}
       </div>
     </div>
   </div>

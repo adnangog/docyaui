@@ -37,11 +37,13 @@ app.engine('.hbs', expressHbs({
         return opts.inverse(this)
       }
     },
-    cFormName: function (value, prefix) {
+    cFormName: function (value, formType) {
+      let prefix  = formType === "add" ? "duForm_" : "dForm_";
       return prefix+helper.slugify(value);
     },
-    getObjectVal: function (obj, key) {
-      return obj && obj[helper.slugify(key)];
+    getObjectVal: function (obj, key, formType) {
+      let rString = formType === "add" ? "" : obj && obj[helper.slugify(key)];
+      return rString;
     }
   }
 }))

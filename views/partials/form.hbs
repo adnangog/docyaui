@@ -1,22 +1,38 @@
+{{#if_equal formType "edit"}}
+<form method="POST" action="/cards/{{cardTemplate._id}}/{{card._id}}">
+ {{else}}
 <form method="POST" action="/cards">
+ {{/if_equal}}
+ {{#if_equal formType "add"}}
   <div class="form-group">
     <label for="name">Dosya Kart Adı</label>
     <input type="text" class="form-control" id="name" name="name" value="{{ cardTemplate.name }}" placeholder="Dosya kart adı giriniz.">
   </div>
+  {{/if_equal}}
 
   {{# each cardTemplate.form.fields }}
 
   <div class="form-group">
     <label for="{{ this.field }}">{{ this.label }}</label>
-    {{#if_equal this.control "textbox"}} {{#if_equal this.type "text"}}
-    <input type="text" value="{{getObjectVal ../card.fields.[0] this.label}}" class="form-control" id="{{cFormName this.label ../prefix}}" name="{{cFormName this.label ../prefix}}" placeholder="{{ this.placeholder }}"> {{/if_equal}} {{#if_equal this.type "date"}}
-    <input type="text" value="{{getObjectVal ../card.fields.[0] this.label}}" data-datetimepicker class="form-control" id="{{cFormName this.label ../prefix}}" name="{{cFormName this.label ../prefix}}"
-      placeholder="{{ this.placeholder }}"> {{/if_equal}} {{/if_equal}} {{#if_equal this.control "textarea"}}
-    <textarea class="form-control" id="{{cFormName this.label ../prefix}}" name="{{cFormName this.label ../prefix}}" placeholder="{{ this.placeholder }}"
-      rows="3">{{getObjectVal ../card.fields.[0] this.label}}</textarea> {{/if_equal}} {{#if_equal this.control "dropdown"}}
-    <select class="form-control" id="{{cFormName this.label ../prefix}}" name="{{cFormName this.label ../prefix}}">
+    {{#if_equal this.control "textbox"}} 
+    
+    {{#if_equal this.type "text"}}
+    <input type="text" value="{{getObjectVal ../card.fields.[0] this.label ../formType}}" class="form-control" id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}">
+    {{/if_equal}}
+    
+    {{#if_equal this.type "date"}}
+    <input type="text" value="{{getObjectVal ../card.fields.[0] this.label ../formType}}" data-datetimepicker class="form-control" id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}">
+      {{/if_equal}}
+      
+    {{/if_equal}} {{#if_equal this.control "textarea"}}
+    <textarea class="form-control" id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}"
+      rows="3">{{getObjectVal ../card.fields.[0] this.label ../formType}}</textarea> 
+    {{/if_equal}}
+    
+    {{#if_equal this.control "dropdown"}}
+    <select class="form-control" id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}">
       <option>{{ this.placeholder }}</option>
-      {{# each this.options }} {{#if_equal "secilen" this }}
+      {{# each this.options }} {{#if_equal (getObjectVal ../../card.fields.[0] ../this.label ../../formType) this.val }}
       <option value="{{ this.val }}" selected="selected">{{ this.option }}</option>
       {{else}}
       <option value="{{ this.val }}">{{ this.option }}</option>

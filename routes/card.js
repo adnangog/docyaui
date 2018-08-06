@@ -57,8 +57,6 @@ router.get("/:cardTemplateId/:cardId", (req, res, next) => {
 // Form Add
 router.post("/", (req, res, next) => {
 
-  console.log(req.body);
-
     let objCopy = Object.assign({}, req.body);
 
     for (var key in objCopy) {
@@ -83,7 +81,6 @@ router.post("/", (req, res, next) => {
         rDate: Date.now()
       },
       (result) => {
-        console.log(result);
         let opt = "";
         if (result.messageType == 1)
           opt = "?messageType=1&message=Kayıt Eklendi";
@@ -159,19 +156,31 @@ router.get("/:cardTemplateId", (req, res, next) => {
 });
 
 // Form Update
-router.post("/:formId", (req, res, next) => {
+router.post("/:cardTemplateId/:cardId", (req, res, next) => {
+
+  let objCopy = Object.assign({}, req.body);
+
+    for (var key in objCopy) {
+      if (key.indexOf("dForm_") < 0 && key.indexOf("duForm_") < 0 ) {
+        delete objCopy[key];
+      } else {
+        Object.defineProperty(objCopy, key.replace("dForm_", "").replace("duForm_", ""), Object.getOwnPropertyDescriptor(objCopy, key));
+        delete objCopy[key];
+      }
+    }
+
   api.apiCall(
     req.session.token,
-    `/form/${req.params.formId}`,
+    `/card/${req.params.cardId}`,
     "PATCH",
     {
-      name: req.body.formName
+      fields: [objCopy]
     },
     (result) => {
       let opt = "";
       if (result.nModified > 0)
         opt = "?messageType=1&message=İşlem Başarılı";
-      res.redirect(`/forms${opt}`);
+      res.redirect(`/cards/${req.params.cardTemplateId}/${req.params.cardId}${opt}`);
     }
   );
 });

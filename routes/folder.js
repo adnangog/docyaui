@@ -4,6 +4,39 @@ const api = require("../api");
 const helper = require("../helpers/index");
 const async = require("async");
 
+// {
+//   "folders": [
+//     {
+//       "id":"1",
+//       "name": "Dökümanlar",
+//       "childs": [
+//         {
+//           "id":"2",
+//           "name": "Employees",
+//           "childs": [
+//             {
+//               "id":"3",
+//               "name": "Reports"
+//             },
+//             {
+//               "id":"4",
+//               "name": "Employee Maint."
+//             }
+//           ]
+//         },
+//         {
+//           "id":"5",
+//           "name": "Company Maintenance"
+//         },
+//         {
+//           "id":"6",
+//           "name": "Human Resources"
+//         }
+//       ]
+//     }
+//   ]
+// }
+
 // Folder Add
 router.post("/", (req, res, next) => {
   api.apiCall(
