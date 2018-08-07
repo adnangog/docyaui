@@ -28,6 +28,7 @@ router.get("/:cardTemplateId/:cardId", (req, res, next) => {
     },
     (callback) => {
       api.apiCall(req.session.token, `/folder/card/${req.params.cardId}`, "GET", null, (result) => {
+        console.log(JSON.stringify(result))
         callback(null, result);
       });
     }

@@ -1,0 +1,10 @@
+
+    <li>{{item.name}}
+        {{#if item.childs}}
+        <ul>
+        {{#each item.childs}}
+        {{> tree item=this}}
+        {{/each}}
+        </ul>
+        {{/if}}
+    </li>
