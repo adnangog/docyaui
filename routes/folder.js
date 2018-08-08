@@ -51,7 +51,6 @@ router.get("/", (req, res, next) => {
 
       let total = results[0].count;
 
-
       helper.paging(req.body.page, req.body.limit, total, "folders", (paging) => {
         res.render("folders", {
           title: "Klasörler",
