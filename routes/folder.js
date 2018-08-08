@@ -117,9 +117,6 @@ router.get("/:folderId", (req, res, next) => {
       });
     });
 });
-router.get("/:folderId", (req, res, next) => {
-
-});
 
 // Folder Update
 router.post("/:folderId", (req, res, next) => {
@@ -151,6 +148,7 @@ router.get("/delete/:folderId", (req, res, next) => {
     "DELETE",
     null,
     result => {
+      console.log(result);
       res.redirect("/folders");
     }
   );

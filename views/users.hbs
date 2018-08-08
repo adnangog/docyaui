@@ -41,6 +41,13 @@
             <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" placeholder="Email giriniz.">
           </div>
 
+          {{#unless edit}}
+          <div class="form-group">
+            <label for="roleName">Şifre</label>
+            <input type="password" class="form-control" id="password" name="password" value="{{ user.password }}" placeholder="Şifre giriniz.">
+          </div>
+          {{/unless}}
+
           <div class="form-group">
             <label for="roleName">Rol</label>
             <select class="form-control" id="role" name="role">

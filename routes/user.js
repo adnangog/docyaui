@@ -16,11 +16,12 @@ router.post("/", (req, res, next) => {
         email: req.body.email,
         username: req.body.email,
         password: req.body.password,
-        statu: 1,
+        status: 1,
         authorities: [],
         rDate: Date.now()
       },
       (result) => {
+        console.log(result);
         let opt = "";
         if (result.messageType == 1)
           opt = "?messageType=1&message=Kayıt Eklendi";

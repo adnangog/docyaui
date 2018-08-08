@@ -41,9 +41,9 @@
             <select class="form-control" id="parent" name="parent">
               <option>Lütfen Seçin</option>
               {{# each data.data }} {{#if_equal ../folder.parent this.[0] }}
-              <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
+              <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }} ({{ this.[4] }})</option>
               {{else}}
-              <option value="{{ this.[0] }}">{{ this.[1] }}</option>
+              <option value="{{ this.[0] }}">{{ this.[1] }} ({{ this.[4] }})</option>
               {{/if_equal}} {{/ each}}
             </select>
           </div>
