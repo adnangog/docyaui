@@ -1,8 +1,27 @@
-var express = require("express");
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
 const api = require("../api");
 const helper = require("../helpers/index");
 const async = require("async");
+const multer = require('multer')
+const upload = multer({ dest: 'uploads/' })
+const sizeOf = require( 'image-size' );
+
+router.post( '/upload', upload.single( 'file' ), function( req, res, next ) {
+
+
+  console.log(req.file);
+  
+    // var dimensions = sizeOf( req.file.path );
+  
+    // if ( ( dimensions.width < 640 ) || ( dimensions.height < 480 ) ) {
+    //   return res.status( 422 ).json( {
+    //     error : 'The image must be at least 640 x 480px'
+    //   } );
+    // }
+  
+    return res.status( 200 ).send( req.file );
+  });
 
 // Form GetById
 router.get("/:cardTemplateId/:cardId", (req, res, next) => {

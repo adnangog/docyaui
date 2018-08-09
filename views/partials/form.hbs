@@ -6,7 +6,7 @@
  {{#if_equal formType "add"}}
   <div class="form-group">
     <label for="name">Dosya Kart Adı</label>
-    <input type="text" class="form-control" id="name" name="name" value="{{ cardTemplate.name }}" placeholder="Dosya kart adı giriniz.">
+    <input type="text" class="form-control form-control-sm" id="name" name="name" value="{{ cardTemplate.name }}" placeholder="Dosya kart adı giriniz.">
   </div>
   {{/if_equal}}
 
@@ -17,20 +17,20 @@
     {{#if_equal this.control "textbox"}} 
     
     {{#if_equal this.type "text"}}
-    <input type="text" value="{{getObjectVal ../card.fields.[0] this.label ../formType}}" class="form-control" id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}">
+    <input type="text" value="{{getObjectVal ../card.fields.[0] this.label ../formType}}" class="form-control form-control-sm" id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}">
     {{/if_equal}}
     
     {{#if_equal this.type "date"}}
-    <input type="text" value="{{getObjectVal ../card.fields.[0] this.label ../formType}}" data-datetimepicker class="form-control" id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}">
+    <input type="text" value="{{getObjectVal ../card.fields.[0] this.label ../formType}}" data-datetimepicker class="form-control form-control-sm" id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}">
       {{/if_equal}}
       
     {{/if_equal}} {{#if_equal this.control "textarea"}}
-    <textarea class="form-control" id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}"
+    <textarea class="form-control form-control-sm" id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}"
       rows="3">{{getObjectVal ../card.fields.[0] this.label ../formType}}</textarea> 
     {{/if_equal}}
     
     {{#if_equal this.control "dropdown"}}
-    <select class="form-control" id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}">
+    <select class="form-control form-control-sm" id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}">
       <option>{{ this.placeholder }}</option>
       {{# each this.options }} {{#if_equal (getObjectVal ../../card.fields.[0] ../this.label ../../formType) this.val }}
       <option value="{{ this.val }}" selected="selected">{{ this.option }}</option>
@@ -49,6 +49,6 @@
   <input type="hidden" name="form" id="form" value="{{cardTemplate.form._id}}">
 
   <div class="form-group">
-    <button type="submit" class="btn btn-primary">Kaydet</button>
+    <button type="submit" class="btn btn-outline-success btn-sm"><i class="fas fa-save"></i> Kaydet</button>
   </div>
 </form>

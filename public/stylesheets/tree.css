@@ -69,3 +69,9 @@
     padding:0px 0px 0px 0px;
     outline: 0;
 }
+.tree li[data-folder] {
+    cursor:pointer;
+}
+.tree li span.selected {
+    color:#f00;
+}

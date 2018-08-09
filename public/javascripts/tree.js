@@ -18,16 +18,29 @@ $.fn.extend({
         tree.addClass("tree");
         tree.find('li').has("ul").each(function () {
             var branch = $(this); //li with children ul
-            branch.prepend("<i class='far " + closedClass + "'></i>");
+            branch.prepend("<i class='far " + openedClass + "'></i>");
             branch.addClass('branch');
-            branch.on('click', function (e) {
+            branch.on('dblclick', function (e) {
                 if (this == e.target) {
                     var icon = $(this).children('i:first');
                     icon.toggleClass(openedClass + " " + closedClass);
                     $(this).children().children().toggle();
                 }
             })
-            branch.children().children().toggle();
+            // branch.children().children().toggle(); // all nodes are closed
+        });
+        tree.find('li:not(.branch)').each(function () {
+            var branch = $(this); //li with children ul
+            branch.prepend("<i class='far " + closedClass + "'></i>");
+            branch.addClass('notBranch');
+        });
+        tree.find('[data-folder]').each(function () {
+            var branch = $(this); //li with children ul
+            
+            branch.on('click', function (e) {
+                e.stopPropagation()
+                branch.toggleClass('selected');
+            })
         });
         //fire event from the dynamically added icon
       tree.find('.branch .indicator').each(function(){

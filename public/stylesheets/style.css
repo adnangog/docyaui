@@ -46,11 +46,28 @@ body {
     margin: 0 !important;
     padding: 15px;
 }
+.dropzone {
+  border:2px dashed #4aa0f1;
+  border-radius: 10px;
+  background-color: #fff;
+  margin-bottom: 15px;
+}
 .doc-title {
     background-color: #555;
     color: #fff;
     margin: -15px -15px 15px -15px;
     padding: 5px 15px;
+}
+.doc-subtitle {
+  background-color: #aaa;
+  color:#222;
+  margin: -15px -15px 15px -15px;
+  padding: 5px 15px;
+  vertical-align: middle;
+}
+.doc-subtitle span {
+  font-size: 10px;
+  vertical-align: middle;
 }
 .max-height-div .table-responsive {
     max-height: 221px;

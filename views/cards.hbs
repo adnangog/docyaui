@@ -17,8 +17,7 @@
 {{#if edit}}
 <div class="row" style="margin:0;">
   <div class="col-md-5">
-    <button type="button" class="btn btn-outline-success btn-sm">
-      <i class="fas fa-save"></i> Kaydet</button>
+    
   </div>
   <div class="col-md-2">...</div>
   <div class="col-md-5">
@@ -46,11 +45,38 @@
   <div class="col-md-2 light-theme">
     <div class="doc-title">Belgeler</div>
     <ul id="tree2">
-    {{>tree item=folders.folders.[0]}}
+      {{>tree item=folders.folders.[0]}}
     </ul>
   </div>
   <div class="col-md-5 light-theme">
-    <div class="doc-title">Detaylar</div>
+    <div class="doc-title">İşlemler</div>
+    <div>
+      <div class="doc-subtitle"><span>Seçilen Klasör :</span> Adli Bilgiler</div>
+      <form id="upload-widget" method="post" action="/cards/upload" class="dropzone">
+        <div class="fallback">
+          <input name="file" type="file" />
+        </div>
+      </form>
+    </div>
+    <div>
+      <form method="POST" action="/documents">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="name">Dosya Adı</label>
+            <input type="text" class="form-control form-control-sm" id="filename" name="filename" disabled>
+          </div>
+
+          <div class="form-group col-md-6">
+            <label for="roleName">Döküman Adı</label>
+            <input type="text" class="form-control form-control-sm" id="name" name="name" placeholder="Döküman adı giriniz" autocomplete="off">
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-outline-success btn-sm">
+      <i class="fas fa-plus"></i> Ekle</button>
+
+      </form>
+    </div>
   </div>
 </div>
 {{/if}}
@@ -66,7 +92,7 @@
         </button>
       </div>
       <div class="modal-body">
-      {{>form formType="add"}}
+        {{>form formType="add"}}
       </div>
     </div>
   </div>
