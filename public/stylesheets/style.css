@@ -40,6 +40,13 @@ body {
 .breadcrumb-item.active {
     color: #ddd;
 }
+.process-boxes {
+  position: relative;
+}
+.process-box {
+  display: none;
+  margin-bottom: 15px;
+}
 .light-theme {
     background-color: #fff;
     border: 3px solid #f1f1f1;
@@ -67,6 +74,7 @@ body {
   margin: -15px -15px 15px -15px;
   padding: 5px 15px;
   vertical-align: middle;
+  display: none;
 }
 .doc-subtitle span {
   font-size: 10px;

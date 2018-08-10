@@ -72,6 +72,9 @@
 .tree li[data-folder] {
     cursor:pointer;
 }
-.tree li span.selected {
+.tree li.selected {
     color:#f00;
+}
+.tree li.selected::before, .tree li.selected::after, .tree li.selected ul::before {
+    color: #111;
 }

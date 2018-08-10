@@ -34,14 +34,6 @@ $.fn.extend({
             branch.prepend("<i class='far " + closedClass + "'></i>");
             branch.addClass('notBranch');
         });
-        tree.find('[data-folder]').each(function () {
-            var branch = $(this); //li with children ul
-            
-            branch.on('click', function (e) {
-                e.stopPropagation()
-                branch.toggleClass('selected');
-            })
-        });
         //fire event from the dynamically added icon
       tree.find('.branch .indicator').each(function(){
         $(this).on('click', function () {

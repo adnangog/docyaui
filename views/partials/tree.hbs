@@ -1,5 +1,5 @@
 
-    <li {{#if_equal item.type "folder"}}data-folder{{/if_equal}} class="context-menu-one">{{item.name}}
+    <li data-treeitem {{#if_equal item.type "folder"}}data-folder{{/if_equal}} class="context-menu-one" data-name={{item.name}} data-id={{item.id}}>{{item.name}}
         {{#if item.childs}}
         <ul>
         {{#each item.childs}}
