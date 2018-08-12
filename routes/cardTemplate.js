@@ -58,7 +58,9 @@ router.get("/", (req, res, next) => {
           data: total === undefined ? false : results[0],
           forms: results[1].data,
           breadcrumb,
-          paging
+          paging,
+          mainMenu:1,
+          subMenu:9
         });
       })
     });
@@ -104,7 +106,9 @@ router.get("/:cardtemplateId", (req, res, next) => {
           cardtemplate: results[1],
           forms: results[2].data,
           breadcrumb,
-          paging
+          paging,
+          mainMenu:1,
+          subMenu:9
         });
       })
     });

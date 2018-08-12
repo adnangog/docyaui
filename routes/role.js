@@ -43,7 +43,9 @@ router.get("/", (req, res, next) => {
         paging,
         route: "roles",
         messageType: req.query.messageType,
-        message: req.query.message
+        message: req.query.message,
+        mainMenu:1,
+        subMenu:3
       });
     })
   });
@@ -72,6 +74,8 @@ router.get("/:roleId", (req, res, next) => {
           breadcrumb,
           paging,
           route: "roles",
+          mainMenu:1,
+          subMenu:3
         });
       })
     });

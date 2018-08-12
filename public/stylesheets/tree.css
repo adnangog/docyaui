@@ -28,13 +28,17 @@
     position:relative;
     font-size: 12px;
 }
-.tree li i {
+.tree li[data-folder] i {
     font-size: 1rem;
     margin-right: 3px;
     background-color: #222;
     color: #fff;
     padding: 2px 4px;
     border-radius: 5px;
+}
+.tree li[data-document] i {
+    background-color: #d0d0d0;
+    color: #222;
 }
 .tree ul li:before {
     content:"";

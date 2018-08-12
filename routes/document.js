@@ -44,7 +44,9 @@ router.get("/types", (req, res, next) => {
           paging,
           route: "../documents/types",
           messageType: req.query.messageType,
-          message: req.query.message
+          message: req.query.message,
+          mainMenu: 1,
+          subMenu: 6
         });
       });
     }
@@ -60,7 +62,7 @@ router.get("/types/:typeId", (req, res, next) => {
         `/document/type/${req.params.typeId}`,
         "GET",
         null,
-        function(documenttype) {
+        function (documenttype) {
 
           let breadcrumb = [
             { route: "/", name: "Anasayfa" },
@@ -75,7 +77,7 @@ router.get("/types/:typeId", (req, res, next) => {
           let total = data.count;
 
           helper.paging(req.body.page, req.body.limit, total, "../documents/types", paging => {
-            
+
             res.render("documenttypes", {
               title: "Döküman Tipleri",
               addTitle: "Döküman Tipi Ekle",
@@ -85,7 +87,9 @@ router.get("/types/:typeId", (req, res, next) => {
               documenttype,
               breadcrumb,
               paging,
-              route: "../documents/types"
+              route: "../documents/types",
+              mainMenu: 1,
+              subMenu: 6
             });
           });
         }
@@ -126,13 +130,23 @@ router.get("/types/delete/:typeId", (req, res, next) => {
 
 // Document Add
 router.post("/", (req, res, next) => {
-  api.apiCall(
-    req.session.token,
-    "/document/add",
-    "POST",
-    {
+  let items = {};
+  let url = "";
+  let apiUrl = "";
+  if (req.body.isCard) { // dosya karti v.s sayfalardan geliyorsa
+    items = {
+      json: req.body.json,
+      rDate: Date.now(),
+      user: req.session.userId,
+      folder: req.body.folder,
+      card: req.body.card,
+      status: 1
+    };
+    url = `/cards/${req.body.cardtemplate}/${req.body.card}`;
+    apiUrl = "/document/adds";
+  } else { // edit formundan geliyorsa
+    items = {
       name: req.body.name,
-      type: req.body.type,
       rDate: Date.now(),
       publishFirstDate: req.body.publishFirstDate,
       publishEndDate: req.body.publishEndDate,
@@ -140,16 +154,26 @@ router.post("/", (req, res, next) => {
       user: req.session.userId,
       folder: req.body.folder,
       card: req.body.card,
-      authSet:null,
+      authSet: null,
       description: req.body.description,
       file: req.body.file,
+      filename: req.body.filename,
       status: 1
-    },
+    };
+    url = "/documents";
+    apiUrl = "/document/add";
+  }
+
+  api.apiCall(
+    req.session.token,
+    apiUrl,
+    "POST",
+    items,
     result => {
       let opt = "";
       if (result.messageType == 1)
         opt = "?messageType=1&message=Kayıt Eklendi";
-      res.redirect(`/documents${opt}`);
+      res.redirect(`${url}${opt}`);
     }
   );
 });
@@ -158,9 +182,9 @@ router.post("/", (req, res, next) => {
 router.get("/", (req, res, next) => {
   async.parallel([
     (callback) => {
-      api.apiCall( req.session.token, "/document", "POST", req.body.pagelimit, (result) => {
-          callback(null, result);
-        }
+      api.apiCall(req.session.token, "/document", "POST", req.body.pagelimit, (result) => {
+        callback(null, result);
+      }
       );
     },
     (callback) => {
@@ -193,20 +217,22 @@ router.get("/", (req, res, next) => {
       let total = results[0].count;
 
 
-    helper.paging(req.body.page, req.body.limit, total, "documents", (paging) => {
-      res.render("documents", {
-        title: "Dökümanlar",
-        addTitle: "Döküman Ekle",
-        route: "documents",
-        data: total === undefined ? false : results[0],
-        cards: results[1].data,
-        types: results[2].data,
-        departments: results[3].data,
-        folders: results[4].data,
-        breadcrumb,
-        paging
-      });
-    })
+      helper.paging(req.body.page, req.body.limit, total, "documents", (paging) => {
+        res.render("documents", {
+          title: "Dökümanlar",
+          addTitle: "Döküman Ekle",
+          route: "documents",
+          data: total === undefined ? false : results[0],
+          cards: results[1].data,
+          types: results[2].data,
+          departments: results[3].data,
+          folders: results[4].data,
+          breadcrumb,
+          paging,
+          mainMenu: 1,
+          subMenu: 7
+        });
+      })
     });
 });
 
@@ -238,7 +264,9 @@ router.get("/:documentId", (req, res, next) => {
             document,
             breadcrumb,
             paging,
-            route: "/documents"
+            route: "/documents",
+            mainMenu: 1,
+            subMenu: 7
           });
         });
       }
@@ -248,11 +276,15 @@ router.get("/:documentId", (req, res, next) => {
 
 // Document Update
 router.post("/:documentId", (req, res, next) => {
-  api.apiCall(
-    req.session.token,
-    `/document/${req.params.documentId}`,
-    "PATCH",
-    {
+  let items = {};
+  let url = "";
+  if (req.body.isCard) { // dosya karti v.s sayfalardan geliyorsa
+    items = {
+      name: req.body.documentname,
+    };
+    url = `/cards/${req.body.cardtemplate}/${req.body.card}`;
+  } else { // edit formundan geliyorsa
+    items = {
       name: req.body.name,
       type: req.body.type,
       publishFirstDate: req.body.publishFirstDate || null,
@@ -261,11 +293,18 @@ router.post("/:documentId", (req, res, next) => {
       user: req.body.user,
       description: req.body.description,
       file: req.body.file
-    },
+    };
+    url = "/documents";
+  }
+  api.apiCall(
+    req.session.token,
+    `/document/${req.params.documentId}`,
+    "PATCH",
+    items,
     result => {
       let opt = "";
       if (result.nModified > 0) opt = "?messageType=1&message=İşlem Başarılı";
-      res.redirect(`/documents${opt}`);
+      res.redirect(`${url}${opt}`);
     }
   );
 });

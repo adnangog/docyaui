@@ -53,30 +53,30 @@
     <div class="doc-subtitle" data-itemName></div>
     <div class="process-boxes">
       <div data-folderoptions class="process-box">
-        <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="Adını Değiştir">
+        <button data-optionitem data-key="folderEdit" type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="Adını Değiştir">
           <i class="far fa-edit"></i>
         </button>
-        <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="Alt Klasör Ekle">
+        <button data-optionitem data-key="folderAdd" type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="Alt Klasör Ekle">
           <i class="fas fa-folder-open"></i>
         </button>
-        <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="Döküman Ekle">
+        <button data-optionitem data-key="documentAdd" type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="Döküman Ekle">
           <i class="fas fa-file-invoice"></i>
         </button>
-        <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Sil">
+        <button data-optionitem data-key="folderDelete" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Sil">
           <i class="far fa-trash-alt"></i>
         </button>
       </div>
       <div data-documentoptions class="process-box">
-        <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="Adını Değiştir">
+        <button data-optionitem data-key="documentEdit" type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="Adını Değiştir">
           <i class="far fa-edit"></i>
         </button>
-        <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="Aç">
+        <button data-optionitem data-key="documentOpen" type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="Aç">
           <i class="fas fa-folder-open"></i>
         </button>
-        <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="Kaydet">
+        <button   data-optionitem data-key="documentSave"type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="Kaydet">
           <i class="fas fa-save"></i>
         </button>
-        <button type="button" class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="top" title="Yazdır">
+        <button data-optionitem data-key="documentPrint" type="button" class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="top" title="Yazdır">
           <i class="fas fa-print"></i>
         </button>
         <button type="button" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Check in">
@@ -85,7 +85,7 @@
         <button type="button" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Check out">
           <i class="fas fa-user-times"></i>
         </button>
-        <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Sil">
+        <button data-optionitem data-key="documentDelete" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Sil">
           <i class="far fa-trash-alt"></i>
         </button>
       </div>
@@ -95,18 +95,12 @@
             <input name="file" type="file" />
           </div>
         </form>
-        <form method="POST" action="/documents">
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="name">Dosya Adı</label>
-              <input type="text" class="form-control form-control-sm" id="filename" name="filename" disabled>
-            </div>
+        <div id="DocumentItems">
 
-            <div class="form-group col-md-6">
-              <label for="roleName">Döküman Adı</label>
-              <input type="text" class="form-control form-control-sm" id="name" name="name" placeholder="Döküman adı giriniz" autocomplete="off">
-            </div>
-          </div>
+        </div>
+        <form method="POST" action="/documents">
+          <input type="hidden" name="folder" id="folder" value="" />
+          <input type="hidden" name="json" id="json" value="" />
 
           <button type="button" class="btn btn-outline-success btn-sm">
             <i class="fas fa-plus"></i> Ekle</button>
@@ -118,15 +112,17 @@
           <div class="form-row">
             <div class="form-group col-md-6">
               <label for="name">Klasör Adı</label>
-              <input type="text" class="form-control form-control-sm" id="foldername" name="foldername" placeholder="Klasör adı giriniz"
+              <input type="text" class="form-control form-control-sm" id="foldernameAdd" name="foldername" placeholder="Klasör adı giriniz"
                 autocomplete="off">
             </div>
 
             <div class="form-group col-md-6">
               <label for="roleName">Yetki Seti</label>
-              <input type="text" class="form-control form-control-sm" id="name" name="name" placeholder="Döküman adı giriniz" autocomplete="off">
+              <input type="text" class="form-control form-control-sm" id="authset" name="authset" placeholder="Döküman adı giriniz" autocomplete="off">
             </div>
           </div>
+
+          <input type="hidden" name="folder" id="folderName" value="" />
 
           <button type="button" class="btn btn-outline-success btn-sm">
             <i class="fas fa-plus"></i> Ekle</button>
@@ -134,7 +130,7 @@
         </form>
       </div>
       <div data-folderedit class="process-box">
-        <form method="POST" action="/folders">
+        <form method="POST" action="/folders/folderId">
           <div class="form-group">
             <label for="name">Klasör Adı</label>
             <input type="text" class="form-control form-control-sm" id="foldername" name="foldername" placeholder="Klasör adı giriniz"
@@ -147,7 +143,7 @@
         </form>
       </div>
       <div data-documentedit class="process-box">
-        <form method="POST" action="/documents">
+        <form method="POST" action="/documents/documentId">
           <div class="form-group">
             <label for="name">Döküman Adı</label>
             <input type="text" class="form-control form-control-sm" id="documentname" name="documentname" placeholder="Döküman adı giriniz"
@@ -180,3 +176,5 @@
     </div>
   </div>
 </div>
+<input type="hidden" name="card" id="card" value="{{ card._id }}" />
+<input type="hidden" name="cardtemplate" id="cardtemplate" value="{{ cardTemplate._id }}" />

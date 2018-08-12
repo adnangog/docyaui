@@ -49,7 +49,9 @@ router.post("/", (req, res, next) => {
           paging,
           route:"users",
           messageType:req.query.messageType,
-          message:req.query.message
+          message:req.query.message,
+          mainMenu:1,
+          subMenu:1
         });
       })
   
@@ -97,7 +99,9 @@ router.post("/", (req, res, next) => {
           user: results[1],
           roles: results[2].data,
           breadcrumb,
-          paging
+          paging,
+          mainMenu:1,
+          subMenu:1
         });
       })
       });

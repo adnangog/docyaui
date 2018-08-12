@@ -7,39 +7,39 @@
   <div class="menu-list">
 
     <ul id="menu-content" class="menu-content collapse out">
-      <li data-toggle="collapse" data-target="#definations" class="collapsed">
+      <li data-toggle="collapse" data-target="#definations" class="collapsed {{#ifCond mainMenu '===' 1}}active{{/ifCond}}">
         <a href="#">
           <i class="fas fa-pen-nib"></i> Tanımlamalar
           <span class="arrow"></span>
         </a>
         <i class="far fa-plus-square"></i>
       </li>
-      <ul class="sub-menu collapse" id="definations">
-        <li>
+      <ul class="sub-menu collapse {{#ifCond mainMenu '===' 1}}show{{/ifCond}}" id="definations">
+        <li {{#ifCond subMenu '===' 1}}class="active"{{/ifCond}}>
           <a href="/users"><i class="fas fa-users"></i> Kullanıcılar</a>
         </li>
-        <li>
+        <li {{#ifCond subMenu '===' 2}}class="active"{{/ifCond}}>
           <a href="/authorities"><i class="fas fa-unlock-alt"></i> Yetkiler</a>
         </li>
-        <li>
+        <li {{#ifCond subMenu '===' 3}}class="active"{{/ifCond}}>
           <a href="/roles"><i class="fas fa-project-diagram"></i> Roller</a>
         </li>
-        <li>
+        <li {{#ifCond subMenu '===' 4}}class="active"{{/ifCond}}>
           <a href="/folders"><i class="fas fa-folder-open"></i> Klasörler</a>
         </li>
-        <li>
+        <li {{#ifCond subMenu '===' 5}}class="active"{{/ifCond}}>
           <a href="/departments"><i class="fas fa-vector-square"></i> Departmanlar</a>
         </li>
-        <li>
+        <li {{#ifCond subMenu '===' 6}}class="active"{{/ifCond}}>
           <a href="/documents/types"><i class="fas fa-file-invoice"></i> Döküman Tipleri</a>
         </li>
-        <li>
+        <li {{#ifCond subMenu '===' 7}}class="active"{{/ifCond}}>
           <a href="/documents"><i class="fas fa-file-invoice"></i> Dökümanlar</a>
         </li>
-        <li>
+        <li {{#ifCond subMenu '===' 8}}class="active"{{/ifCond}}>
           <a href="/forms"><i class="fas fa-file-alt"></i> Formlar</a>
         </li>
-        <li>
+        <li {{#ifCond subMenu '===' 9}}class="active"{{/ifCond}}>
           <a href="/cardtemplates"><i class="fas fa-archive"></i> Kart Taslakları</a>
         </li>
       </ul>
@@ -57,16 +57,16 @@
         </li>
         {{/ each}}
       </ul>
-      <li data-toggle="collapse" data-target="#folderCards" class="collapsed active">
+      <li data-toggle="collapse" data-target="#folderCards" class="collapsed {{#ifCond mainMenu '===' 3}}active{{/ifCond}}">
         <a href="#">
           <i class="fas fa-archive"></i> Dosya Kartları
           <span class="arrow"></span>
         </a>
         <i class="far fa-plus-square"></i>
       </li>
-      <ul class="sub-menu collapse" id="folderCards">
+      <ul class="sub-menu collapse {{#ifCond mainMenu '===' 3}}show{{/ifCond}}" id="folderCards">
         {{# each menucards.data}}
-        <li>
+        <li {{#ifCond subMenu '===' "5b64c612d050eb0d22fb797e"}}show{{/ifCond}}>
           <a href="/cards/{{this.[0]}}"><i class="fas fa-file-invoice"></i> {{this.[1]}}</a>
         </li>
         {{/ each}}

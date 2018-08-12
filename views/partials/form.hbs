@@ -31,7 +31,6 @@
     
     {{#if_equal this.control "dropdown"}}
     <select class="form-control form-control-sm" id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}">
-      <option>{{ this.placeholder }}</option>
       {{# each this.options }} {{#if_equal (getObjectVal ../../card.fields.[0] ../this.label ../../formType) this.val }}
       <option value="{{ this.val }}" selected="selected">{{ this.option }}</option>
       {{else}}

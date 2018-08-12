@@ -9,4 +9,11 @@ $(function () {
         $(".nav-side-menu, .right-side, .toggle-right, .breadcrumb").toggleClass("gizli");
     });
 
+    $('select.form-control').fastselect({
+        placeholder: 'Lütfen seçin',
+        searchPlaceholder: 'Arama kriterinizi girin',
+        noResultsText: 'Kayıt bulunamadı',
+        userOptionPrefix: 'Ekle'
+    });
+
 });

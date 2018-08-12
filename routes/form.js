@@ -17,7 +17,9 @@ router.get("/add", (req, res, next) => {
   res.render("create", {
     breadcrumb,
     route: "forms/create",
-    fields:"[]"
+    fields:"[]",
+    mainMenu:1,
+    subMenu:8
   });
 });
 
@@ -61,7 +63,9 @@ router.get("/", (req, res, next) => {
         paging,
         route: "forms",
         messageType: req.query.messageType,
-        message: req.query.message
+        message: req.query.message,
+        mainMenu:1,
+        subMenu:8
       });
     })
   });
@@ -84,7 +88,9 @@ router.get("/:formId", (req, res, next) => {
         edit: true,
         form,
         fields: JSON.stringify(form.fields),
-        breadcrumb
+        breadcrumb,
+        mainMenu:1,
+        subMenu:8
       });
 
   });

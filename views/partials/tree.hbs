@@ -1,10 +1,13 @@
 
     <li data-treeitem {{#if_equal item.type "folder"}}data-folder{{/if_equal}} class="context-menu-one" data-name={{item.name}} data-id={{item.id}}>{{item.name}}
-        {{#if item.childs}}
+        {{#ifCond item.childs '||' item.documents}}
         <ul>
         {{#each item.childs}}
         {{> tree item=this}}
         {{/each}}
+        {{#each item.documents}}
+        <li data-treeitem data-document class="context-menu-one2" data-name={{this.name}} data-id={{this.id}}>{{this.name}}</li>
+        {{/each}}
         </ul>
-        {{/if}}
+        {{/ifCond}}
     </li>

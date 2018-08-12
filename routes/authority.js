@@ -40,6 +40,8 @@ router.get("/", (req, res, next) => {
         breadcrumb,
         paging,
         route: "authorities",
+        mainMenu:1,
+        subMenu:2,
         messageType: req.query.messageType,
         message: req.query.message
       });
@@ -74,6 +76,8 @@ router.get("/:authorityId", (req, res, next) => {
           breadcrumb,
           paging,
           route: "authorities",
+          mainMenu:1,
+          subMenu:2
         });
       })
 

@@ -47,7 +47,6 @@ router.get("/:cardTemplateId/:cardId", (req, res, next) => {
     },
     (callback) => {
       api.apiCall(req.session.token, `/folder/card/${req.params.cardId}`, "GET", null, (result) => {
-        console.log(JSON.stringify(result))
         callback(null, result);
       });
     }
@@ -74,7 +73,9 @@ router.get("/:cardTemplateId/:cardId", (req, res, next) => {
           folders: results[3],
           breadcrumb,
           paging,
-          edit: true
+          edit: true,
+          mainMenu:3,
+          subMenu:req.params.cardTemplateId
         });
       })
     });
@@ -175,7 +176,9 @@ router.get("/:cardTemplateId", (req, res, next) => {
           cardTemplate: results[1],
           breadcrumb,
           paging,
-          edit: false
+          edit: false,
+          mainMenu:3,
+          subMenu:req.params.cardTemplateId
         });
       })
     });

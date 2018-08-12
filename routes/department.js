@@ -44,7 +44,9 @@ router.get("/", (req, res, next) => {
           paging,
           route: "departments",
           messageType: req.query.messageType,
-          message: req.query.message
+          message: req.query.message,
+          mainMenu:1,
+          subMenu:5
         });
       });
     }
@@ -82,6 +84,8 @@ router.get("/:departmentId", (req, res, next) => {
             breadcrumb,
             paging,
             route: "departments",
+            mainMenu:1,
+            subMenu:5
           });
         })
       }

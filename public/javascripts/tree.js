@@ -29,10 +29,14 @@ $.fn.extend({
             })
             // branch.children().children().toggle(); // all nodes are closed
         });
-        tree.find('li:not(.branch)').each(function () {
+        tree.find('li[data-folder]:not(.branch)').each(function () {
             var branch = $(this); //li with children ul
             branch.prepend("<i class='far " + closedClass + "'></i>");
             branch.addClass('notBranch');
+        });
+        tree.find('li[data-document]').each(function () {
+            var branch = $(this); //li with children ul
+            branch.prepend("<i class='fas fa-file'></i>");
         });
         //fire event from the dynamically added icon
       tree.find('.branch .indicator').each(function(){
