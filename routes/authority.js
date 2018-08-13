@@ -11,6 +11,7 @@ router.post("/", (req, res, next) => {
     "/authority/add",
     "POST",
     {
+      _id: req.body.id,
       name: req.body.authorityName,
       rDate: Date.now()
     },
@@ -92,6 +93,7 @@ router.post("/:authorityId", (req, res, next) => {
     `/authority/${req.params.authorityId}`,
     "PATCH",
     {
+      id: req.body._id,
       name: req.body.authorityName
     },
     (result) => {
