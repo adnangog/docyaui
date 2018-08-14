@@ -32,31 +32,41 @@ router.post("/", (req, res, next) => {
   
   // User List
   router.get("/", (req, res, next) => {
-    api.apiCall(req.session.token, "/user", "POST", req.body.pagelimit, (data) => {
-      let breadcrumb = [
-        { route: "/", name: "Anasayfa" },
-        { route: "/users", name: "Kullanıcılar" }
-      ];
+    async.parallel([
+      (callback) => {
+        api.apiCall(req.session.token, "/user", "POST", req.body.pagelimit, (result) => {
+          callback(null, result);
+        });
+      },
+      (callback) => {
+        api.apiCall(req.session.token, `/role`, "POST", req.body.pagelimit, (result) => {
+          callback(null, result);
+        });
+      }
+    ],
+      (err, results) => {
+        
+        let breadcrumb = [
+          { route: "/", name: "Anasayfa" },
+          { route: "/users", name: "Kullanıcılar" }
+        ];
   
-      let total = data.count;
+        let total = results[0].info && results[0].info[0].count;
   
       helper.paging(req.body.page, req.body.limit, total, "users", (paging) => {
         res.render("users", {
           title: "Kullanıcılar",
           addTitle: "Kullanıcı Ekle",
-          data: total === undefined ? false : data,
+          route:"users",
+          data: results[0],
+          roles: results[1].data,
           breadcrumb,
           paging,
-          route:"users",
-          messageType:req.query.messageType,
-          message:req.query.message,
           mainMenu:1,
           subMenu:1
         });
       })
-  
-  
-    });
+      });
   });
   
   // User GetById

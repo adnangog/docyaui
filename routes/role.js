@@ -26,29 +26,43 @@ router.post("/", (req, res, next) => {
 
 // Role List
 router.get("/", (req, res, next) => {
-  api.apiCall(req.session.token, "/role", "POST", req.body.pagelimit, (data) => {
-    let breadcrumb = [
-      { route: "/", name: "Anasayfa" },
-      { route: "/roles", name: "Roller" }
-    ];
-
-    let total = data.count;
-
-    helper.paging(req.body.page, req.body.limit, total, "roles", (paging) => {
-      res.render("roles", {
-        title: "Roller",
-        addTitle: "Rol Ekle",
-        data: total === undefined ? false : data,
-        breadcrumb,
-        paging,
-        route: "roles",
-        messageType: req.query.messageType,
-        message: req.query.message,
-        mainMenu:1,
-        subMenu:3
+  async.parallel([
+    (callback) => {
+      api.apiCall(req.session.token, "/role", "POST", req.body.pagelimit, (result) => {
+        callback(null, result);
       });
-    })
-  });
+    },
+    (callback) => {
+      api.apiCall(req.session.token, `/authority`, "POST", req.body.pagelimit, (result) => {
+        callback(null, result);
+      });
+    }
+  ],
+    (err, results) => {
+
+      let breadcrumb = [
+        { route: "/", name: "Anasayfa" },
+        { route: "/roles", name: "Roller" }
+      ];
+
+      let total = results[0].count;
+
+      helper.paging(req.body.page, req.body.limit, total, "roles", (paging) => {
+        res.render("roles", {
+          title: "Roller",
+          addTitle: "Rol Ekle",
+          data: total === undefined ? false : results[0],
+          authorities: results[1].data,
+          breadcrumb,
+          paging,
+          route: "roles",
+          messageType: req.query.messageType,
+          message: req.query.message,
+          mainMenu: 1,
+          subMenu: 3
+        });
+      })
+    });
 });
 
 // Role GetById
@@ -74,8 +88,8 @@ router.get("/:roleId", (req, res, next) => {
           breadcrumb,
           paging,
           route: "roles",
-          mainMenu:1,
-          subMenu:3
+          mainMenu: 1,
+          subMenu: 3
         });
       })
     });

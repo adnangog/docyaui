@@ -18,6 +18,7 @@ router.get("/add", (req, res, next) => {
     breadcrumb,
     route: "forms/create",
     fields:"[]",
+    create:true,
     mainMenu:1,
     subMenu:8
   });
@@ -89,6 +90,7 @@ router.get("/:formId", (req, res, next) => {
         form,
         fields: JSON.stringify(form.fields),
         breadcrumb,
+        create:true,
         mainMenu:1,
         subMenu:8
       });
