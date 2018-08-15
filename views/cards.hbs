@@ -48,114 +48,152 @@
       {{>tree item=folders.folders.[0]}}
     </ul>
   </div>
-  <div class="col-md-5 light-theme">
-    <div class="doc-title">İşlemler</div>
+  <div class="col-md-5 light-theme2">
     <div class="doc-subtitle" data-itemName></div>
-    <div class="process-boxes">
-      <div data-folderoptions class="process-box">
-        <button data-optionitem data-key="folderEdit" type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="Adını Değiştir">
-          <i class="far fa-edit"></i>
-        </button>
-        <button data-optionitem data-key="folderAdd" type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="Alt Klasör Ekle">
-          <i class="fas fa-folder-open"></i>
-        </button>
-        <button data-optionitem data-key="documentAdd" type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="Döküman Ekle">
-          <i class="fas fa-file-invoice"></i>
-        </button>
-        <button data-optionitem data-key="folderDelete" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Sil">
-          <i class="far fa-trash-alt"></i>
-        </button>
-      </div>
-      <div data-documentoptions class="process-box">
-        <button data-optionitem data-key="documentEdit" type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="Adını Değiştir">
-          <i class="far fa-edit"></i>
-        </button>
-        <button data-optionitem data-key="documentOpen" type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="Aç">
-          <i class="fas fa-folder-open"></i>
-        </button>
-        <button   data-optionitem data-key="documentSave"type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="Kaydet">
-          <i class="fas fa-save"></i>
-        </button>
-        <button data-optionitem data-key="documentPrint" type="button" class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="top" title="Yazdır">
-          <i class="fas fa-print"></i>
-        </button>
-        <button type="button" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Check in">
-          <i class="fas fa-user-check"></i>
-        </button>
-        <button type="button" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Check out">
-          <i class="fas fa-user-times"></i>
-        </button>
-        <button data-optionitem data-key="documentDelete" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Sil">
-          <i class="far fa-trash-alt"></i>
-        </button>
-      </div>
-      <div data-documentsection class="process-box">
-        <form id="upload-widget" method="post" action="/cards/upload" class="dropzone">
-          <div class="fallback">
-            <input name="file" type="file" />
-          </div>
-        </form>
-        <div id="DocumentItems">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" id="process-tab" data-toggle="tab" href="#process" role="tab" aria-controls="process" aria-selected="true">İşlemler</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="note-tab" data-toggle="tab" href="#notes" role="tab" aria-controls="notes" aria-selected="false">Notlar</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="history-tab" data-toggle="tab" href="#history" role="tab" aria-controls="history" aria-selected="false">Geçmiş</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="subscription-tab" data-toggle="tab" href="#subscription" role="tab" aria-controls="subscription" aria-selected="false">İzle</a>
+      </li>
+    </ul>
 
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div class="tab-pane fade show active" id="process" role="tabpanel" aria-labelledby="process-tab">
+        <div class="process-boxes">
+          <div data-folderoptions class="process-box">
+            <button data-optionitem data-key="folderEdit" type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top"
+              title="Adını Değiştir">
+              <i class="far fa-edit"></i>
+            </button>
+            <button data-optionitem data-key="folderAdd" type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top"
+              title="Alt Klasör Ekle">
+              <i class="fas fa-folder-open"></i>
+            </button>
+            <button data-optionitem data-key="documentAdd" type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top"
+              title="Döküman Ekle">
+              <i class="fas fa-file-invoice"></i>
+            </button>
+            <button data-optionitem data-key="folderDelete" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top"
+              title="Sil">
+              <i class="far fa-trash-alt"></i>
+            </button>
+          </div>
+          <div data-documentoptions class="process-box">
+            <button data-optionitem data-key="documentEdit" type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top"
+              title="Adını Değiştir">
+              <i class="far fa-edit"></i>
+            </button>
+            <button data-optionitem data-key="documentOpen" type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top"
+              title="Aç">
+              <i class="fas fa-folder-open"></i>
+            </button>
+            <button data-optionitem data-key="documentSave" type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top"
+              title="Kaydet">
+              <i class="fas fa-save"></i>
+            </button>
+            <button data-optionitem data-key="documentPrint" type="button" class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="top"
+              title="Yazdır">
+              <i class="fas fa-print"></i>
+            </button>
+            <button type="button" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Check in">
+              <i class="fas fa-user-check"></i>
+            </button>
+            <button type="button" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Check out">
+              <i class="fas fa-user-times"></i>
+            </button>
+            <button data-optionitem data-key="documentDelete" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top"
+              title="Sil">
+              <i class="far fa-trash-alt"></i>
+            </button>
+          </div>
+          <div data-documentsection class="process-box">
+            <form id="upload-widget" method="post" action="/cards/upload" class="dropzone">
+              <div class="fallback">
+                <input name="file" type="file" />
+              </div>
+            </form>
+            <div id="DocumentItems">
+
+            </div>
+            <form method="POST" action="/documents">
+              <input type="hidden" name="folder" id="folder" value="" />
+              <input type="hidden" name="json" id="json" value="" />
+
+              <button type="button" class="btn btn-outline-success btn-sm">
+                <i class="fas fa-plus"></i> Ekle</button>
+
+            </form>
+          </div>
+          <div data-foldersection class="process-box">
+            <form method="POST" action="/folders">
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="name">Klasör Adı</label>
+                  <input type="text" class="form-control form-control-sm" id="foldernameAdd" name="foldername" placeholder="Klasör adı giriniz"
+                    autocomplete="off">
+                </div>
+
+                <div class="form-group col-md-6">
+                  <label for="roleName">Yetki Seti</label>
+                  <input type="text" class="form-control form-control-sm" id="authset" name="authset" placeholder="Döküman adı giriniz" autocomplete="off">
+                </div>
+              </div>
+
+              <input type="hidden" name="folder" id="folderName" value="" />
+
+              <button type="button" class="btn btn-outline-success btn-sm">
+                <i class="fas fa-plus"></i> Ekle</button>
+
+            </form>
+          </div>
+          <div data-folderedit class="process-box">
+            <form method="POST" action="/folders/folderId">
+              <div class="form-group">
+                <label for="name">Klasör Adı</label>
+                <input type="text" class="form-control form-control-sm" id="foldername" name="foldername" placeholder="Klasör adı giriniz"
+                  autocomplete="off">
+              </div>
+
+              <button type="button" class="btn btn-outline-success btn-sm">
+                <i class="fas fa-save"></i> Güncelle</button>
+
+            </form>
+          </div>
+          <div data-documentedit class="process-box">
+            <form method="POST" action="/documents/documentId">
+              <div class="form-group">
+                <label for="name">Döküman Adı</label>
+                <input type="text" class="form-control form-control-sm" id="documentname" name="documentname" placeholder="Döküman adı giriniz"
+                  autocomplete="off">
+              </div>
+
+              <button type="button" class="btn btn-outline-success btn-sm">
+                <i class="fas fa-save"></i> Güncelle</button>
+
+            </form>
+          </div>
         </div>
-        <form method="POST" action="/documents">
-          <input type="hidden" name="folder" id="folder" value="" />
-          <input type="hidden" name="json" id="json" value="" />
-
-          <button type="button" class="btn btn-outline-success btn-sm">
-            <i class="fas fa-plus"></i> Ekle</button>
-
-        </form>
       </div>
-      <div data-foldersection class="process-box">
-        <form method="POST" action="/folders">
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="name">Klasör Adı</label>
-              <input type="text" class="form-control form-control-sm" id="foldernameAdd" name="foldername" placeholder="Klasör adı giriniz"
-                autocomplete="off">
-            </div>
-
-            <div class="form-group col-md-6">
-              <label for="roleName">Yetki Seti</label>
-              <input type="text" class="form-control form-control-sm" id="authset" name="authset" placeholder="Döküman adı giriniz" autocomplete="off">
-            </div>
-          </div>
-
-          <input type="hidden" name="folder" id="folderName" value="" />
-
-          <button type="button" class="btn btn-outline-success btn-sm">
-            <i class="fas fa-plus"></i> Ekle</button>
-
-        </form>
+      <div class="tab-pane fade" id="notes" role="tabpanel" aria-labelledby="notes-tab">
+notlar
       </div>
-      <div data-folderedit class="process-box">
-        <form method="POST" action="/folders/folderId">
-          <div class="form-group">
-            <label for="name">Klasör Adı</label>
-            <input type="text" class="form-control form-control-sm" id="foldername" name="foldername" placeholder="Klasör adı giriniz"
-              autocomplete="off">
-          </div>
-
-          <button type="button" class="btn btn-outline-success btn-sm">
-            <i class="fas fa-save"></i> Güncelle</button>
-
-        </form>
+      <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">
+geçmiş
       </div>
-      <div data-documentedit class="process-box">
-        <form method="POST" action="/documents/documentId">
-          <div class="form-group">
-            <label for="name">Döküman Adı</label>
-            <input type="text" class="form-control form-control-sm" id="documentname" name="documentname" placeholder="Döküman adı giriniz"
-              autocomplete="off">
-          </div>
-
-          <button type="button" class="btn btn-outline-success btn-sm">
-            <i class="fas fa-save"></i> Güncelle</button>
-
-        </form>
+      <div class="tab-pane fade" id="subscription" role="tabpanel" aria-labelledby="subscription-tab">
+abonelik
       </div>
     </div>
+
   </div>
 </div>
 {{/if}}

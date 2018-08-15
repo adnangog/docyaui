@@ -137,7 +137,7 @@
                     $("[data-treeitem]").removeClass("selected");
                     $(this).toggleClass('selected');
 
-                    let isFolder = jqElm[0].hasAttribute("data-folder");
+                    let isFolder = $(this)[0].hasAttribute("data-folder");
 
                     $("[data-itemName]").text($(this).attr("data-name")).show();
 
@@ -161,6 +161,40 @@
                     "documentAdd": { name: "Döküman Ekle", icon: "fas fa-file-alt" },
                     "sep1": "---------",
                     "folderDelete": { name: "Sil", icon: "delete" }
+                }
+            });
+
+            $.contextMenu({
+                selector: '.context-menu-one2',
+                callback: function (key, options) {
+
+                    $("[data-treeitem]").removeClass("selected");
+                    $(this).toggleClass('selected');
+
+                    let isFolder = $(this)[0].hasAttribute("data-folder");
+
+                    $("[data-itemName]").text($(this).attr("data-name")).show();
+
+                    Docya.CardController.handleProcess(isFolder, key);
+
+                    if (isFolder) {
+                        Docya.CardController.SelectedFolder = $(this).attr("data-id");
+                        Docya.CardController.SelectedFolderName = $(this).attr("data-name");
+                        $("#foldername").val($(this).attr("data-name"));
+                        $("[name=folder]").val($(this).attr("data-id"));
+                    } else {
+                        Docya.CardController.SelectedDocument = $(this).attr("data-id");
+                        Docya.CardController.SelectedDocumentName = $(this).attr("data-name");
+                        $("#documentname").val($(this).attr("data-name"));
+                    }
+
+                },
+                items: {
+                    "documentEdit": { name: "Adını Değiştir", icon: "edit" },
+                    "documentOpen": { name: "Aç", icon: "fas fa-folder-open" },
+                    "documentSave": { name: "Kaydet", icon: "fas fa-file-alt" },
+                    "sep1": "---------",
+                    "documentDelete": { name: "Sil", icon: "delete" }
                 }
             });
         },

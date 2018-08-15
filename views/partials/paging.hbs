@@ -1,6 +1,6 @@
-<nav aria-label="Page navigation example">
+<nav aria-label="paging">
   <ul class="pagination justify-content-end">
-       {{# each paging }}
+    {{# each paging.items }}
     <li class="page-item {{# if this.isDisabled }}disabled{{/ if }}">
       <a class="page-link" href="{{ this.url }}" tabindex="-1">{{ this.label }}</a>
     </li>

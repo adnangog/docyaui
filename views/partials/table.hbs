@@ -1,10 +1,8 @@
-
-{{#unless data}}
+ {{#unless data}}
 <div class="alert alert-danger" role="alert">
   Upps! Maalesef burada hiçbir şey yok :(
 </div>
-{{else}}
-{{#if isForm}}
+{{else}} {{#if isForm}}
 <div class="table-responsive">
   <table class="table table-sm table-striped">
     <thead class="thead-dark">
@@ -29,12 +27,32 @@
 </div>
 {{ else }}
 <div class="table-responsive">
-  <table class="table table-striped">
+  <div class="bg-secondary text-light table-infos">
+    Toplam
+    <strong>{{paging.total}}</strong> kayıt var. Şu an
+    <strong>{{paging.first}}-{{paging.last}}</strong> arasındaki kayıtlar listeleniyor.
+    <div class="table-export">
+      <div class="btn-group" role="group" aria-label="Dışa aktar">
+        <div class="btn-group" role="group">
+          <button id="btnGroupDrop1" type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+            Dışa Aktar
+          </button>
+          <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+            <a class="dropdown-item" href="#">
+              <i class="fas fa-file-excel"></i> Excell</a>
+            <a class="dropdown-item" href="#">
+              <i class="fas fa-file-pdf"></i> PDF</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <table class="table table-striped table-sm">
     <thead class="thead-dark">
       {{# each data.header }}
       <tr>
-        {{# each this }} {{#if_equal @index 0}}
-        {{else}}
+        {{# each this }} {{#if_equal @index 0}} {{else}}
         <th scope="col">{{ this }}</th>
         {{/if_equal}} {{/ each }}
         <th class="text-right">İşlem</th>
@@ -44,18 +62,17 @@
     <tbody>
       {{# each data.data }}
       <tr>
-        {{# each this }} {{#if_equal @index 0}}
-        {{else}}
+        {{# each this }} {{#if_equal @index 0}} {{else}}
         <td scope="row">{{ this }}</td>
         {{/if_equal}} {{/ each }}
         <td>
-            {{# each this }} {{#if_equal @index 0}}
+          {{# each this }} {{#if_equal @index 0}}
           <div class="btn-group btn-group-sm float-right" role="group" aria-label="İşlemler">
-            <a href="/{{ ../../../route }}/{{ ../../../cardTemplate._id }}/{{ this }}" class="btn btn-outline-success">
+            <a href="/{{ ../../../route }}/{{ ../../../cardTemplate._id }}/{{ this }}" class="btn btn-outline-success btn-sm">
               <i class="far fa-edit"></i>
               <span class="d-none d-sm-inline">Düzenle</span>
             </a>
-            <a href="/{{ ../../../route }}/delete/{{ this }}" class="btn btn-outline-danger">
+            <a href="/{{ ../../../route }}/delete/{{ this }}" class="btn btn-outline-danger btn-sm">
               <i class="far fa-trash-alt"></i>
               <span class="d-none d-sm-inline">Sil</span>
             </a>
@@ -67,5 +84,4 @@
     </tbody>
   </table>
 </div>
-{{/if }}
-{{/unless}}
+{{/if }} {{/unless}}
