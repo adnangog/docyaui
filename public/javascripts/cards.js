@@ -8,6 +8,7 @@
         SelectedFolder: null,
         SelectedFolderName: null,
         handleProcess: function (folder, action) {
+            $('#myTab a[href="#process"]').tab('show') // Select tab by name
             $(".process-box").hide();
             if (folder) {
                 $("[data-folderoptions]").fadeIn();
