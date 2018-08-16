@@ -1,0 +1,50 @@
+<div class="light-theme">
+  <h1>{{title}}</h1>
+  {{> alert}}
+  <form method="POST" action="{{#if edit}}/authorities/set/add{{ authority._id }}{{else}}/authorities/set/add{{/if}}">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="name">Adı</label>
+          <input type="text" class="form-control" id="name" name="name" value="{{ authSet.name }}" placeholder="Yetki seti adı giriniz.">
+        </div>
+
+        <div class="form-group">
+          <label for="description">Açıklama</label>
+          <textarea class="form-control form-control-sm" id="description" name="description" placeholder="Açıklama giriniz." rows="3"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Kaydet</button>
+      </div>
+      <div class="col-md-8">
+        <div class="row">
+          <div class="col-md-4">
+            <label>Kişi / Rol</label>
+            <div class="user-remove float-right disable">
+              <i class="fas fa-minus"></i>
+            </div>
+            <div class="user-add float-right">
+              <i class="fas fa-plus"></i>
+            </div>
+            <div class="list-group list-group-flush" data-auth-users>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <label>Yetkiler</label>
+            <div class="card auth-list">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item" data-auth-id="1">Listeleme</li>
+                <li class="list-group-item" data-auth-id="2">Ekleme</li>
+                <li class="list-group-item" data-auth-id="3">Düzenleme</li>
+                <li class="list-group-item" data-auth-id="4">Silme</li>
+                <li class="list-group-item" data-auth-id="5">Taşıma</li>
+                <li class="list-group-item" data-auth-id="6">Sevketme</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </form>
+</div>

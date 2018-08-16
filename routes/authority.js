@@ -4,8 +4,28 @@ const api = require("../api");
 const helper = require("../helpers/index");
 const async = require("async");
 
-// Authority Add
-router.post("/set/", (req, res, next) => {
+// Authority set add
+router.get("/set/add", (req, res, next) => {
+  let breadcrumb = [
+    { route: "/", name: "Anasayfa" },
+    { route: "/authorities/set", name: "Yetki Setleri" },
+    {
+      route: `/authorities/set/add`,
+      name: "Yetki Seti Ekle"
+    }
+  ];
+  res.render("authSetAdd", {
+    title: "Yetki Seti Ekle",
+    edit: true,
+    breadcrumb,
+    route: "authorities/set",
+    mainMenu: 1,
+    subMenu: 10
+  });
+});
+
+// Authority set Add post
+router.post("/set/add", (req, res, next) => {
   api.apiCall(
     req.session.token,
     "/authority/set/add",
@@ -41,8 +61,8 @@ router.get("/set/", (req, res, next) => {
         breadcrumb,
         paging,
         route: "authorities/set",
-        mainMenu:1,
-        subMenu:10,
+        mainMenu: 1,
+        subMenu: 10,
         messageType: req.query.messageType,
         message: req.query.message
       });
@@ -77,8 +97,8 @@ router.get("/set/:authSetId", (req, res, next) => {
           breadcrumb,
           paging,
           route: "authorities/set",
-          mainMenu:1,
-          subMenu:10
+          mainMenu: 1,
+          subMenu: 10
         });
       })
 
@@ -109,7 +129,7 @@ router.post("/set/:authSetId", (req, res, next) => {
 router.get("/delete/set/:authSetId", (req, res, next) => {
   next();
   res.redirect("/authorities/set");
-  
+
 });
 
 
@@ -150,8 +170,8 @@ router.get("/", (req, res, next) => {
         breadcrumb,
         paging,
         route: "authorities",
-        mainMenu:1,
-        subMenu:2,
+        mainMenu: 1,
+        subMenu: 2,
         messageType: req.query.messageType,
         message: req.query.message
       });
@@ -186,8 +206,8 @@ router.get("/:authorityId", (req, res, next) => {
           breadcrumb,
           paging,
           route: "authorities",
-          mainMenu:1,
-          subMenu:2
+          mainMenu: 1,
+          subMenu: 2
         });
       })
 
@@ -218,7 +238,7 @@ router.post("/:authorityId", (req, res, next) => {
 router.get("/delete/:authorityId", (req, res, next) => {
   next();
   res.redirect("/authorities");
-  
+
 });
 
 module.exports = router;

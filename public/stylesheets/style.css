@@ -410,3 +410,67 @@ a.btn-success, a.btn-danger {
   }
   
 /* tabs bitti */
+
+/* yetki seti */
+.list-group-item.active {
+  z-index: 2;
+  color: #222;
+  background-color: #dee2e6;
+  border-color: #babcbd;
+}
+.auth-list .list-group-item {
+  cursor: pointer;
+}
+.auth-list .list-group-item::before {
+  content: "";
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ccc;
+  background-color: #eee;
+  margin-right: 5px;
+  vertical-align: text-top;
+}
+.auth-list .list-group-item:hover::before {
+  background-color: #ddd;
+}
+.auth-list .list-group-item.selected::before {
+  background-color: #dee2e6;
+  border-color: #babcbd;
+}
+.auth-list .list-group-item.selected::after {
+  position: absolute;
+  display: block;
+  content: "";
+  left: 27px;
+  top: 17px;
+  width: 5px;
+  height: 10px;
+  border: solid #222;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+[data-auth-users] .list-group-item-action.active::after {
+  position: absolute;
+  display: block;
+  content: "";
+  right: 27px;
+  top: 17px;
+  width: 5px;
+  height: 10px;
+  border: solid #222;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.user-add, .user-remove {
+  cursor: pointer;
+  margin-left: 20px;
+}
+.user-add.disable, .user-remove.disable {
+  cursor: inherit;
+  color: #eee;
+}
