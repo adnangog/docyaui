@@ -42,17 +42,17 @@
             var parent = $("[data-auth-users]");
             parent.html("");
             Docya.AuthController.AuthJSON.map(x => {
-                var className="fa-user";
-                if(x.type===2)
-                    className="fa-users";
-                parent.append($('<a href="#" class="list-group-item list-group-item-action" data-ownerId="' + x.ownerId + '"> <i class="fas '+className+'"></i> ' + x.name + '</a>'));
+                var className = "fa-user";
+                if (x.type === 2)
+                    className = "fa-users";
+                parent.append($('<a href="#" class="list-group-item list-group-item-action" data-ownerId="' + x.ownerId + '"> <i class="fas ' + className + '"></i> ' + x.name + '</a>'));
             });
         },
         initAuthClick: function () {
             $("body").on("click", ".auth-list .list-group-item", function (e) {
                 e.preventDefault();
 
-                if(Docya.AuthController.Owners.length<1){
+                if (Docya.AuthController.Owners.length < 1) {
                     alert("Lütfen önce Kişi ya da Rol seçiniz.");
                     return false;
                 }
@@ -69,61 +69,72 @@
                 }
 
                 var getOwner = (item) => {
-                    if (Docya.AuthController.Owners.indexOf(item.ownerId)>-1) {
-                      return true;
-                    } 
-                    return false; 
-                  }
-    
-                Docya.AuthController.AuthJSON.filter(getOwner).map((x,i)=>{
+                    if (Docya.AuthController.Owners.indexOf(item.ownerId) > -1) {
+                        return true;
+                    }
+                    return false;
+                }
+
+                Docya.AuthController.AuthJSON.filter(getOwner).map((x, i) => {
                     x.authorities = Docya.AuthController.Auths;
                 });
 
 
             });
         },
-        setOwnersAuths: function() {
+        setOwnersAuths: function () {
             $("[data-auth-id]").removeClass("selected");
-            var auths=[];
+            var auths = [];
 
             var getOwner = (item) => {
-                if (Docya.AuthController.Owners.indexOf(item.ownerId)>-1) {
-                  return true;
-                } 
-                return false; 
-              }
+                if (Docya.AuthController.Owners.indexOf(item.ownerId) > -1) {
+                    return true;
+                }
+                return false;
+            }
 
-            Docya.AuthController.AuthJSON.filter(getOwner).map((x,i)=>{
-                if(i===0){
+            Docya.AuthController.AuthJSON.filter(getOwner).map((x, i) => {
+                if (i === 0) {
                     auths = x.authorities;
                 }
-                else{
+                else {
                     auths = auths.filter(value => -1 !== x.authorities.indexOf(value));
                 }
             });
 
-            Docya.AuthController.Auths=auths;
+            Docya.AuthController.Auths = auths;
 
-            auths.map(x=>{
-                $("[data-auth-id="+x+"]").addClass("selected");
+            auths.map(x => {
+                $("[data-auth-id=" + x + "]").addClass("selected");
             });
 
         },
         initUserClick: function () {
             $("body").on("click", "[data-auth-users] .list-group-item-action", function (e) {
                 e.preventDefault();
+
                 var jqElm = $(this);
                 var ownerId = jqElm.attr("data-ownerId");
                 var index = Docya.AuthController.Owners.indexOf(ownerId);
-                jqElm.toggleClass("active");
 
-                if (index < 0) {
-                    Docya.AuthController.Owners.push(ownerId);
+                if (e.ctrlKey) {
+                    jqElm.toggleClass("active");
+                    if (index < 0) {
+                        Docya.AuthController.Owners.push(ownerId);
+                    } else {
+                        Docya.AuthController.Owners.splice(index, 1);
+                    }
                 } else {
-                    Docya.AuthController.Owners.splice(index, 1);
+                    $("[data-ownerId]").removeClass("active");
+                    jqElm.toggleClass("active");
+                    if (index < 0) {
+                        Docya.AuthController.Owners = [ownerId];
+                    } else {
+                        Docya.AuthController.Owners = [];
+                    }
                 }
 
-                if(Docya.AuthController.Owners.length>0)
+                if (Docya.AuthController.Owners.length > 0)
                     $(".user-remove").removeClass("disable");
                 else
                     $(".user-remove").addClass("disable");

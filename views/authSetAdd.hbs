@@ -3,7 +3,7 @@
   {{> alert}}
   <form method="POST" action="{{#if edit}}/authorities/set/add{{ authority._id }}{{else}}/authorities/set/add{{/if}}">
     <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-3">
         <div class="form-group">
           <label for="name">Adı</label>
           <input type="text" class="form-control" id="name" name="name" value="{{ authSet.name }}" placeholder="Yetki seti adı giriniz.">
@@ -16,9 +16,9 @@
 
         <button type="submit" class="btn btn-primary">Kaydet</button>
       </div>
-      <div class="col-md-8">
+      <div class="col-md-9">
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-5">
             <label>Kişi / Rol</label>
             <div class="user-remove float-right disable">
               <i class="fas fa-minus"></i>
@@ -29,7 +29,7 @@
             <div class="list-group list-group-flush" data-auth-users>
             </div>
           </div>
-          <div class="col-md-8">
+          <div class="col-md-7">
             <label>Yetkiler</label>
             <div class="card auth-list">
               <ul class="list-group list-group-flush">

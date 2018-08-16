@@ -59,6 +59,14 @@ body {
   margin: 0 !important;
   padding: 0;
 }
+.light-theme h1 {
+  color:#333;
+  font-size: 1.4rem;
+  font-weight: 400;
+  border-bottom: 1px solid #999;
+  padding: 0 0 .3rem;
+  margin: 0 0 .8rem;
+}
 .dropzone {
   border:2px dashed #4aa0f1;
   border-radius: 10px;
