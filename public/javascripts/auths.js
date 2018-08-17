@@ -3,37 +3,38 @@
         w.Docya = {};
 
     w.Docya.AuthController = {
+        JsJSON: JSON.parse($("#jsJSON").val()),
         AuthJSON: [
-            {
-                type: 1,
-                ownerId: "1",
-                name: "Ahmet Muhip Piranhas",
-                authorities: [1, 2, 3, 4]
-            },
-            {
-                type: 1,
-                ownerId: "2",
-                name: "Memduh Şevket Essential",
-                authorities: [4, 5, 6]
-            },
-            {
-                type: 1,
-                ownerId: "3",
-                name: "Necip Jhonson",
-                authorities: [1, 2]
-            },
-            {
-                type: 2,
-                ownerId: "4",
-                name: "Kanarya Severler",
-                authorities: [3, 4]
-            },
-            {
-                type: 2,
-                ownerId: "5",
-                name: "Terakkiperver Hulk Fırkası",
-                authorities: [1, 3, 4]
-            }
+            // {
+            //     type: 1,
+            //     ownerId: "1",
+            //     name: "Ahmet Muhip Piranhas",
+            //     authorities: [1, 2, 3, 4]
+            // },
+            // {
+            //     type: 1,
+            //     ownerId: "2",
+            //     name: "Memduh Şevket Essential",
+            //     authorities: [4, 5, 6]
+            // },
+            // {
+            //     type: 1,
+            //     ownerId: "3",
+            //     name: "Necip Jhonson",
+            //     authorities: [1, 2]
+            // },
+            // {
+            //     type: 2,
+            //     ownerId: "4",
+            //     name: "Kanarya Severler",
+            //     authorities: [3, 4]
+            // },
+            // {
+            //     type: 2,
+            //     ownerId: "5",
+            //     name: "Terakkiperver Hulk Fırkası",
+            //     authorities: [1, 3, 4]
+            // }
         ],
         InputJSON: [],
         Owners: [],
@@ -142,7 +143,28 @@
                 Docya.AuthController.setOwnersAuths();
             });
         },
+        initUserAdd: function () {
+            $("body").on("click", "[data-addowner]", function (e) {
+                e.preventDefault();
+                var ids_ = $("#owners").val();
+
+                if (ids_ !== null && ids_ !== "" && ids_.length > 0) {
+
+
+                    ids_.map((x, i) => {
+                        if (Docya.AuthController.AuthJSON.filter(function (a) { return a.ownerId !== x })) {
+                            let item = Docya.AuthController.JsJSON.filter(function (a) { return a.ownerId === x })[0];
+                            Docya.AuthController.AuthJSON.push(item);
+                        }
+                    });
+
+                    Docya.AuthController.createList();
+                }
+
+            });
+        },
         initElements: function () {
+            this.initUserAdd();
             this.initAuthClick();
             this.initUserClick();
             this.createList();

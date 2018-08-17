@@ -6,22 +6,70 @@ const async = require("async");
 
 // Authority set add
 router.get("/set/add", (req, res, next) => {
-  let breadcrumb = [
-    { route: "/", name: "Anasayfa" },
-    { route: "/authorities/set", name: "Yetki Setleri" },
-    {
-      route: `/authorities/set/add`,
-      name: "Yetki Seti Ekle"
+  async.parallel([
+    (callback) => {
+      api.apiCall(req.session.token, "/user", "POST", req.body.pagelimit, (result) => {
+        callback(null, result);
+      });
+    },
+    (callback) => {
+      api.apiCall(req.session.token, `/role`, "POST", req.body.pagelimit, (result) => {
+        callback(null, result);
+      });
+    },
+    (callback) => {
+      api.apiCall(req.session.token, `/authority`, "POST", req.body.pagelimit, (result) => {
+        callback(null, result);
+      });
     }
-  ];
-  res.render("authSetAdd", {
-    title: "Yetki Seti Ekle",
-    edit: true,
-    breadcrumb,
-    route: "authorities/set",
-    mainMenu: 1,
-    subMenu: 10
-  });
+  ],
+    (err, results) => {
+
+      let breadcrumb = [
+        { route: "/", name: "Anasayfa" },
+        { route: "/authorities/set", name: "Yetki Setleri" },
+        {
+          route: `/authorities/set/add`,
+          name: "Yetki Seti Ekle"
+        }
+      ];
+
+      let total = results[0].info && results[0].info[0].count;
+
+      let owners = [];
+      
+      results[0].data.map(x => {
+        owners.push({
+          type: 1,
+          ownerId: x[0],
+          name: `${x[1]} ${x[2]}`,
+          authorities: []
+        });
+      });
+
+      results[1].data.map(x => {
+        owners.push({
+          type: 2,
+          ownerId: x[0],
+          name: x[1],
+          authorities: []
+        });
+      });
+
+      helper.paging(req.body.page, req.body.limit, total, "users", (paging) => {
+        res.render("authSetAdd", {
+          title: "Yetki Seti Ekle",
+          route: "authorities/set",
+          ownersJSON: JSON.stringify(owners),
+          owners:owners,
+          authorities: results[2].data,
+          breadcrumb,
+          paging,
+          mainMenu: 1,
+          subMenu: 1
+        });
+      })
+    });
 });
 
 // Authority set Add post
