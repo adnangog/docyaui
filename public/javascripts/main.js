@@ -19,3 +19,10 @@ $(function () {
     $('[data-toggle="tooltip"]').tooltip();
 
 });
+
+function showMessageBox(type, title, message) {
+    $('#messageBox .modal-content').addClass(type);
+    $('#messageBox #myModalLabel').text(title);
+    $('#messageBox .modal-body').html(message);
+    $('#messageBox').modal('show');
+}

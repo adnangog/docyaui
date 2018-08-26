@@ -29,12 +29,12 @@
                     $("[data-documentsection]").fadeIn();
                     break;
                 case "folderDelete":
-                    let data = {
+                    var data = {
                         process: "deleteFolder",
                         folder: Docya.CardController.SelectedFolder
                     };
 
-                    let cb = function (data) {
+                    var cb = function (data) {
                         if (data.messageType === 1) {
                             Docya.CardController.getTree();
                         } else {
@@ -58,12 +58,12 @@
                     break;
                 case "documentDelete":
 
-                    let data = {
+                    var data = {
                         process: "deleteDocument",
                         document: Docya.CardController.SelectedDocument
                     };
 
-                    let cb = function (data) {
+                    var cb = function (data) {
                         if (data.messageType === 1) {
                             Docya.CardController.getTree();
                         } else {
@@ -150,6 +150,7 @@
                         if (data.documentname === "") {
                             errors.push('Lütfen döküman adı giriniz.');
                             $("#documentname").css({ "border": "1px solid #f00" });
+                            $("#documentname").next().remove();
                             $("#documentname").after('<div class="invalid-feedback">Lütfen döküman adı giriniz.</div>');
                         } else {
                             $("#documentname").css({ "border": "1px solid #ced4da" });
@@ -174,6 +175,7 @@
                         if (data.foldername === "") {
                             errors.push('Lütfen klasör adı giriniz.');
                             $("#foldername").css({ "border": "1px solid #f00" });
+                            $("#foldername").next().remove();
                             $("#foldername").after('<div class="invalid-feedback">Lütfen klasör adı giriniz.</div>');
                         } else {
                             $("#foldername").css({ "border": "1px solid #ced4da" });
@@ -199,6 +201,7 @@
                         if (data.note === "") {
                             errors.push('Lütfen notunuzu giriniz.');
                             $("#note").css({ "border": "1px solid #f00" });
+                            $("#note").next().remove();
                             $("#note").after('<div class="invalid-feedback">Lütfen notunuzu giriniz.</div>');
                         } else {
                             $("#note").css({ "border": "1px solid #ced4da" });
@@ -223,6 +226,7 @@
                         if (data.foldername === "") {
                             errors.push('Lütfen klasör adı giriniz.');
                             $("#foldernameAdd").css({ "border": "1px solid #f00" });
+                            $("#foldernameAdd").next().remove();
                             $("#foldernameAdd").after('<div class="invalid-feedback">Lütfen klasör adı giriniz.</div>');
                         } else {
                             $("#foldernameAdd").css({ "border": "1px solid #ced4da" });
@@ -256,7 +260,7 @@
                 }
 
                 if (errors.length > 0) {
-                    alert(errors.join("<br/>"));
+                    showMessageBox("danger","Uyari",errors.join("<br/>"));
                     return false;
                 }
 
@@ -514,7 +518,6 @@
             Docya.CardController.initAjax(data, cb);
         },
         initAjax: function (data, cb) {
-            console.log(data);
             $.ajax({
                 dataType: "json",
                 url: '/ajax',

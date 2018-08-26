@@ -591,5 +591,17 @@ span.tooltip:after {
   top: 0px;
   left: -48px;
 }
-/* scroller */
+/* messageBox */
+#messageBox .modal-body {
+  padding: .75rem;
+}
+#messageBox .modal-header {
+  padding: .75rem;
+  border-bottom-color: #bd2a38;
+  color:#222;
+}
+#messageBox .modal-content.danger {
+  background-color: #dc3545;
+  color: #fff;
+}
 
