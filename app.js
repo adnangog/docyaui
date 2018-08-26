@@ -15,10 +15,12 @@ const cardRouter = require('./routes/card');
 const cardTemplateRouter = require('./routes/cardTemplate');
 const departmentRouter = require('./routes/department');
 const documentRouter = require('./routes/document');
+const noteRouter = require('./routes/notes');
 const folderRouter = require('./routes/folder');
 const roleRouter = require('./routes/role');
 const userRouter = require('./routes/user');
 const formRouter = require('./routes/form');
+const ajaxRouter = require('./routes/ajax');
 const loginRouter = require('./routes/login');
 const checkAuth = require("./middleware/checkAuth");
 const pagelimit = require("./middleware/pagelimit");
@@ -98,10 +100,12 @@ app.use('/cards', checkAuth, cardRouter);
 app.use('/cardtemplates', checkAuth, cardTemplateRouter);
 app.use('/departments', checkAuth, departmentRouter);
 app.use('/documents', checkAuth, documentRouter);
+app.use('/notes', checkAuth, noteRouter);
 app.use('/folders', checkAuth, folderRouter);
 app.use('/roles', checkAuth, roleRouter);
 app.use('/users', checkAuth, userRouter);
 app.use('/forms', checkAuth, formRouter);
+app.use('/ajax', checkAuth, ajaxRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

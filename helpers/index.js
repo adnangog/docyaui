@@ -1,10 +1,12 @@
+var fs = require('fs');
+
 module.exports.paging = (page, limit, total, route, cb) => {
 
   let totalPage = Math.ceil(total / limit);
   let paging = {
     total: total,
-    first: (((page+1)*limit)-(limit-1)),
-    last: total < ((page+1)*limit) ? total : ((page+1)*limit),
+    first: (((page + 1) * limit) - (limit - 1)),
+    last: total < ((page + 1) * limit) ? total : ((page + 1) * limit),
     items: [totalPage > 1 ? {
       label: "Önceki",
       url: page === 0 ? "#" : `/${route}?page=${page - 1}`,
@@ -55,4 +57,59 @@ module.exports.cHeaderText = (text) => {
   }
   return texts.join(" ");
 
+}
+
+module.exports.isAuth = (auths, auth) => {
+  return auths.indexOf(auth) > -1;
+}
+
+module.exports.getUnique = (array) => {
+  return array.filter(onlyUnique);
+}
+
+function onlyUnique(value, index, self) {
+  return self.indexOf(value) === index;
+}
+
+module.exports.auths = {
+  view: 1,
+  read: 2,
+  write: 3,
+  delete: 4
+}
+
+module.exports.deleteFile = (path) => {
+  fs.unlink(path, (err) => {
+    if (err) throw err;
+    console.log(path + ' was deleted');
+  });
+}
+
+module.exports.moveFile = (oldPath, newPath, callback) => {
+
+  fs.rename(oldPath, newPath, function (err) {
+    if (err) {
+      if (err.code === 'EXDEV') {
+        copy();
+      } else {
+        callback(err);
+      }
+      return;
+    }
+    callback();
+  });
+
+  function copy() {
+    var readStream = fs.createReadStream(oldPath);
+    var writeStream = fs.createWriteStream(newPath);
+
+    readStream.on('error', callback);
+    writeStream.on('error', callback);
+
+    readStream.on('close', function () {
+      fs.unlink(oldPath, callback);
+    });
+
+    readStream.pipe(writeStream);
+  }
 }

@@ -116,7 +116,7 @@ router.post("/:roleId", (req, res, next) => {
 
 // Role Delete
 router.get("/delete/:roleId", (req, res, next) => {
-  api.apiCall(req.session.token, `/role/${req.params.roleId}`, "DELETE", null, (result) => {
+  api.apiCall(req.session.token, `/role/delete/${req.params.roleId}`, "GET", null, (result) => {
     res.redirect("/roles");
   });
 });

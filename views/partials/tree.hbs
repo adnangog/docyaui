@@ -1,12 +1,12 @@
 
-    <li data-treeitem {{#if_equal item.type "folder"}}data-folder{{/if_equal}} class="context-menu-one" data-name={{item.name}} data-id={{item.id}}>{{item.name}}
+    <li data-treeitem {{#if_equal item.type "folder"}}data-folder{{/if_equal}} class="context-menu-one" data-name="{{item.name}}" data-id={{item.id}}>{{item.name}}
         {{#ifCond item.childs '||' item.documents}}
-        <ul>
+        <ul data-parent={{item.id}}>
         {{#each item.childs}}
         {{> tree item=this}}
         {{/each}}
         {{#each item.documents}}
-        <li data-treeitem data-document class="context-menu-one2" data-name={{this.name}} data-id={{this.id}}>{{this.name}}</li>
+        <li data-treeitem data-document class="context-menu-one2" data-name="{{this.name}}" data-f="{{this.file}}" data-id={{this.id}}>{{this.name}}</li>
         {{/each}}
         </ul>
         {{/ifCond}}

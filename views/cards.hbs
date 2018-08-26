@@ -39,7 +39,7 @@
 </div>
 <div class="row" style="margin:0;">
   <div class="col-md-4 light-theme ">
-    <div class="doc-title">Form</div>
+    <div class="doc-title">Form {{isWrite}}</div>
     {{>form formType="edit"}}
   </div>
   <div class="col-md-3 light-theme">
@@ -61,12 +61,14 @@
         <a class="nav-link" id="history-tab" data-toggle="tab" href="#history" role="tab" aria-controls="history" aria-selected="false">Geçmiş</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="subscription-tab" data-toggle="tab" href="#subscription" role="tab" aria-controls="subscription" aria-selected="false">İzle</a>
+        <a class="nav-link" id="subscription-tab" data-toggle="tab" href="#subscription" role="tab" aria-controls="subscription"
+          aria-selected="false">İzle</a>
       </li>
     </ul>
 
     <!-- Tab panes -->
-    <div class="tab-content">
+    <div class="tab-content cardForms">
+
       <div class="tab-pane fade show active" id="process" role="tabpanel" aria-labelledby="process-tab">
         <div class="process-boxes">
           <div data-folderoptions class="process-box">
@@ -92,14 +94,6 @@
               title="Adını Değiştir">
               <i class="far fa-edit"></i>
             </button>
-            <button data-optionitem data-key="documentOpen" type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top"
-              title="Aç">
-              <i class="fas fa-folder-open"></i>
-            </button>
-            <button data-optionitem data-key="documentSave" type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top"
-              title="Kaydet">
-              <i class="fas fa-save"></i>
-            </button>
             <button data-optionitem data-key="documentPrint" type="button" class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="top"
               title="Yazdır">
               <i class="fas fa-print"></i>
@@ -110,10 +104,31 @@
             <button type="button" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Check out">
               <i class="fas fa-user-times"></i>
             </button>
-            <button data-optionitem data-key="documentDelete" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top"
-              title="Sil">
-              <i class="far fa-trash-alt"></i>
-            </button>
+          </div>
+          <div data-documentdetail class="process-box">
+            <div class="row">
+              <div class="col-md-3 document-image">
+                <i class="far fa-file-image"></i>
+              </div>
+              <div class="col-md-9">
+                <span class="document-title"></span>
+                <br/>
+                <button data-optionitem data-key="documentOpen" type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top"
+                  title="Aç">
+                  <i class="fas fa-folder-open"></i> Aç
+                </button>
+                <button data-optionitem data-key="documentSave" type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top"
+                  title="Kaydet">
+                  <i class="fas fa-save"></i> Kaydet
+                </button>
+                <button data-optionitem data-key="documentDelete" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top"
+                  title="Sil">
+                  <i class="far fa-trash-alt"></i> Sil
+                </button>
+              </div>
+
+            </div>
+
           </div>
           <div data-documentsection class="process-box">
             <form id="upload-widget" method="post" action="/cards/upload" class="dropzone">
@@ -184,13 +199,27 @@
         </div>
       </div>
       <div class="tab-pane fade" id="notes" role="tabpanel" aria-labelledby="notes-tab">
-notlar
+        <div id="note-container"></div>
+        <form method="POST" action="/notes">
+
+          <div class="form-group">
+            <label for="roleName">Notunuz</label>
+            <textarea class="form-control" id="note" name="note" placeholder="Notunuzu giriniz." rows="3"></textarea>
+          </div>
+
+          <input type="hidden" name="folder" id="folderName2" value="" />
+          <input type="hidden" name="document" id="documentName2" value="" />
+
+          <button type="button" class="btn btn-outline-success btn-sm">
+            <i class="fas fa-paper-plane"></i> Gönder</button>
+
+        </form>
       </div>
       <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">
-geçmiş
+        geçmiş
       </div>
       <div class="tab-pane fade" id="subscription" role="tabpanel" aria-labelledby="subscription-tab">
-abonelik
+        abonelik
       </div>
     </div>
 

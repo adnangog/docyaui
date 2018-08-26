@@ -4,7 +4,7 @@ const api = require("../api");
 
 // Login page
 router.get("/", (req, res, next) => {
-  res.render("login", { title: "Giriş yapın", errors: req.session.errors, email: req.session.email, password: req.session.password, message: req.session.message });
+  res.render("login", { title: "Giriş yapın", url:req.query.url, errors: req.session.errors, email: req.session.email, password: req.session.password, message: req.session.message });
   req.session.errors = null;
   req.session.email = null;
   req.session.password = null;
@@ -43,7 +43,10 @@ router.post("/", (req, res, next) => {
         req.session.token = result.token;
         req.session.userId = result.userId;
         req.session.userName = result.userName;
-        res.redirect('/');
+        if (req.body.url)
+          res.redirect(req.body.url);
+        else
+          res.redirect('/');
       }
     }
   );

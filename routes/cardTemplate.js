@@ -139,8 +139,8 @@ router.post("/:cardtemplateId", (req, res, next) => {
 router.get("/delete/:cardId", (req, res, next) => {
   api.apiCall(
     req.session.token,
-    `/cardtemplates/${req.params.cardId}`,
-    "DELETE",
+    `/cardtemplates/delete/${req.params.cardId}`,
+    "GET",
     null,
     (result) => {
       res.redirect("/cardtemplates");

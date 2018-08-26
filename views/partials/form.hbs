@@ -17,20 +17,20 @@
     {{#if_equal this.control "textbox"}} 
     
     {{#if_equal this.type "text"}}
-    <input type="text" value="{{getObjectVal ../card.fields.[0] this.label ../formType}}" class="form-control form-control-sm" id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}">
+    <input type="text" {{#unless ../isWrite}}readonly{{/unless}} value="{{getObjectVal ../card.fields.[0] this.label ../formType}}" class="{{#unless ../isWrite}}form-control-plaintext{{else}}form-control{{/unless}} form-control-sm " id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}">
     {{/if_equal}}
     
-    {{#if_equal this.type "date"}}
-    <input type="text" value="{{getObjectVal ../card.fields.[0] this.label ../formType}}" data-datetimepicker class="form-control form-control-sm" id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}">
+    {{#if_equal this.type "datetime"}}
+    <input type="text" {{#unless ../isWrite}}readonly{{/unless}} value="{{getObjectVal ../card.fields.[0] this.label ../formType}}" data-datetimepicker class="{{#unless ../isWrite}}form-control-plaintext{{else}}form-control{{/unless}} form-control-sm" id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}">
       {{/if_equal}}
       
     {{/if_equal}} {{#if_equal this.control "textarea"}}
-    <textarea class="form-control form-control-sm" id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}"
+    <textarea class="{{#unless ../isWrite}}form-control-plaintext{{else}}form-control{{/unless}} form-control-sm" {{#unless ../isWrite}}readonly{{/unless}} id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}"
       rows="3">{{getObjectVal ../card.fields.[0] this.label ../formType}}</textarea> 
     {{/if_equal}}
     
     {{#if_equal this.control "dropdown"}}
-    <select class="form-control form-control-sm" id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}">
+    <select class="{{#unless ../isWrite}}form-control-plaintext{{else}}form-control{{/unless}} form-control-sm" {{#unless ../isWrite}}readonly{{/unless}} id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}">
       {{# each this.options }} {{#if_equal (getObjectVal ../../card.fields.[0] ../this.label ../../formType) this.val }}
       <option value="{{ this.val }}" selected="selected">{{ this.option }}</option>
       {{else}}
@@ -47,7 +47,8 @@
   <input type="hidden" name="type" id="type" value="{{cardTemplate.type}}">
   <input type="hidden" name="form" id="form" value="{{cardTemplate.form._id}}">
 
-  <div class="form-group">
+  {{#if isWrite}}<div class="form-group">
     <button type="submit" class="btn btn-outline-success btn-sm"><i class="fas fa-save"></i> Kaydet</button>
   </div>
+  {{/if}}
 </form>

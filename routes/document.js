@@ -3,6 +3,45 @@ var router = express.Router();
 const api = require("../api");
 const helper = require("../helpers/index");
 const async = require("async");
+const fs = require('fs');
+const sharp = require('sharp');
+
+router.get('/download/:file', function (req, res, next) {
+  var filePath = "./uploads/documents/" + req.params.file; // Or format the path using the `id` rest param
+  var fileName = "download.png"; // The default name the browser will use
+
+  res.download(filePath, fileName);
+});
+
+router.get('/view/:file', function (req, res, next) {
+
+  let width = null;
+  let height = null;
+
+  if (req.query.width)
+    width = parseInt(req.query.width);
+
+  if (req.query.height)
+    height = parseInt(req.query.height);
+  // Check if the file exists in the current directory, and if it is writable.
+  fs.access('./uploads/documents/' + req.params.file, fs.constants.F_OK, (err) => {
+    if (err) {
+      res.status(404).send('Not found');
+    } else {
+      const readStream = fs.createReadStream('./uploads/documents/' + req.params.file);
+      let transform = sharp()
+        .toFormat('png')
+        .resize(width, height);
+
+      readStream.pipe(transform).pipe(res);
+    }
+  });
+
+
+  // const src = fs.createReadStream('./uploads/' + req.params.file);
+  // src.pipe(res);
+
+});
 
 // Document Type Add
 router.post("/types", (req, res, next) => {
@@ -119,8 +158,8 @@ router.post("/types/:typeId", (req, res, next) => {
 router.get("/types/delete/:typeId", (req, res, next) => {
   api.apiCall(
     req.session.token,
-    `/document/type/${req.params.typeId}`,
-    "DELETE",
+    `/document/type/delete/${req.params.typeId}`,
+    "GET",
     null,
     result => {
       res.redirect("/documenttypes");
@@ -171,8 +210,14 @@ router.post("/", (req, res, next) => {
     items,
     result => {
       let opt = "";
-      if (result.messageType == 1)
+      if (result.messageType == 1){
         opt = "?messageType=1&message=Kayıt Eklendi";
+        if (req.body.isCard) {
+          JSON.parse(req.body.json).map(f=>{
+            helper.moveFile('./uploads/'+y.filename,'./uploads/documents/'+y.filename,null);
+          });
+        }
+      }
       res.redirect(`${url}${opt}`);
     }
   );
@@ -311,10 +356,14 @@ router.post("/:documentId", (req, res, next) => {
 
 // Document Delete
 router.get("/delete/:documentId", (req, res, next) => {
+
+  // versionlari sil
+  // dosyalari sil
+
   api.apiCall(
     req.session.token,
-    `/document/${req.params.documentId}`,
-    "DELETE",
+    `/document/delete/${req.params.documentId}`,
+    "GET",
     null,
     result => {
       res.redirect("/documents");

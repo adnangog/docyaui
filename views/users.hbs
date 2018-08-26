@@ -26,27 +26,59 @@
         <div class="modal-body">
           <div class="form-row">
             <div class="form-group col-md-6">
-              <label for="roleName">Adı</label>
+              <label for="fName">Adı</label>
               <input type="text" class="form-control" id="fName" name="fName" value="{{ user.fName }}" placeholder="Adı giriniz.">
             </div>
 
             <div class="form-group col-md-6">
-              <label for="roleName">Soyadı</label>
+              <label for="lName">Soyadı</label>
               <input type="text" class="form-control" id="lName" name="lName" value="{{ user.lName }}" placeholder="Soyadı giriniz.">
             </div>
           </div>
 
-          <div class="form-group">
+          <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="email">Kullanıcı adı</label>
+            <input type="email" class="form-control" id="username" name="username" value="{{ user.username }}" placeholder="Kullanıcı adı giriniz.">
+          </div>
+
+          <div class="form-group col-md-6">
             <label for="email">Email</label>
             <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" placeholder="Email giriniz.">
           </div>
+          </div>
 
           {{#unless edit}}
-          <div class="form-group">
-            <label for="roleName">Şifre</label>
-            <input type="password" class="form-control" id="password" name="password" value="{{ user.password }}" placeholder="Şifre giriniz.">
+          <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="password">Şifre</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Şifre giriniz.">
+          </div>
+
+          <div class="form-group col-md-6">
+            <label for="passwordTemp">Şifre (Tekrar)</label>
+            <input type="password" class="form-control" id="passwordTemp" name="passwordTemp" placeholder="Şifreyi tekrar giriniz.">
+          </div>
           </div>
           {{/unless}}
+
+          <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="title">Ünvan</label>
+            <input type="text" class="form-control" id="title" name="title" value="{{ user.title }}" placeholder="Ünvan giriniz.">
+          </div>
+
+          <div class="form-group col-md-6">
+            <label for="position">Pozisyon</label>
+            <select class="form-control" id="position" name="position">
+              {{# each positions }} {{#if_equal ../user.position this.[0] }}
+              <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
+              {{else}}
+              <option value="{{ this.[0] }}">{{ this.[1] }}</option>
+              {{/if_equal}} {{/ each}}
+            </select>
+          </div>
+          </div>
 
           <div class="form-group">
             <label for="roleName">Rol</label>

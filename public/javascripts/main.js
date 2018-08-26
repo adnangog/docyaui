@@ -16,4 +16,6 @@ $(function () {
         userOptionPrefix: 'Ekle'
     });
 
+    $('[data-toggle="tooltip"]').tooltip();
+
 });
