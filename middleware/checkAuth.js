@@ -8,6 +8,7 @@ module.exports = (req, res, next) => {
         );
         next();
     } catch (error) {
-        res.redirect("/login");
+        var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+        res.redirect("/login?url="+fullUrl);
     }
 };

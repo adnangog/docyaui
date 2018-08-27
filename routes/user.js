@@ -16,8 +16,10 @@ router.post("/", (req, res, next) => {
         email: req.body.email,
         username: req.body.email,
         password: req.body.password,
+        title:req.body.title,
+        position:req.body.position,
+        source:req.body.source,
         status: 1,
-        authorities: [],
         rDate: Date.now()
       },
       (result) => {
@@ -141,7 +143,7 @@ router.post("/", (req, res, next) => {
   
   // User Delete
   router.get("/delete/:userId", (req, res, next) => {
-    api.apiCall(req.session.token, `/user/${req.params.userId}`, "DELETE", null, (result) => {
+    api.apiCall(req.session.token, `/user/delete/${req.params.userId}`, "GET", null, (result) => {
       res.redirect("/users");
     });
   });

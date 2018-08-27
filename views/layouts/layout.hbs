@@ -20,31 +20,47 @@
 </head>
 
 <body>
-  {{> header}} 
-  {{> sidemenu}}
+  {{> header}} {{> sidemenu}}
   <div class="right-side">
     {{> breadcrumb}}
     <div class="container-fluid">
       {{{body}}}
     </div>
+    <!-- small modal -->
+    <div class="modal fade" id="messageBox" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="modal-title" id="myModalLabel"></div>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+          </div>
+        </div>
+      </div>
+    </div>
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
       crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-      crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
-      crossorigin="anonymous"></script>
-      <script src="/javascripts/dropzone.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
+    <!-- online handlebars.js-->
+    <script src="/javascripts/dropzone.min.js"></script>
     <script src="/javascripts/moment-with-locales.js"></script>
     <script src="/javascripts/bootstrap-datetimepicker.js"></script>
     <script src="/javascripts/jquery.ui.min.js"></script>
     <script src="/javascripts/jquery.contextMenu.min.js"></script>
     <script src="/javascripts/jquery.ui.position.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+      crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
+      crossorigin="anonymous"></script>
     <script src="/javascripts/tree.js"></script>
     <script src="/javascripts/fastselect.standalone.min.js"></script>
     <script src="/javascripts/main.js"></script>
     <script src="/javascripts/cards.js"></script>
-    <script src="/javascripts/auths.js"></script>
-    {{> bottom}}
+    <script src="/javascripts/auths.js"></script> {{> bottom}}
   </div>
 </body>
 

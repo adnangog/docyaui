@@ -173,10 +173,13 @@ router.post("/:folderId", (req, res, next) => {
 
 // Folder Delete
 router.get("/delete/:folderId", (req, res, next) => {
+
+  // dokuman ya da klasor varsa buna ait silinemez.
+
   api.apiCall(
     req.session.token,
-    `/folder/${req.params.folderId}`,
-    "DELETE",
+    `/folder/delete/${req.params.folderId}`,
+    "GET",
     null,
     result => {
       console.log(result);

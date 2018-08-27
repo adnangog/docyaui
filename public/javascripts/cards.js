@@ -5,6 +5,8 @@
     w.Docya.CardController = {
         DocumentJSON: [],
         InputJSON: [],
+        CardId: $("#card").val(),
+        CardTemplateId: $("#cardtemplate").val(),
         SelectedFolder: null,
         SelectedFolderName: null,
         handleProcess: function (folder, action) {
@@ -27,22 +29,49 @@
                     $("[data-documentsection]").fadeIn();
                     break;
                 case "folderDelete":
-                    alert("Silme işlemi yapılacak");;
+                    var data = {
+                        process: "deleteFolder",
+                        folder: Docya.CardController.SelectedFolder
+                    };
+
+                    var cb = function (data) {
+                        if (data.messageType === 1) {
+                            Docya.CardController.getTree();
+                        } else {
+                            alert(data.message);
+                        }
+                    };
+
+                    Docya.CardController.initAjax(data, cb);
                     break;
                 case "documentEdit":
                     $("[data-documentedit]").fadeIn();
                     break;
                 case "documentOpen":
-                    $("[data-documentadd]").fadeIn();
+                    document.location.href = "/documents/view/" + $(".document-image").attr("data-f");
                     break;
                 case "documentSave":
-                    $("[data-documentsave]").fadeIn();
+                    document.location.href = "/documents/download/" + $(".document-image").attr("data-f");
                     break;
                 case "documentPrint":
                     $("[data-documentprint]").fadeIn();
                     break;
                 case "documentDelete":
-                    alert("Silme işlemi yapılacak");;
+
+                    var data = {
+                        process: "deleteDocument",
+                        document: Docya.CardController.SelectedDocument
+                    };
+
+                    var cb = function (data) {
+                        if (data.messageType === 1) {
+                            Docya.CardController.getTree();
+                        } else {
+                            alert(data.message);
+                        }
+                    };
+
+                    Docya.CardController.initAjax(data, cb);
                     break;
                 default:
             }
@@ -90,20 +119,162 @@
             });
         },
         initFormSubmit: function () {
-            $("body").on("click", "form button", function (e) {
+            $("body").on("click", ".cardForms form button", function (e) {
                 e.preventDefault();
 
                 var jqElm = $(this);
                 var jqForm = $(this).parents("form");
-                var inpCard = $("#card");
-                var inpCardTemplate = $("#cardtemplate");
-                var isCard = $("<input type='hidden' name='isCard' id='isCard' value='true' />")
-                jqForm.attr("action", jqForm.attr("action").replace("documentId", Docya.CardController.SelectedDocument));
-                jqForm.attr("action", jqForm.attr("action").replace("folderId", Docya.CardController.SelectedFolder));
-                jqForm.append(inpCard);
-                jqForm.append(inpCardTemplate);
-                jqForm.append(isCard);
-                jqForm.submit();
+
+                let process = "";
+
+                let data = {
+                    card: Docya.CardController.CardId,
+                    cardtemplate: Docya.CardController.CardTemplateId,
+                    isCard: true
+                };
+
+                let cb = function () { };
+
+                let errors = [];
+
+                switch (jqForm.attr("action")) {
+                    case '/documents/documentId':
+                        data.process = "renameDocument";
+                        data.document = Docya.CardController.SelectedDocument;
+                        data.documentname = $("#documentname").val();
+
+                        if (data.document === "") {
+                            errors.push('Lütfen döküman seçiniz.');
+                        }
+
+                        if (data.documentname === "") {
+                            errors.push('Lütfen döküman adı giriniz.');
+                            $("#documentname").css({ "border": "1px solid #f00" });
+                            $("#documentname").next().remove();
+                            $("#documentname").after('<div class="invalid-feedback">Lütfen döküman adı giriniz.</div>');
+                        } else {
+                            $("#documentname").css({ "border": "1px solid #ced4da" });
+                            $("#documentname").next().remove();
+                        }
+
+                        cb = function (data) {
+                            $("#documentname").val("");
+                            Docya.CardController.getTree();
+                        };
+                        break;
+
+                    case '/folders/folderId':
+                        data.process = "renameFolder";
+                        data.folder = Docya.CardController.SelectedFolder;
+                        data.foldername = $("#foldername").val();
+
+                        if (data.folder === "") {
+                            errors.push('Lütfen klasör seçiniz.');
+                        }
+
+                        if (data.foldername === "") {
+                            errors.push('Lütfen klasör adı giriniz.');
+                            $("#foldername").css({ "border": "1px solid #f00" });
+                            $("#foldername").next().remove();
+                            $("#foldername").after('<div class="invalid-feedback">Lütfen klasör adı giriniz.</div>');
+                        } else {
+                            $("#foldername").css({ "border": "1px solid #ced4da" });
+                            $("#foldername").next().remove();
+                        }
+
+                        cb = function (data) {
+                            $("#foldername").val("");
+                            Docya.CardController.getTree();
+                        };
+                        break;
+
+                    case '/notes':
+                        data.process = "addNote";
+                        data.note = $("#note").val();
+                        data.document = Docya.CardController.SelectedDocument;
+                        data.folder = Docya.CardController.SelectedFolder;
+
+                        if (data.folder === "") {
+                            errors.push('Lütfen klasör seçiniz.');
+                        }
+
+                        if (data.note === "") {
+                            errors.push('Lütfen notunuzu giriniz.');
+                            $("#note").css({ "border": "1px solid #f00" });
+                            $("#note").next().remove();
+                            $("#note").after('<div class="invalid-feedback">Lütfen notunuzu giriniz.</div>');
+                        } else {
+                            $("#note").css({ "border": "1px solid #ced4da" });
+                            $("#note").next().remove();
+                        }
+
+                        cb = function (data) {
+                            $("#note").val("");
+                            Docya.CardController.getNotes();
+                        };
+                        break;
+
+                    case '/folders':
+                        data.process = "addFolder";
+                        data.foldername = $("#foldernameAdd").val();
+                        data.folder = Docya.CardController.SelectedFolder;
+
+                        if (data.folder === "") {
+                            errors.push('Lütfen klasör seçiniz.');
+                        }
+
+                        if (data.foldername === "") {
+                            errors.push('Lütfen klasör adı giriniz.');
+                            $("#foldernameAdd").css({ "border": "1px solid #f00" });
+                            $("#foldernameAdd").next().remove();
+                            $("#foldernameAdd").after('<div class="invalid-feedback">Lütfen klasör adı giriniz.</div>');
+                        } else {
+                            $("#foldernameAdd").css({ "border": "1px solid #ced4da" });
+                            $("#foldernameAdd").next().remove();
+                        }
+
+                        cb = function (data) {
+                            $("#foldernameAdd").val("");
+                            Docya.CardController.getTree();
+                        };
+                        break;
+
+                    case '/documents':
+                        data.process = "addDocument";
+                        data.folder = Docya.CardController.SelectedFolder;
+                        data.json = JSON.stringify(Docya.CardController.DocumentJSON);
+
+                        if (data.folder === "") {
+                            errors.push('Lütfen klasör seçiniz.');
+                        }
+
+                        if (data.json === []) {
+                            errors.push('Lütfen yuklemek icin dokuman secin.');
+                        }
+
+                        cb = function (data) {
+                            Docya.CardController.DocumentJSON = [];
+                            Docya.CardController.getTree();
+                        };
+                        break;
+                }
+
+                if (errors.length > 0) {
+                    showMessageBox("danger","Uyari",errors.join("<br/>"));
+                    return false;
+                }
+
+                Docya.CardController.initAjax(data, cb);
+
+            });
+        },
+        initTableRowClick: function () {
+            $("body").on("click", "[data-cardtr]", function (e) {
+                var jqElm = $(this);
+                var card = jqElm.attr("data-card");
+                var cardtemplate = jqElm.attr("data-cardtemplate");
+                document.location.href = "/cards/" + cardtemplate + "/" + card;
+
             });
         },
         initTreeClick: function () {
@@ -116,6 +287,7 @@
                 let isFolder = jqElm[0].hasAttribute("data-folder");
                 $("[data-itemName]").text(jqElm.attr("data-name")).show();
 
+
                 Docya.CardController.handleProcess(isFolder, null);
 
                 if (isFolder) {
@@ -124,10 +296,21 @@
                     $("#foldername").val(jqElm.attr("data-name"));
                     $("[name=folder]").val(jqElm.attr("data-id"));
                 } else {
+                    $("[data-documentdetail]").fadeIn();
+
                     Docya.CardController.SelectedDocument = jqElm.attr("data-id");
                     Docya.CardController.SelectedDocumentName = jqElm.attr("data-name");
                     $("#documentname").val(jqElm.attr("data-name"));
+                    $("[name=document]").val(jqElm.attr("data-id"));
+
+                    Docya.CardController.SelectedFolder = jqElm.parent().attr("data-parent");
+                    $("[name=folder]").val(Docya.CardController.SelectedFolder);
+
+                    $(".document-title").text(jqElm.attr("data-name"));
+                    $(".document-image").attr("data-f", jqElm.attr("data-f")).html("<img class='img-fluid img-thumbnail' src='/documents/view/" + jqElm.attr("data-f") + "?height=50' />");
                 };
+
+                Docya.CardController.getNotes();
             });
         },
         initContextMenu: function () {
@@ -141,6 +324,7 @@
                     let isFolder = $(this)[0].hasAttribute("data-folder");
 
                     $("[data-itemName]").text($(this).attr("data-name")).show();
+                    $(".document-title").text($(this).attr("data-name"));
 
                     Docya.CardController.handleProcess(isFolder, key);
 
@@ -153,7 +337,13 @@
                         Docya.CardController.SelectedDocument = $(this).attr("data-id");
                         Docya.CardController.SelectedDocumentName = $(this).attr("data-name");
                         $("#documentname").val($(this).attr("data-name"));
+                        $("[name=document]").val($(this).attr("data-id"));
+
+                        Docya.CardController.SelectedFolder = $(this).parent().attr("data-parent");
+                        $("[name=folder]").val(Docya.CardController.SelectedFolder);
                     }
+
+                    Docya.CardController.getNotes();
 
                 },
                 items: {
@@ -175,6 +365,7 @@
                     let isFolder = $(this)[0].hasAttribute("data-folder");
 
                     $("[data-itemName]").text($(this).attr("data-name")).show();
+                    $(".document-title").text($(this).attr("data-name"));
 
                     Docya.CardController.handleProcess(isFolder, key);
 
@@ -187,7 +378,13 @@
                         Docya.CardController.SelectedDocument = $(this).attr("data-id");
                         Docya.CardController.SelectedDocumentName = $(this).attr("data-name");
                         $("#documentname").val($(this).attr("data-name"));
+                        $("[name=document]").val($(this).attr("data-id"));
+
+                        Docya.CardController.SelectedFolder = $(this).parent().attr("data-parent");
+                        $("[name=folder]").val(Docya.CardController.SelectedFolder);
                     }
+
+                    Docya.CardController.getNotes();
 
                 },
                 items: {
@@ -208,7 +405,7 @@
                 removedfile: function (file) {
                     var name = file.name;
                     var filename = JSON.parse(file.xhr.response).filename;
-                    Docya.CardController.DocumentJSON = Docya.CardController.DocumentJSON.filter(function(a){
+                    Docya.CardController.DocumentJSON = Docya.CardController.DocumentJSON.filter(function (a) {
                         return a.filename != filename;
                     });
                     Docya.CardController.createDocumentItems();
@@ -241,6 +438,94 @@
                 }
             };
         },
+        getNotes: function () {
+            $("#note-container").html("");
+
+            let data = {
+                process: "getNote",
+                document: Docya.CardController.SelectedDocument,
+                folder: Docya.CardController.SelectedFolder
+            };
+
+            let cb = function (data) {
+                var template = '{{# each data.data}}<div class="chat-box"><div class="chat-avatar"><i class="fas fa-user-tie"></i></div><div class="chat-text">{{this.[1]}}</div><div class="chat-info">{{this.[2]}} - {{this.[3]}}</div></div>{{/each}}';
+                var renderedHtml = Handlebars.compile(template)(data);
+                $("#note-container").append(renderedHtml);
+            };
+
+            Docya.CardController.initAjax(data, cb);
+        },
+        getTree: function () {
+            $("#tree2").html("");
+
+            let data = {
+                process: "getTree",
+                card: Docya.CardController.CardId
+            };
+
+            Handlebars.registerHelper('ifCond', function (v1, operator, v2, options) {
+                switch (operator) {
+                    case '==':
+                        return (v1 == v2) ? options.fn(this) : options.inverse(this);
+                    case '===':
+                        return (v1 === v2) ? options.fn(this) : options.inverse(this);
+                    case '!=':
+                        return (v1 != v2) ? options.fn(this) : options.inverse(this);
+                    case '!==':
+                        return (v1 !== v2) ? options.fn(this) : options.inverse(this);
+                    case '<':
+                        return (v1 < v2) ? options.fn(this) : options.inverse(this);
+                    case '<=':
+                        return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+                    case '>':
+                        return (v1 > v2) ? options.fn(this) : options.inverse(this);
+                    case '>=':
+                        return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+                    case '&&':
+                        return (v1 && v2) ? options.fn(this) : options.inverse(this);
+                    case '||':
+                        return (v1 || v2) ? options.fn(this) : options.inverse(this);
+                    default:
+                        return options.inverse(this);
+                }
+            });
+
+            Handlebars.registerHelper("log", function (something) {
+                console.log(something);
+            });
+
+            let cb = function (data) {
+                var partial = '{{#if this}}<li data-treeitem {{#ifCond this.type "===" "folder"}}data-folder{{/ifCond}} class="context-menu-one" data-name="{{this.name}}" data-id={{this.id}}>{{this.name}}\
+                    {{#ifCond this.childs "||" this.documents}}\
+                    <ul data-parent={{this.id}}>\
+                    {{#each this.childs}}\
+                    {{> tree this}}\
+                    {{/each}}\
+                    {{#each this.documents}}\
+                    <li data-treeitem data-document class="context-menu-one2" data-name="{{this.name}}" data-f="{{this.file}}" data-id={{this.id}}>{{this.name}}</li>\
+                    {{/each}}\
+                    </ul>\
+                    {{/ifCond}}\
+                </li>{{/if}}';
+                var template = "{{> tree this }}";
+                Handlebars.registerPartial("tree", partial);
+                var renderedHtml = Handlebars.compile(template)(data.data.folders[0]);
+                $("#tree2").append(renderedHtml);
+                $('#tree2').treed({ openedClass: 'fa-folder-open', closedClass: 'fa-folder' });
+                Docya.CardController.initContextMenu();
+            };
+
+            Docya.CardController.initAjax(data, cb);
+        },
+        initAjax: function (data, cb) {
+            $.ajax({
+                dataType: "json",
+                url: '/ajax',
+                type: 'post',
+                data: data,
+                success: cb
+            });
+        },
         initElements: function () {
             this.initDropzone();
             this.initContextMenu();
@@ -248,6 +533,7 @@
             this.initTreeClick();
             this.initNameChange();
             this.initFormSubmit();
+            this.initTableRowClick();
         },
         init: function () {
             this.initElements();

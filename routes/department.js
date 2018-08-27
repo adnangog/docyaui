@@ -115,8 +115,8 @@ router.post("/:departmentId", (req, res, next) => {
 router.get("/delete/:departmentId", (req, res, next) => {
   api.apiCall(
     req.session.token,
-    `/department/${req.params.departmentId}`,
-    "DELETE",
+    `/department/delete/${req.params.departmentId}`,
+    "GET",
     null,
     result => {
       res.redirect("/departments");

@@ -10,11 +10,26 @@
                 "type": "text",
                 "label": "Textbox",
                 "placeholder": "Açıklama.",
-                "help": "Düzenle butonuna tıklayarak form elamnını ihtiyaç duyduğunuz şekilde ayarlayabilirsiniz.",
-                "isRequired": true,
+                "help": "",
+                "isRequired": false,
                 "isDynamic": false,
                 "url": "",
-                "isFiltering": true,
+                "isFiltering": false,
+                "filterType": "start",
+                "filterMinLength": 3,
+                "defaultValue": "",
+                "validationType": 0
+            },
+            {
+                "control": "textbox",
+                "type": "datetime",
+                "label": "Datetime",
+                "placeholder": "Açıklama.",
+                "help": "",
+                "isRequired": false,
+                "isDynamic": false,
+                "url": "",
+                "isFiltering": false,
                 "filterType": "start",
                 "filterMinLength": 3,
                 "defaultValue": "",
@@ -24,7 +39,7 @@
                 "control": "dropdown",
                 "label": "Selectbox",
                 "placeholder": "Lütfen seçiniz.",
-                "help": "Düzenle butonuna tıklayarak form elamnını ihtiyaç duyduğunuz şekilde ayarlayabilirsiniz.",
+                "help": "",
                 "isDynamic": true,
                 "url": "http://www.google.com",
                 "isFiltering": true,
@@ -156,8 +171,14 @@
                         break;
                 }
 
+                let helpText = "Düzenle butonuna tıklayarak form elamnını ihtiyaç duyduğunuz şekilde ayarlayabilirsiniz.";
+                
+                if(elm.help !== ""){
+                    helpText = el.help;
+                }
+
                 if (itemBlockHtml != null) {
-                    itemBlockHtml.append($("<small id='emailHelp' class='form-text text-muted'>" + elm.help + "</small>"));
+                    itemBlockHtml.append($("<small id='emailHelp' class='form-text text-muted'>" + helpText + "</small>"));
                     itemBlockHtml.appendTo($("#HedefDiv"));
                 }
             });
