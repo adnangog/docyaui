@@ -11,10 +11,12 @@
 
         <div class="form-group">
           <label for="description">Açıklama</label>
-          <textarea class="form-control form-control-sm" id="description" name="description" placeholder="Açıklama giriniz." rows="3"></textarea>
+          <textarea class="form-control form-control-sm" id="description" name="description" placeholder="Açıklama giriniz." rows="3">{{authSet.description}}</textarea>
         </div>
 
-        <button type="submit" class="btn btn-primary">Kaydet</button>
+        <input type="hidden" name="json" id="json" value="{{ jsonStringify authSet.json }}" />
+
+        <button type="type" data-submit class="btn btn-primary">{{#if edit}}Güncelle{{ authority._id }}{{else}}Kaydet{{/if}}</button>
       </div>
       <div class="col-md-9">
         <div class="row">

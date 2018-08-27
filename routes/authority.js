@@ -38,7 +38,7 @@ router.get("/set/add", (req, res, next) => {
 
       let owners = [];
       
-      results[0].data.map(x => {
+      results[0].data && results[0].data.map(x => {
         owners.push({
           type: 1,
           ownerId: x[0],
@@ -47,7 +47,7 @@ router.get("/set/add", (req, res, next) => {
         });
       });
 
-      results[1].data.map(x => {
+      results[1].data && results[1].data.map(x => {
         owners.push({
           type: 2,
           ownerId: x[0],
@@ -66,7 +66,7 @@ router.get("/set/add", (req, res, next) => {
           breadcrumb,
           paging,
           mainMenu: 1,
-          subMenu: 1
+          subMenu: 10
         });
       })
     });
@@ -79,8 +79,9 @@ router.post("/set/add", (req, res, next) => {
     "/authority/set/add",
     "POST",
     {
-      _id: req.body.id,
-      name: req.body.authorityName,
+      name: req.body.name,
+      description: req.body.description,
+      json: req.body.json,
       rDate: Date.now()
     },
     (result) => {
@@ -120,38 +121,76 @@ router.get("/set/", (req, res, next) => {
 
 // Authority GetById
 router.get("/set/:authSetId", (req, res, next) => {
-  api.apiCall(req.session.token, "/authority/set", "POST", req.body.pagelimit, (data) => {
-    api.apiCall(req.session.token, `/authority/set/${req.params.authSetId}`, "GET", null, (
-      authority
-    ) => {
-      let total = data.count;
+  async.parallel([
+    (callback) => {
+      api.apiCall(req.session.token, "/user", "POST", req.body.pagelimit, (result) => {
+        callback(null, result);
+      });
+    },
+    (callback) => {
+      api.apiCall(req.session.token, `/role`, "POST", req.body.pagelimit, (result) => {
+        callback(null, result);
+      });
+    },
+    (callback) => {
+      api.apiCall(req.session.token, `/authority`, "POST", req.body.pagelimit, (result) => {
+        callback(null, result);
+      });
+    },
+    (callback) => {
+      api.apiCall(req.session.token, `/authority/set/${req.params.authSetId}`, "GET", null, (result) => {
+        callback(null, result);
+      });
+    }
+  ],
+    (err, results) => {
 
-      helper.paging(req.body.page, req.body.limit, total, "authorities/set", (paging) => {
-        let breadcrumb = [
-          { route: "/", name: "Anasayfa" },
-          { route: "/authorities/set", name: "Yetki Setleri" },
-          {
-            route: `/authorities/set/${req.params.authSetId}`,
-            name: "Yetki Seti Düzenle"
-          }
-        ];
-        res.render("authSets", {
-          title: "Yetki Setleri",
-          addTitle: "Yetki Seti Ekle",
-          editTitle: "Yetki Seti Düzenle",
-          edit: true,
-          data,
-          authority,
+      let breadcrumb = [
+        { route: "/", name: "Anasayfa" },
+        { route: "/authorities/set", name: "Yetki Setleri" },
+        {
+          route: `/authorities/set/add`,
+          name: "Yetki Seti Düzenle"
+        }
+      ];
+
+      let total = results[0].info && results[0].info[0].count;
+
+      let owners = [];
+      
+      results[0].data && results[0].data.map(x => {
+        owners.push({
+          type: 1,
+          ownerId: x[0],
+          name: `${x[1]} ${x[2]}`,
+          authorities: []
+        });
+      });
+
+      results[1].data && results[1].data.map(x => {
+        owners.push({
+          type: 2,
+          ownerId: x[0],
+          name: x[1],
+          authorities: []
+        });
+      });
+
+      helper.paging(req.body.page, req.body.limit, total, "users", (paging) => {
+        res.render("authSetAdd", {
+          title: "Yetki Seti Düzenle",
+          route: "authorities/set",
+          ownersJSON: JSON.stringify(owners),
+          owners:owners,
+          authorities: results[2].data,
+          authSet:results[3],
           breadcrumb,
           paging,
-          route: "authorities/set",
           mainMenu: 1,
           subMenu: 10
         });
       })
-
     });
-  });
 });
 
 // Authority Update

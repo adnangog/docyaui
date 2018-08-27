@@ -39,6 +39,9 @@ app.engine('.hbs', expressHbs({
         return opts.inverse(this)
       }
     },
+    jsonStringify: function (value) {
+      return JSON.stringify(value);
+    },
     cFormName: function (value, formType) {
       let prefix  = formType === "add" ? "duForm_" : "dForm_";
       return prefix+helper.slugify(value);

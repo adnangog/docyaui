@@ -1,41 +1,9 @@
 (function ($, w, document, undefined) {
-    if (w.Docya == undefined)
-        w.Docya = {};
+    if (w.Docya == undefined) w.Docya = {};
 
     w.Docya.AuthController = {
-        JsJSON: JSON.parse($("#jsJSON").val()),
-        AuthJSON: [
-            // {
-            //     type: 1,
-            //     ownerId: "1",
-            //     name: "Ahmet Muhip Piranhas",
-            //     authorities: [1, 2, 3, 4]
-            // },
-            // {
-            //     type: 1,
-            //     ownerId: "2",
-            //     name: "Memduh Şevket Essential",
-            //     authorities: [4, 5, 6]
-            // },
-            // {
-            //     type: 1,
-            //     ownerId: "3",
-            //     name: "Necip Jhonson",
-            //     authorities: [1, 2]
-            // },
-            // {
-            //     type: 2,
-            //     ownerId: "4",
-            //     name: "Kanarya Severler",
-            //     authorities: [3, 4]
-            // },
-            // {
-            //     type: 2,
-            //     ownerId: "5",
-            //     name: "Terakkiperver Hulk Fırkası",
-            //     authorities: [1, 3, 4]
-            // }
-        ],
+        JsJSON: $("#jsJSON")[0] && $("#jsJSON").val().length > 0 ? JSON.parse($("#jsJSON").val()) : [],
+        AuthJSON: $("#json")[0] && $("#json").val().length > 0 ? JSON.parse($("#json").val()) : [],
         InputJSON: [],
         Owners: [],
         Auths: [],
@@ -44,9 +12,28 @@
             parent.html("");
             Docya.AuthController.AuthJSON.map(x => {
                 var className = "fa-user";
-                if (x.type === 2)
-                    className = "fa-users";
-                parent.append($('<a href="#" class="list-group-item list-group-item-action" data-ownerId="' + x.ownerId + '"> <i class="fas ' + className + '"></i> ' + x.name + '</a>'));
+                if (x.type === 2) className = "fa-users";
+                var attention = "";
+                var classes = "list-group-item list-group-item-action";
+                if (Docya.AuthController.Owners.indexOf(x.ownerId) > -1)
+                    classes = "list-group-item list-group-item-action active";
+                if (x.authorities.length === 0)
+                    attention =
+                        " <span class='badge badge-danger'>Yetki atanmadı.</span>";
+                parent.append(
+                    $(
+                        '<a href="#" class="' +
+                        classes +
+                        '" data-ownerId="' +
+                        x.ownerId +
+                        '"> <i class="fas ' +
+                        className +
+                        '"></i> ' +
+                        x.name +
+                        attention +
+                        "</a>"
+                    )
+                );
             });
         },
         initAuthClick: function () {
@@ -69,36 +56,37 @@
                     Docya.AuthController.Auths.splice(index, 1);
                 }
 
-                var getOwner = (item) => {
+                var getOwner = item => {
                     if (Docya.AuthController.Owners.indexOf(item.ownerId) > -1) {
                         return true;
                     }
                     return false;
-                }
+                };
 
                 Docya.AuthController.AuthJSON.filter(getOwner).map((x, i) => {
                     x.authorities = Docya.AuthController.Auths;
                 });
 
+                $("#json").val(JSON.stringify(Docya.AuthController.AuthJSON));
 
+                Docya.AuthController.createList();
             });
         },
         setOwnersAuths: function () {
             $("[data-auth-id]").removeClass("selected");
             var auths = [];
 
-            var getOwner = (item) => {
+            var getOwner = item => {
                 if (Docya.AuthController.Owners.indexOf(item.ownerId) > -1) {
                     return true;
                 }
                 return false;
-            }
+            };
 
             Docya.AuthController.AuthJSON.filter(getOwner).map((x, i) => {
                 if (i === 0) {
                     auths = x.authorities;
-                }
-                else {
+                } else {
                     auths = auths.filter(value => -1 !== x.authorities.indexOf(value));
                 }
             });
@@ -108,40 +96,42 @@
             auths.map(x => {
                 $("[data-auth-id=" + x + "]").addClass("selected");
             });
-
         },
         initUserClick: function () {
-            $("body").on("click", "[data-auth-users] .list-group-item-action", function (e) {
-                e.preventDefault();
+            $("body").on(
+                "click",
+                "[data-auth-users] .list-group-item-action",
+                function (e) {
+                    e.preventDefault();
 
-                var jqElm = $(this);
-                var ownerId = jqElm.attr("data-ownerId");
-                var index = Docya.AuthController.Owners.indexOf(ownerId);
+                    var jqElm = $(this);
+                    var ownerId = jqElm.attr("data-ownerId");
+                    var index = Docya.AuthController.Owners.indexOf(ownerId);
 
-                if (e.ctrlKey) {
-                    jqElm.toggleClass("active");
-                    if (index < 0) {
-                        Docya.AuthController.Owners.push(ownerId);
+                    if (e.ctrlKey) {
+                        jqElm.toggleClass("active");
+                        if (index < 0) {
+                            Docya.AuthController.Owners.push(ownerId);
+                        } else {
+                            Docya.AuthController.Owners.splice(index, 1);
+                        }
                     } else {
-                        Docya.AuthController.Owners.splice(index, 1);
+                        $("[data-ownerId]").removeClass("active");
+                        if (index < 0) {
+                            jqElm.addClass("active");
+                            Docya.AuthController.Owners = [ownerId];
+                        } else {
+                            Docya.AuthController.Owners = [];
+                        }
                     }
-                } else {
-                    $("[data-ownerId]").removeClass("active");
-                    jqElm.toggleClass("active");
-                    if (index < 0) {
-                        Docya.AuthController.Owners = [ownerId];
-                    } else {
-                        Docya.AuthController.Owners = [];
-                    }
+
+                    if (Docya.AuthController.Owners.length > 0)
+                        $(".user-remove").removeClass("disable");
+                    else $(".user-remove").addClass("disable");
+
+                    Docya.AuthController.setOwnersAuths();
                 }
-
-                if (Docya.AuthController.Owners.length > 0)
-                    $(".user-remove").removeClass("disable");
-                else
-                    $(".user-remove").addClass("disable");
-
-                Docya.AuthController.setOwnersAuths();
-            });
+            );
         },
         initUserAdd: function () {
             $("body").on("click", "[data-addowner]", function (e) {
@@ -149,18 +139,55 @@
                 var ids_ = $("#owners").val();
 
                 if (ids_ !== null && ids_ !== "" && ids_.length > 0) {
-
-
                     ids_.map((x, i) => {
-                        if (Docya.AuthController.AuthJSON.filter(function (a) { return a.ownerId !== x })) {
-                            let item = Docya.AuthController.JsJSON.filter(function (a) { return a.ownerId === x })[0];
+                        if (
+                            Docya.AuthController.AuthJSON.filter(function (a) {
+                                return a.ownerId === x;
+                            }).length === 0
+                        ) {
+                            let item = Docya.AuthController.JsJSON.filter(function (a) {
+                                return a.ownerId === x;
+                            })[0];
                             Docya.AuthController.AuthJSON.push(item);
                         }
                     });
 
                     Docya.AuthController.createList();
                 }
+            });
+        },
+        initFormSubmit: function () {
+            $("body").on("click", "[data-submit]", function (e) {
+                e.preventDefault();
+                var jqElm = $(this);
+                var jqForm = jqElm.parents("form");
 
+                let errors = [];
+
+                if($("#name").val()===""){
+                    errors.push('Yetki seti adı boş bırakılamaz.');
+                    $("#name").css({ "border": "1px solid #f00" });
+                    $("#name").next().remove();
+                    $("#name").after('<div class="invalid-feedback">Lütfen yetki seti adı giriniz.</div>');
+                } else {
+                    $("#name").css({ "border": "1px solid #ced4da" });
+                    $("#name").next().remove();
+                }
+
+                if(Docya.AuthController.AuthJSON.length===0){
+                    errors.push('Yetki setine en az bir kişi ya da rol eklemelisiniz.');
+                }
+
+                if(Docya.AuthController.AuthJSON.filter(function (a) {return a.authorities.length === 0;}).length === 0){
+                    errors.push('Yetki atanmayan kişi ya da rol bulunuyor.');
+                }
+
+                if (errors.length > 0) {
+                    showMessageBox("danger","Uyari",errors.join("<br/>"));
+                    return false;
+                }
+
+                jqForm.submit();
             });
         },
         initElements: function () {
@@ -172,11 +199,9 @@
         init: function () {
             this.initElements();
         }
-
-    }
+    };
 
     $(document).ready(function () {
         w.Docya.AuthController.init();
     });
-
 })(jQuery, window, document);

@@ -12,7 +12,6 @@ router.post("/", (req, res, next) => {
     "POST",
     {
       name: req.body.roleName,
-      authorities: [],
       rDate: Date.now()
     },
     (result) => {
