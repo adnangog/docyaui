@@ -66,10 +66,12 @@ router.post("/", (req, res, next) => {
       type = "PATCH";
       break;
     case 'deleteDocument':
-      api.apiCall(req.session.token, "/document/version", "GET", params, (data) => {
-        data.map(x=>{
-          helper.deleteFile('./uploads/' + x.filename);
-        });
+      api.apiCall(req.session.token, `/document/version/${req.body.document}`, "GET", params, (data) => {
+        if (data.messageType === 1) {
+          data.data.map(x => {
+            helper.deleteFile('./uploads/documents/' + x.file);
+          });
+        }
       });
       route = `/document/delete/${req.body.document}`;
       type = "GET";
