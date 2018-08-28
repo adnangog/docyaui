@@ -164,7 +164,7 @@
 
                 let errors = [];
 
-                if($("#name").val()===""){
+                if ($("#name").val() === "") {
                     errors.push('Yetki seti adı boş bırakılamaz.');
                     $("#name").css({ "border": "1px solid #f00" });
                     $("#name").next().remove();
@@ -174,16 +174,19 @@
                     $("#name").next().remove();
                 }
 
-                if(Docya.AuthController.AuthJSON.length===0){
+                if (Docya.AuthController.AuthJSON.length === 0) {
                     errors.push('Yetki setine en az bir kişi ya da rol eklemelisiniz.');
                 }
 
-                if(Docya.AuthController.AuthJSON.filter(function (a) {return a.authorities.length === 0;}).length === 0){
+                if (Docya.AuthController.AuthJSON.filter(function (a) { return a.authorities.length === 0; }).length === 0) {
                     errors.push('Yetki atanmayan kişi ya da rol bulunuyor.');
                 }
 
                 if (errors.length > 0) {
-                    showMessageBox("danger","Uyari",errors.join("<br/>"));
+                    let errorHtml = "<ul>";
+                    errors.map(x => { errorHtml += "<li>" + x + "</li>" });
+                    errorHtml += "</ul>";
+                    showMessageBox("danger", "Uyari", errorHtml);
                     return false;
                 }
 
@@ -195,6 +198,7 @@
             this.initAuthClick();
             this.initUserClick();
             this.createList();
+            this.initFormSubmit();
         },
         init: function () {
             this.initElements();

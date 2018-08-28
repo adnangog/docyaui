@@ -4,6 +4,33 @@ const api = require("../api");
 const helper = require("../helpers/index");
 const async = require("async");
 
+  // User GetById
+  router.get("/settings", (req, res, next) => {
+    async.parallel([
+      (callback) => {
+        api.apiCall(req.session.token, `/user/${req.params.userId}`, "GET", null, (result) => {
+          callback(null, result);
+        });
+      }
+    ],
+      (err, results) => {
+        
+        let breadcrumb = [
+          { route: "/", name: "Anasayfa" },
+          { route: `/users/settings`, name: "Kullanıcı Ayarları" }
+        ];
+  
+
+        res.render("settings", {
+          title: "Kullanıcı Ayarları",
+          user: results[0],
+          breadcrumb,
+          mainMenu:5,
+          subMenu:11
+        });
+      });
+  });
+
 // User Add
 router.post("/", (req, res, next) => {
     api.apiCall(
