@@ -4,7 +4,7 @@ const api = require("../api");
 const helper = require("../helpers/index");
 const async = require("async");
 
-// Authority set add
+// Authority set add form sayfası
 router.get("/set/add", (req, res, next) => {
   async.parallel([
     (callback) => {
@@ -181,6 +181,7 @@ router.get("/set/:authSetId", (req, res, next) => {
           title: "Yetki Seti Düzenle",
           route: "authorities/set",
           ownersJSON: JSON.stringify(owners),
+          edit:true,
           owners:owners,
           authorities: results[2].data,
           authSet:results[3],
@@ -200,8 +201,9 @@ router.post("/set/:authSetId", (req, res, next) => {
     `/authority/set/${req.params.authSetId}`,
     "PATCH",
     {
-      id: req.body._id,
-      name: req.body.authorityName
+      name: req.body.name,
+      description: req.body.description,
+      json: req.body.json
     },
     (result) => {
       let opt = "";
@@ -213,10 +215,10 @@ router.post("/set/:authSetId", (req, res, next) => {
 });
 
 // Authority Delete
-router.get("/delete/set/:authSetId", (req, res, next) => {
-  next();
-  res.redirect("/authorities/set");
-
+router.get("/set/delete/:authSetId", (req, res, next) => {
+  api.apiCall(req.session.token, `/authority/set/delete/${req.params.authSetId}`, "GET", null, (result) => {
+    res.redirect("/authorities/set");
+  });
 });
 
 
@@ -323,9 +325,9 @@ router.post("/:authorityId", (req, res, next) => {
 
 // Authority Delete
 router.get("/delete/:authorityId", (req, res, next) => {
-  next();
-  res.redirect("/authorities");
-
+  api.apiCall(req.session.token, `/authority/delete/${req.params.authorityId}`, "GET", null, (result) => {
+    res.redirect("/authorities");
+  });
 });
 
 module.exports = router;

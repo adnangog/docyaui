@@ -1,7 +1,7 @@
 <div class="light-theme">
   <h1>{{title}}</h1>
   {{> alert}}
-  <form method="POST" action="{{#if edit}}/authorities/set/add{{ authority._id }}{{else}}/authorities/set/add{{/if}}">
+  <form method="POST" action="{{#if edit}}/authorities/set/{{ authSet._id }}{{else}}/authorities/set/add{{/if}}">
     <div class="row">
       <div class="col-md-3">
         <div class="form-group">

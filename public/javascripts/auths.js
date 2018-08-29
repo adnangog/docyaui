@@ -51,7 +51,7 @@
                 jqElm.toggleClass("selected");
 
                 if (index < 0) {
-                    Docya.AuthController.Auths.push(authId);
+                    Docya.AuthController.Auths.push(parseInt(authId));
                 } else {
                     Docya.AuthController.Auths.splice(index, 1);
                 }
@@ -178,7 +178,7 @@
                     errors.push('Yetki setine en az bir kişi ya da rol eklemelisiniz.');
                 }
 
-                if (Docya.AuthController.AuthJSON.filter(function (a) { return a.authorities.length === 0; }).length === 0) {
+                if (Docya.AuthController.AuthJSON.filter(function (a) { return a.authorities.length === 0; }).length > 0) {
                     errors.push('Yetki atanmayan kişi ya da rol bulunuyor.');
                 }
 
