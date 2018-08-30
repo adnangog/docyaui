@@ -13,6 +13,9 @@ router.post("/", (req, res, next) => {
   let cb = function () { };
 
   switch (req.body.process) {
+    case 'getAuthSets':
+      route = `/authority/set`;
+      break;
     case 'getTree':
       route = `/folder/card/${req.body.card}`;
       type = "GET";
@@ -80,6 +83,8 @@ router.post("/", (req, res, next) => {
 
   api.apiCall(req.session.token, route, type, params, (data) => {
     cb();
+    // bu kisim apiden gelen message type gore cevap verir hale getirelecek. 
+    // bunun icin api her response'a bir message ve messageType parametresi donmeli.
     res.status(201).json({
       message: "islem başarılı",
       messageType: 1,

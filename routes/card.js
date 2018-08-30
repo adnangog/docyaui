@@ -49,6 +49,11 @@ router.get("/:cardTemplateId/:cardId", (req, res, next) => {
       api.apiCall(req.session.token, `/folder/card/${req.params.cardId}`, "GET", null, (result) => {
         callback(null, result);
       });
+    },
+    (callback) => {
+      api.apiCall(req.session.token, `/authority/set`, "POST", req.body.pagelimit, (result) => {
+        callback(null, result);
+      });
     }
   ],
     (err, results) => {
@@ -75,6 +80,7 @@ router.get("/:cardTemplateId/:cardId", (req, res, next) => {
           isForm:true,
           card: results[2],
           folders: results[3],
+          authSets: results[4].data,
           breadcrumb,
           paging,
           edit: true,
@@ -102,7 +108,7 @@ router.post("/", (req, res, next) => {
     api.apiCall(req.session.token, "/card/add", "POST",
       {
         name: req.body.name,
-        authSet: null,
+        authSet: req.body.authSet,
         user: req.session.userId,
         status: 1,
         type: req.body.type,
@@ -126,16 +132,16 @@ router.get("/", (req, res, next) => {
 
   let breadcrumb = [
     { route: "/", name: "Anasayfa" },
-    { route: "/forms", name: "Dosya Kartlari" },
+    { route: "/cards", name: "Dosya Kartlari" },
     {
-      route: `/forms/${req.params.formId}`,
+      route: `/cards/${req.params.formId}`,
       name: "Dosya Karti Detay"
     }
   ];
 
   res.render("cards", {
-    title: "Form",
-    addTitle: "Yetki Ekle",
+    title: "Kart",
+    addTitle: "Kart Ekle",
     breadcrumb,
     isForm: true
   });
@@ -156,6 +162,11 @@ router.get("/:cardTemplateId", (req, res, next) => {
     },
     (callback) => {
       api.apiCall(req.session.token, `/cardtemplate/${req.params.cardTemplateId}`, "GET", null, (result) => {
+        callback(null, result);
+      });
+    },
+    (callback) => {
+      api.apiCall(req.session.token, `/authority/set`, "POST", req.body.pagelimit, (result) => {
         callback(null, result);
       });
     }
@@ -181,6 +192,7 @@ router.get("/:cardTemplateId", (req, res, next) => {
           isWrite: helper.isAuth(userAuths,helper.auths.write), //gecici
           data: total === undefined ? false : results[0],
           cardTemplate: results[1],
+          authSets: results[2].data,
           breadcrumb,
           paging,
           edit: false,
@@ -223,10 +235,15 @@ router.post("/:cardTemplateId/:cardId", (req, res, next) => {
 });
 
 // Form Delete
-router.get("/delete/:formId", (req, res, next) => {
-  next();
-  res.redirect("/forms");
-
+router.get("/delete/:cardId", (req, res, next) => { api.apiCall(
+  req.session.token,
+  `/cards/delete/${req.params.cardId}`,
+  "GET",
+  null,
+  (result) => {
+    res.redirect("/cards");
+  }
+);
 });
 
 module.exports = router;

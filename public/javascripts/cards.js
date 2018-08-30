@@ -5,6 +5,7 @@
     w.Docya.CardController = {
         DocumentJSON: [],
         InputJSON: [],
+        AuthSets:[],
         CardId: $("#card").val(),
         CardTemplateId: $("#cardtemplate").val(),
         SelectedFolder: null,
@@ -438,6 +439,18 @@
                 }
             };
         },
+        getAuthSets: function () {
+
+            let data = {
+                process: "getAuthSets"
+            };
+
+            let cb = function (data) {
+                Docya.CardController.AuthSets = data.data.data;
+            };
+
+            Docya.CardController.initAjax(data, cb);
+        },
         getNotes: function () {
             $("#note-container").html("");
 
@@ -534,6 +547,7 @@
             this.initNameChange();
             this.initFormSubmit();
             this.initTableRowClick();
+            this.getAuthSets();
         },
         init: function () {
             this.initElements();

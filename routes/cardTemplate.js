@@ -14,6 +14,7 @@ router.post("/", (req, res, next) => {
       name: req.body.name,
       authSet: null,
       user: req.session.userId,
+      authSet: req.body.authSet,
       type: req.body.type,
       form: req.body.form,
       rDate: Date.now()
@@ -39,6 +40,11 @@ router.get("/", (req, res, next) => {
       api.apiCall(req.session.token, `/form`, "POST", req.body.pagelimit, (result) => {
         callback(null, result);
       });
+    },
+    (callback) => {
+      api.apiCall(req.session.token, `/authority/set`, "POST", req.body.pagelimit, (result) => {
+        callback(null, result);
+      });
     }
   ],
     (err, results) => {
@@ -57,6 +63,7 @@ router.get("/", (req, res, next) => {
           route: "cardtemplates",
           data: total === undefined ? false : results[0],
           forms: results[1].data,
+          authSets: results[2].data,
           breadcrumb,
           paging,
           mainMenu:1,
@@ -83,6 +90,12 @@ router.get("/:cardtemplateId", (req, res, next) => {
       api.apiCall(req.session.token, `/form`, "POST", req.body.pagelimit, (result) => {
         callback(null, result);
       });
+    },
+    (callback) => {
+      api.apiCall(req.session.token, `/authority/set`, "POST", req.body.pagelimit, (result) => {
+        console.log(result);
+        callback(null, result);
+      });
     }
   ],
     (err, results) => {
@@ -105,6 +118,7 @@ router.get("/:cardtemplateId", (req, res, next) => {
           data: results[0],
           cardtemplate: results[1],
           forms: results[2].data,
+          authSets: results[3].data,
           breadcrumb,
           paging,
           mainMenu:1,
@@ -122,7 +136,7 @@ router.post("/:cardtemplateId", (req, res, next) => {
     "PATCH",
     {
       name: req.body.name,
-      authSet: null,
+      authSet: req.body.authSet,
       type: req.body.type,
       form: req.body.form
     },

@@ -187,14 +187,10 @@ router.post("/", (req, res, next) => {
     items = {
       name: req.body.name,
       rDate: Date.now(),
-      publishFirstDate: req.body.publishFirstDate,
-      publishEndDate: req.body.publishEndDate,
-      department: req.body.department,
       user: req.session.userId,
       folder: req.body.folder,
       card: req.body.card,
-      authSet: null,
-      description: req.body.description,
+      authSet: req.body.authSet,
       file: req.body.file,
       filename: req.body.filename,
       status: 1
@@ -251,6 +247,11 @@ router.get("/", (req, res, next) => {
       api.apiCall(req.session.token, `/folder`, "POST", req.body.pagelimit, (result) => {
         callback(null, result);
       });
+    },
+    (callback) => {
+      api.apiCall(req.session.token, `/authority/set`, "POST", req.body.pagelimit, (result) => {
+        callback(null, result);
+      });
     }
   ],
     (err, results) => {
@@ -272,6 +273,7 @@ router.get("/", (req, res, next) => {
           types: results[2].data,
           departments: results[3].data,
           folders: results[4].data,
+          authSets: results[5].data,
           breadcrumb,
           paging,
           mainMenu: 1,
@@ -332,11 +334,9 @@ router.post("/:documentId", (req, res, next) => {
     items = {
       name: req.body.name,
       type: req.body.type,
-      publishFirstDate: req.body.publishFirstDate || null,
-      publishEndDate: req.body.publishEndDate || null,
-      department: req.body.department || null,
       user: req.body.user,
       description: req.body.description,
+      authSet: req.body.authSet,
       file: req.body.file
     };
     url = "/documents";

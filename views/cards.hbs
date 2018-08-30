@@ -39,12 +39,12 @@
 </div>
 <div class="row" style="margin:0;">
   <div class="col-md-4 light-theme ">
-    <div class="doc-title">Form {{isWrite}}</div>
+    <div class="doc-title">Form </div>
     {{>form formType="edit"}}
   </div>
   <div class="col-md-3 light-theme">
     <div class="doc-title">Belgeler</div>
-    <ul id="tree2">
+    <ul id="tree2" class="treeCont">
       {{>tree item=folders.folders.[0]}}
     </ul>
   </div>
@@ -109,10 +109,10 @@
           </div>
           <div data-documentdetail class="process-box">
             <div class="row">
-              <div class="col-md-3 document-image">
+              <div class="col-md-12">
+                <div class="document-image">
                 <i class="far fa-file-image"></i>
               </div>
-              <div class="col-md-9">
                 <span class="document-title"></span>
                 <br/>
                 <button data-optionitem data-key="documentOpen" type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top"
@@ -160,8 +160,15 @@
                 </div>
 
                 <div class="form-group col-md-6">
-                  <label for="roleName">Yetki Seti</label>
-                  <input type="text" class="form-control form-control-sm" id="authset" name="authset" placeholder="Döküman adı giriniz" autocomplete="off">
+                  <label for="authSet">Yetki Seti</label>
+                  <select class="form-control" id="authSet" name="authSet">
+                <option>Lütfen Seçin</option>
+                {{# each authSets }} {{#if_equal ../cardtemplate.authSet this.[0] }}
+                <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
+                {{else}}
+                <option value="{{ this.[0] }}">{{ this.[1] }}</option>
+                {{/if_equal}} {{/ each}}
+              </select>
                 </div>
               </div>
 

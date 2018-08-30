@@ -1,54 +1,58 @@
 {{#if_equal formType "edit"}}
 <form method="POST" action="/cards/{{cardTemplate._id}}/{{card._id}}">
- {{else}}
-<form method="POST" action="/cards">
- {{/if_equal}}
- {{#if_equal formType "add"}}
-  <div class="form-group">
-    <label for="name">Dosya Kart Adı</label>
-    <input type="text" class="form-control form-control-sm" id="name" name="name" value="{{ cardTemplate.name }}" placeholder="Dosya kart adı giriniz.">
-  </div>
-  {{/if_equal}}
+  {{else}}
+  <form method="POST" action="/cards">
+    {{/if_equal}} {{#if_equal formType "add"}}
+    <div class="form-group">
+      <label for="name">Dosya Kart Adı</label>
+      <input type="text" class="form-control form-control-sm" id="name" name="name" value="{{ cardTemplate.name }}" placeholder="Dosya kart adı giriniz.">
+    </div>
 
-  {{# each cardTemplate.form.fields }}
+    <div class="form-group">
+      <label for="authSet">Yetki Seti</label>
+      <select class="form-control" id="authSet" name="authSet">
+        <option>Lütfen Seçin</option>
+        {{# each authSets }} {{#if_equal ../cardtemplate.authSet this.[0] }}
+        <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
+        {{else}}
+        <option value="{{ this.[0] }}">{{ this.[1] }}</option>
+        {{/if_equal}} {{/ each}}
+      </select>
+    </div>
+    {{/if_equal}} {{# each cardTemplate.form.fields }}
 
-  <div class="form-group">
-    <label for="{{ this.field }}">{{ this.label }}</label>
-    {{#if_equal this.control "textbox"}} 
-    
-    {{#if_equal this.type "text"}}
-    <input type="text" {{#unless ../isWrite}}readonly{{/unless}} value="{{getObjectVal ../card.fields.[0] this.label ../formType}}" class="{{#unless ../isWrite}}form-control-plaintext{{else}}form-control{{/unless}} form-control-sm " id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}">
-    {{/if_equal}}
-    
-    {{#if_equal this.type "datetime"}}
-    <input type="text" {{#unless ../isWrite}}readonly{{/unless}} value="{{getObjectVal ../card.fields.[0] this.label ../formType}}" data-datetimepicker class="{{#unless ../isWrite}}form-control-plaintext{{else}}form-control{{/unless}} form-control-sm" id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}">
+    <div class="form-group">
+      <label for="{{ this.field }}">{{ this.label }}</label>
+      {{#if_equal this.control "textbox"}} {{#if_equal this.type "text"}}
+      <input type="text" {{#unless ../isWrite}}readonly{{/unless}} value="{{getObjectVal ../card.fields.[0] this.label ../formType}}"
+        class="{{#unless ../isWrite}}form-control-plaintext{{else}}form-control{{/unless}} form-control-sm " id="{{cFormName this.label ../formType}}"
+        name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}"> {{/if_equal}} {{#if_equal this.type "datetime"}}
+      <input type="text" {{#unless ../isWrite}}readonly{{/unless}} value="{{getObjectVal ../card.fields.[0] this.label ../formType}}"
+        data-datetimepicker class="{{#unless ../isWrite}}form-control-plaintext{{else}}form-control{{/unless}} form-control-sm"
+        id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}"> {{/if_equal}} {{/if_equal}} {{#if_equal this.control "textarea"}}
+      <textarea class="{{#unless ../isWrite}}form-control-plaintext{{else}}form-control{{/unless}} form-control-sm" {{#unless ../isWrite}}readonly{{/unless}}
+        id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}"
+        rows="3">{{getObjectVal ../card.fields.[0] this.label ../formType}}</textarea> {{/if_equal}} {{#if_equal this.control "dropdown"}}
+      <select class="{{#unless ../isWrite}}form-control-plaintext{{else}}form-control{{/unless}} form-control-sm" {{#unless ../isWrite}}readonly{{/unless}}
+        id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}">
+        {{# each this.options }} {{#if_equal (getObjectVal ../../card.fields.[0] ../this.label ../../formType) this.val }}
+        <option value="{{ this.val }}" selected="selected">{{ this.option }}</option>
+        {{else}}
+        <option value="{{ this.val }}">{{ this.option }}</option>
+        {{/if_equal}} {{/ each}}
+      </select>
       {{/if_equal}}
-      
-    {{/if_equal}} {{#if_equal this.control "textarea"}}
-    <textarea class="{{#unless ../isWrite}}form-control-plaintext{{else}}form-control{{/unless}} form-control-sm" {{#unless ../isWrite}}readonly{{/unless}} id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}"
-      rows="3">{{getObjectVal ../card.fields.[0] this.label ../formType}}</textarea> 
-    {{/if_equal}}
-    
-    {{#if_equal this.control "dropdown"}}
-    <select class="{{#unless ../isWrite}}form-control-plaintext{{else}}form-control{{/unless}} form-control-sm" {{#unless ../isWrite}}readonly{{/unless}} id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}">
-      {{# each this.options }} {{#if_equal (getObjectVal ../../card.fields.[0] ../this.label ../../formType) this.val }}
-      <option value="{{ this.val }}" selected="selected">{{ this.option }}</option>
-      {{else}}
-      <option value="{{ this.val }}">{{ this.option }}</option>
-      {{/if_equal}} {{/ each}}
-    </select>
-    {{/if_equal}}
 
-  </div>
+    </div>
 
-  {{/ each }}
+    {{/ each }}
 
-  <input type="hidden" name="cardId" id="cardId" value="{{cardTemplate._id}}">
-  <input type="hidden" name="type" id="type" value="{{cardTemplate.type}}">
-  <input type="hidden" name="form" id="form" value="{{cardTemplate.form._id}}">
-
-  {{#if isWrite}}<div class="form-group">
-    <button type="submit" class="btn btn-outline-success btn-sm"><i class="fas fa-save"></i> Kaydet</button>
-  </div>
-  {{/if}}
-</form>
+    <input type="hidden" name="cardId" id="cardId" value="{{cardTemplate._id}}">
+    <input type="hidden" name="type" id="type" value="{{cardTemplate.type}}">
+    <input type="hidden" name="form" id="form" value="{{cardTemplate.form._id}}"> {{#if isWrite}}
+    <div class="form-group">
+      <button type="submit" class="btn btn-outline-success btn-sm">
+        <i class="fas fa-save"></i> Kaydet</button>
+    </div>
+    {{/if}}
+  </form>

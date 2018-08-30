@@ -56,9 +56,23 @@ body {
   font-size: .8rem;
   line-height: 1.1;
 }
+.document-image {
+  float: left;
+  margin-right: 10px;
+}
+.document-title {
+  background-color: rgba(0,0,0,.1);
+  display: inline-block;
+  padding: 2px 5px;
+  margin-bottom: .1rem;
+  font-size: .9rem;
+}
 .document-image i {
   font-size: 4rem;
   color:#f00;
+}
+.treeCont li {
+  white-space: nowrap;
 }
 .light-theme {
     background-color: #fff;
