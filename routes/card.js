@@ -235,9 +235,11 @@ router.post("/:cardTemplateId/:cardId", (req, res, next) => {
 });
 
 // Form Delete
-router.get("/delete/:cardId", (req, res, next) => { api.apiCall(
+router.get("/delete/:cardId", (req, res, next) => { 
+  console.log(req.body);
+  api.apiCall(
   req.session.token,
-  `/cards/delete/${req.params.cardId}`,
+  `/card/delete/${req.params.cardId}`,
   "GET",
   null,
   (result) => {

@@ -32,6 +32,9 @@ const app = express();
 // app.set('views', path.join(__dirname, 'views'));
 app.engine('.hbs', expressHbs({
   defaultLayout: 'layout', extname: '.hbs', helpers: {
+    consoleLog: function(o){
+      return console.log(o);
+    },
     if_equal: function (a, b, opts) {
       if (a == b) {
         return opts.fn(this)
