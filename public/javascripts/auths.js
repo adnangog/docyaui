@@ -169,20 +169,33 @@
                             });
                         });
 
-                        Docya.AuthController.Owners=[];
-                        Docya.AuthController.Auths=[];
+                        Docya.AuthController.Owners = [];
+                        Docya.AuthController.Auths = [];
                         Docya.AuthController.createList();
                     }
                 }
 
-                
+
             });
         },
         initAuthFilter: function () {
             $("body").on("keyup", "#authFilter", function (e) {
                 var jqElm = $(this);
-                $('.auth-list .list-group-item:icontains('+ jqElm.val() +')').show();
-                $('.auth-list .list-group-item:not(:icontains('+ jqElm.val() +'))').hide();
+                var jqElmVal = jqElm.val()
+                if (jqElmVal.length > 0)
+                    $("#deleteFilter").text("X");
+                else
+                    $("#deleteFilter").text("Filtrele");
+                $('.auth-list .list-group-item:icontains(' + jqElmVal + ')').show();
+                $('.auth-list .list-group-item:not(:icontains(' + jqElmVal + '))').hide();
+            });
+        },
+        initDeleteFilter: function () {
+            $("body").on("click", "#deleteFilter", function (e) {
+                var jqElm = $(this);
+                jqElm.text("Filtrele");
+                $("#authFilter").val("");
+                $('.auth-list .list-group-item').show();
             });
         },
         initFormSubmit: function () {
@@ -223,6 +236,7 @@
             });
         },
         initElements: function () {
+            this.initDeleteFilter();
             this.initAuthFilter();
             this.initUserRemove();
             this.initUserAdd();
