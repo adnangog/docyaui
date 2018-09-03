@@ -619,3 +619,12 @@ span.tooltip:after {
   color: #fff;
 }
 
+/*filrer box*/
+.filter-box, .filter-box input, .filter-box div, .filter-box span {
+  line-height: 1rem;
+  font-size: .75rem;
+}
+#deleteFilter {
+  cursor: pointer;
+}
+

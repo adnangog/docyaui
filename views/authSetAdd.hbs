@@ -35,16 +35,20 @@
           </div>
           <div class="col-md-7">
             <div class="row">
-              <div class="col-md-6"><label>Yetkiler</label></div>
-              <div class="col-md-6"><div class="input-group float-right" style="width:250px;">
-              <input type="text" id="authFilter" placeholder="anahtar kelime" class="form-control">
-              <div class="input-group-append">
-    <span class="input-group-text" id="deleteFilter">Filtrele</span>
-  </div>
-            </div></div>
-            
+              <div class="col-md-6">
+                <label>Yetkiler</label>
+              </div>
+              <div class="col-md-6">
+                <div class="input-group float-right filter-box" style="width:200px;">
+                  <input type="text" id="authFilter" placeholder="anahtar kelime" class="form-control">
+                  <div class="input-group-append">
+                    <span class="input-group-text" id="deleteFilter"><i class="fas fa-filter"></i></span>
+                  </div>
+                </div>
+              </div>
+
             </div>
-            
+
             <div class="card auth-list">
               <ul class="list-group list-group-flush">
                 {{# each authorities }}

@@ -183,9 +183,9 @@
                 var jqElm = $(this);
                 var jqElmVal = jqElm.val()
                 if (jqElmVal.length > 0)
-                    $("#deleteFilter").text("X");
+                    $("#deleteFilter").html('<i class="fas fa-times"></i>');
                 else
-                    $("#deleteFilter").text("Filtrele");
+                    $("#deleteFilter").html('<i class="fas fa-filter"></i>');
                 $('.auth-list .list-group-item:icontains(' + jqElmVal + ')').show();
                 $('.auth-list .list-group-item:not(:icontains(' + jqElmVal + '))').hide();
             });
@@ -193,7 +193,7 @@
         initDeleteFilter: function () {
             $("body").on("click", "#deleteFilter", function (e) {
                 var jqElm = $(this);
-                jqElm.text("Filtrele");
+                jqElm.html('<i class="fas fa-filter"></i>');
                 $("#authFilter").val("");
                 $('.auth-list .list-group-item').show();
             });
