@@ -26,3 +26,19 @@ function showMessageBox(type, title, message) {
     $('#messageBox .modal-body').html(message);
     $('#messageBox').modal('show');
 }
+
+jQuery.expr[':'].icontains = function (a, i, m) {
+    return replaceTurkish(jQuery(a).text())
+        .indexOf(replaceTurkish(m[3])) >= 0;
+};
+
+function replaceTurkish(e) {
+    var output = e.toUpperCase();
+    output = output.replace("Ğ", "G");
+    output = output.replace("Ü", "U");
+    output = output.replace("Ş", "S");
+    output = output.replace("İ", "I");
+    output = output.replace("Ö", "O");
+    output = output.replace("Ç", "C");
+    return output;
+}

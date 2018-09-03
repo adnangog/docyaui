@@ -203,7 +203,8 @@ router.post("/set/:authSetId", (req, res, next) => {
     {
       name: req.body.name,
       description: req.body.description,
-      json: req.body.json
+      json: req.body.json,
+      rDate: Date.now()
     },
     (result) => {
       let opt = "";

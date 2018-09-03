@@ -156,6 +156,35 @@
                 }
             });
         },
+        initUserRemove: function () {
+            $("body").on("click", ".user-remove", function (e) {
+                e.preventDefault();
+                var ids_ = Docya.AuthController.Owners;
+
+                if (confirm("Silmek istediğinizden emin misiniz?")) {
+                    if (ids_ !== null && ids_ !== "" && ids_.length > 0) {
+                        ids_.map((x, i) => {
+                            Docya.AuthController.AuthJSON = Docya.AuthController.AuthJSON.filter(function (a) {
+                                return a.ownerId !== x;
+                            });
+                        });
+
+                        Docya.AuthController.Owners=[];
+                        Docya.AuthController.Auths=[];
+                        Docya.AuthController.createList();
+                    }
+                }
+
+                
+            });
+        },
+        initAuthFilter: function () {
+            $("body").on("keyup", "#authFilter", function (e) {
+                var jqElm = $(this);
+                $('.auth-list .list-group-item:icontains('+ jqElm.val() +')').show();
+                $('.auth-list .list-group-item:not(:icontains('+ jqElm.val() +'))').hide();
+            });
+        },
         initFormSubmit: function () {
             $("body").on("click", "[data-submit]", function (e) {
                 e.preventDefault();
@@ -194,6 +223,8 @@
             });
         },
         initElements: function () {
+            this.initAuthFilter();
+            this.initUserRemove();
             this.initUserAdd();
             this.initAuthClick();
             this.initUserClick();
