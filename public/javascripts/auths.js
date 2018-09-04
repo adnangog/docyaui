@@ -41,7 +41,7 @@
                 e.preventDefault();
 
                 if (Docya.AuthController.Owners.length < 1) {
-                    alert("Lütfen önce Kişi ya da Rol seçiniz.");
+                    showMessageBox("danger","Uyari","Lütfen önce Kişi ya da Rol seçiniz.");
                     return false;
                 }
 

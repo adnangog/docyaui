@@ -308,11 +308,18 @@
                     $("[name=folder]").val(Docya.CardController.SelectedFolder);
 
                     $(".document-title").text(jqElm.attr("data-name"));
-                    $(".document-image").attr("data-f", jqElm.attr("data-f")).html("<img class='img-fluid img-thumbnail' src='/documents/view/" + jqElm.attr("data-f") + "?height=50' />");
+                    $(".document-image").attr("data-f", jqElm.attr("data-id")).html(Docya.CardController.ThumbCreator(jqElm.attr("data-ft"),jqElm.attr("data-id")));
                 };
 
                 Docya.CardController.getNotes();
             });
+        },
+        ThumbCreator: function(fileType,file){
+            let html = "<i class='far fa-file-image'></i>";
+            if (fileType.indexOf("image")>-1){
+                html = "<img class='img-fluid img-thumbnail' src='/documents/view/" + file + "?height=50' />";
+            }
+            return html;
         },
         initContextMenu: function () {
             $.contextMenu({
@@ -515,7 +522,7 @@
                     {{> tree this}}\
                     {{/each}}\
                     {{#each this.documents}}\
-                    <li data-treeitem data-document class="context-menu-one2" data-name="{{this.name}}" data-f="{{this.file}}" data-id={{this.id}}>{{this.name}}</li>\
+                    <li data-treeitem data-document class="context-menu-one2" data-name="{{this.name}}" data-f="{{this.file}}" data-ft="{{this.fileType}}" data-id={{this.id}}>{{this.name}}</li>\
                     {{/each}}\
                     </ul>\
                     {{/ifCond}}\

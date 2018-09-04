@@ -36,10 +36,10 @@
               </div>
 
               <div class="form-group col-md-6">
-                <label for="roleName">Form</label>
+                <label for="roleName">Form </label>
                 <select class="form-control" id="form" name="form">
                   <option>Lütfen Seçin</option>
-                  {{# each forms }} {{#if_equal ../cardtemplate.form this.[0] }}
+                  {{# each forms }} {{#if_equal ../cardtemplate.form._id this.[0] }}
                   <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
                   {{else}}
                   <option value="{{ this.[0] }}">{{ this.[1] }}</option>

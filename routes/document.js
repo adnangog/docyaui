@@ -6,40 +6,61 @@ const async = require("async");
 const fs = require('fs');
 const sharp = require('sharp');
 
-router.get('/download/:file', function (req, res, next) {
-  var filePath = "./uploads/documents/" + req.params.file; // Or format the path using the `id` rest param
-  var fileName = "download.png"; // The default name the browser will use
+router.get('/download/:documentId', function (req, res, next) {
 
-  res.download(filePath, fileName);
+  api.apiCall(
+    req.session.token,
+    `/document/${req.params.documentId}`,
+    "GET",
+    null,
+    (doc) => {
+      var filePath = "./uploads/documents/" + doc.version.file;
+      var fileName = doc.version.filename;
+
+      res.download(filePath, fileName);
+    }
+  );
 });
 
-router.get('/view/:file', function (req, res, next) {
+router.get('/view/:documentId', function (req, res, next) {
 
-  let width = null;
-  let height = null;
+  api.apiCall(
+    req.session.token,
+    `/document/${req.params.documentId}`,
+    "GET",
+    null,
+    (doc) => {
 
-  if (req.query.width)
-    width = parseInt(req.query.width);
+      fs.access('./uploads/documents/' + doc.version.file, fs.constants.F_OK, (err) => {
+        if (err) {
+          res.status(404).send('Not found');
+        } else {
 
-  if (req.query.height)
-    height = parseInt(req.query.height);
-  // Check if the file exists in the current directory, and if it is writable.
-  fs.access('./uploads/documents/' + req.params.file, fs.constants.F_OK, (err) => {
-    if (err) {
-      res.status(404).send('Not found');
-    } else {
-      const readStream = fs.createReadStream('./uploads/documents/' + req.params.file);
-      let transform = sharp()
-        .toFormat('png')
-        .resize(width, height);
+          if (doc.version.fileType.indexOf("image") > -1) {
+            let width = null;
+            let height = null;
 
-      readStream.pipe(transform).pipe(res);
+            if (req.query.width)
+              width = parseInt(req.query.width);
+
+            if (req.query.height)
+              height = parseInt(req.query.height);
+
+            const readStream = fs.createReadStream('./uploads/documents/' + doc.version.file);
+            let transform = sharp()
+              .toFormat(doc.version.fileType.replace("image/", ""))
+              .resize(width, height);
+
+            readStream.pipe(transform).pipe(res);
+
+          } else {
+            const src = fs.createReadStream('./uploads/documents/' + doc.version.file);
+            src.pipe(res);
+          }
+        }
+      });
     }
-  });
-
-
-  // const src = fs.createReadStream('./uploads/' + req.params.file);
-  // src.pipe(res);
+  );
 
 });
 
@@ -206,11 +227,11 @@ router.post("/", (req, res, next) => {
     items,
     result => {
       let opt = "";
-      if (result.messageType == 1){
+      if (result.messageType == 1) {
         opt = "?messageType=1&message=Kayıt Eklendi";
         if (req.body.isCard) {
-          JSON.parse(req.body.json).map(f=>{
-            helper.moveFile('./uploads/'+y.filename,'./uploads/documents/'+y.filename,null);
+          JSON.parse(req.body.json).map(f => {
+            helper.moveFile('./uploads/' + y.filename, './uploads/documents/' + y.filename, null);
           });
         }
       }
