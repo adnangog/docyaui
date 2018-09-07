@@ -50,7 +50,6 @@ router.post("/", (req, res, next) => {
         rDate: Date.now()
       },
       (result) => {
-        console.log(result);
         let opt = "";
         if (result.messageType == 1)
           opt = "?messageType=1&message=Kayıt Eklendi";

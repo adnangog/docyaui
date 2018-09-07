@@ -182,7 +182,6 @@ router.get("/delete/:folderId", (req, res, next) => {
     "GET",
     null,
     result => {
-      console.log(result);
       res.redirect("/folders");
     }
   );

@@ -93,7 +93,6 @@ router.get("/:cardtemplateId", (req, res, next) => {
     },
     (callback) => {
       api.apiCall(req.session.token, `/authority/set`, "POST", req.body.pagelimit, (result) => {
-        console.log(result);
         callback(null, result);
       });
     }

@@ -30,7 +30,8 @@ router.get("/:cardTemplateId/:cardId", (req, res, next) => {
       api.apiCall(req.session.token, `/card/`, "POST", {
         page: parseInt(req.query.page) || 0,
         limit: parseInt(req.query.limit) || 25,
-        cardTemplateId: req.params.cardTemplateId
+        cardTemplateId: req.params.cardTemplateId,
+        userId: req.session.userId
       }, (result) => {
         callback(null, result);
       });
@@ -41,7 +42,12 @@ router.get("/:cardTemplateId/:cardId", (req, res, next) => {
       });
     },
     (callback) => {
-      api.apiCall(req.session.token, `/card/${req.params.cardId}`, "GET", null, (result) => {
+      api.apiCall(req.session.token, `/card/${req.params.cardId}`, "POST", {
+        page: parseInt(req.query.page) || 0,
+        limit: parseInt(req.query.limit) || 25,
+        cardTemplateId: req.params.cardTemplateId,
+        userId: req.session.userId
+      }, (result) => {
         callback(null, result);
       });
     },
@@ -68,7 +74,7 @@ router.get("/:cardTemplateId/:cardId", (req, res, next) => {
 
       let total = results[0].count;
 
-      let userAuths = [1,2,3,4,5]; // gecici.
+      let isWrite = helper.isAuth(results[2].authsetitems,helper.auths.cardEdit)
 
       helper.paging(req.body.page, req.body.limit, total, "cards", (paging) => {
         res.render("cards", {
@@ -76,7 +82,7 @@ router.get("/:cardTemplateId/:cardId", (req, res, next) => {
           route: "cards",
           data: total === undefined ? false : results[0],
           cardTemplate: results[1],
-          isWrite: helper.isAuth(userAuths,helper.auths.write), //gecici
+          isWrite: isWrite, //gecici
           isForm:true,
           card: results[2],
           folders: results[3],
@@ -155,7 +161,8 @@ router.get("/:cardTemplateId", (req, res, next) => {
       api.apiCall(req.session.token, `/card/`, "POST", {
         page: parseInt(req.query.page) || 0,
         limit: parseInt(req.query.limit) || 25,
-        cardTemplateId: req.params.cardTemplateId
+        cardTemplateId: req.params.cardTemplateId,
+        userId: req.session.userId
       }, (result) => {
         callback(null, result);
       });
@@ -236,7 +243,6 @@ router.post("/:cardTemplateId/:cardId", (req, res, next) => {
 
 // Form Delete
 router.get("/delete/:cardId", (req, res, next) => { 
-  console.log(req.body);
   api.apiCall(
   req.session.token,
   `/card/delete/${req.params.cardId}`,

@@ -59,7 +59,16 @@ module.exports.cHeaderText = (text) => {
 
 }
 
-module.exports.isAuth = (auths, auth) => {
+module.exports.isAuth = (authsetitems, auth) => {
+  var auths = [];
+  authsetitems.map((x,i)=>{
+    x.authorities && x.authorities.map((a,k)=>{
+      if(auths.indexOf(a)===-1){
+        auths.push(a);
+      }
+    });
+  });
+
   return auths.indexOf(auth) > -1;
 }
 
@@ -72,16 +81,33 @@ function onlyUnique(value, index, self) {
 }
 
 module.exports.auths = {
-  view: 1,
-  read: 2,
-  write: 3,
-  delete: 4
+  cardView: 1,
+  cardEdit: 2,
+  cardDelete: 3,
+  docHistory: 4,
+  docSendEmail: 5,
+  docSend: 6,
+  docWatch: 7,
+  docOpen: 8,
+  docRename: 9,
+  docCheckOut: 10,
+  docAuth: 11,
+  docNote: 12,
+  docSave: 13,
+  docPrint: 14,
+  docVersion: 15,
+  folderCreate: 16,
+  folderDelete: 17,
+  docCreate: 18,
+  docDelete: 19,
+  folderView: 20,
+  docView: 21
+  //...
 }
 
 module.exports.deleteFile = (path) => {
   fs.unlink(path, (err) => {
     if (err) throw err;
-    console.log(path + ' was deleted');
   });
 }
 

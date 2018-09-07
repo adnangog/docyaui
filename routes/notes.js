@@ -8,7 +8,6 @@ const async = require("async");
 
 // Note Add
 router.post("/", (req, res, next) => {
-  console.log(req.body)
   api.apiCall(
     req.session.token,
     "/note/add",
@@ -22,7 +21,6 @@ router.post("/", (req, res, next) => {
       rDate: Date.now()
     },
     (result) => {
-      console.log(result)
       let opt = "";
       if (result.messageType == 1)
         opt = "?messageType=1&message=Kayıt Eklendi";
