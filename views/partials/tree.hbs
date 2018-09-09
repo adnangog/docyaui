@@ -1,12 +1,12 @@
 
-    <li data-treeitem {{#if_equal item.type "folder"}}data-folder{{/if_equal}} class="context-menu-one" data-name="{{item.name}}" data-id={{item.id}}>{{item.name}}
+    <li data-treeitem {{#if_equal item.type "folder"}}data-folder{{/if_equal}} class="context-menu-one" data-name="{{item.name}}" data-id={{item.id}} data-a="{{jsonStringify item.authsetitems.0.authorities}}">{{item.name}}
         {{#ifCond item.childs '||' item.documents}}
         <ul data-parent={{item.id}}>
         {{#each item.childs}}
         {{> tree item=this}}
         {{/each}}
         {{#each item.documents}}
-        <li data-treeitem data-document class="context-menu-one2" data-name="{{this.name}}" data-f="{{this.file}}" data-ft="{{this.fileType}}" data-id={{this.id}}>{{this.name}}</li>
+        <li data-treeitem data-document class="context-menu-one2" data-name="{{this.name}}" data-f="{{this.file}}" data-ft="{{this.fileType}}" data-id={{this.id}} data-a="{{jsonStringify this.authsetitems.0.authorities}}">{{this.name}}</li>
         {{/each}}
         </ul>
         {{/ifCond}}

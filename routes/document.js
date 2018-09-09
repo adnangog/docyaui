@@ -48,7 +48,6 @@ router.get('/view/:documentId', function (req, res, next) {
 
             const readStream = fs.createReadStream('./uploads/documents/' + doc.version.file);
             let transform = sharp()
-              .toFormat(doc.version.fileType.replace("image/", ""))
               .resize(width, height);
 
             readStream.pipe(transform).pipe(res);

@@ -101,7 +101,8 @@ module.exports.auths = {
   docCreate: 18,
   docDelete: 19,
   folderView: 20,
-  docView: 21
+  docView: 21,
+  folderRename: 22
   //...
 }
 

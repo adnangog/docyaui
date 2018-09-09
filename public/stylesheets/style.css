@@ -628,3 +628,8 @@ span.tooltip:after {
   cursor: pointer;
 }
 
+/* yetki */
+[data-ca] {
+  display: none;
+}
+

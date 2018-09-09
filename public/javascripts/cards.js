@@ -10,6 +10,34 @@
         CardTemplateId: $("#cardtemplate").val(),
         SelectedFolder: null,
         SelectedFolderName: null,
+        Auths : {
+            cardView: 1,
+            cardEdit: 2,
+            cardDelete: 3,
+            docHistory: 4,
+            docSendEmail: 5,
+            docSend: 6,
+            docWatch: 7,
+            docOpen: 8,
+            docRename: 9,
+            docCheckOut: 10,
+            docAuth: 11,
+            docNote: 12,
+            docSave: 13,
+            docPrint: 14,
+            docVersion: 15,
+            folderCreate: 16,
+            folderDelete: 17,
+            docCreate: 18,
+            docDelete: 19,
+            folderView: 20,
+            docView: 21,
+            folderRename: 22
+            //...
+        },
+        checkAuth : function(auths, auth) {          
+            return auths.indexOf(auth) > -1;
+          },
         handleProcess: function (folder, action) {
             $('#myTab a[href="#process"]').tab('show') // Select tab by name
             $(".process-box").hide();
@@ -80,7 +108,8 @@
         createDocumentItems: function () {
             $("#DocumentItems").html("");
             Docya.CardController.DocumentJSON.map((x, i) => {
-                let htmlBlok = '<div class="form-row">';
+                let htmlBlok = '<hr/>';
+                htmlBlok += '<div class="form-row">';
                 htmlBlok += '<div class="form-group col-md-6">';
                 htmlBlok += '<label for="itemFileName' + i + '">Dosya Adı</label>';
                 htmlBlok += '<input type="text" class="form-control form-control-sm" id="itemFileName" name="itemFileName" value="' + x.originalname + '" readonly>';
@@ -88,11 +117,27 @@
 
                 htmlBlok += '<div class="form-group col-md-6">';
                 htmlBlok += '<label for="itemName' + i + '">Döküman Adı</label>';
-                htmlBlok += '<input type="text" class="form-control form-control-sm" id="itemName' + i + '" name="itemName' + i + '"  data-doc-index="' + i + '"  value="' + x.name + '" placeholder="Döküman adı giriniz" autocomplete="off">';
+                htmlBlok += '<input type="text" class="form-control form-control-sm" id="itemName' + i + '" name="itemName' + i + '" data-doc-itemname  data-doc-index="' + i + '"  value="' + x.name + '" placeholder="Döküman adı giriniz" autocomplete="off">';
                 htmlBlok += '</div>';
                 htmlBlok += '</div>';
 
+                htmlBlok += '<div class="form-row">';
+                htmlBlok += '<label for="authSet' + i + '">Yetki Seti</label>';
+                htmlBlok += '<select data-doc-authSet data-doc-index="' + i + '" id="authSet' + i + '" class="form-control form-control-sm">Yetki Seti';
+                Docya.CardController.AuthSets.map(x=>{
+                    htmlBlok += '<option value="' + x[0] + '">'+x[1]+'</option>';
+                });
+                htmlBlok += '</select>';
+                htmlBlok += '</div>';
+
                 $("#DocumentItems").append(htmlBlok);
+            });
+
+            $('#DocumentItems select.form-control').fastselect({
+                placeholder: 'Lütfen seçin',
+                searchPlaceholder: 'Arama kriterinizi girin',
+                noResultsText: 'Kayıt bulunamadı',
+                userOptionPrefix: 'Ekle'
             });
         },
         initOptionClick: function () {
@@ -107,13 +152,26 @@
             });
         },
         initNameChange: function () {
-            $("body").on("blur", "[data-doc-index]", function (e) {
+            $("body").on("blur", "[data-doc-itemname]", function (e) {
 
                 var jqElm = $(this);
                 var index = jqElm.attr("data-doc-index");
                 var text = jqElm.val();
 
                 Docya.CardController.DocumentJSON[index].name = text;
+
+                $("#json").val(JSON.stringify(Docya.CardController.DocumentJSON));
+
+            });
+        },
+        initAuthSetChange: function () {
+            $("body").on("change", "[data-doc-authSet]", function (e) {
+
+                var jqElm = $(this);
+                var index = jqElm.attr("data-doc-index");
+                var text = jqElm.val();
+
+                Docya.CardController.DocumentJSON[index].authSet = text;
 
                 $("#json").val(JSON.stringify(Docya.CardController.DocumentJSON));
 
@@ -282,6 +340,16 @@
             $("body").on("click", "[data-treeitem]", function (e) {
                 e.stopPropagation();
                 var jqElm = $(this);
+
+                var authorities_ = JSON.parse(jqElm.attr("data-a"));
+                console.log(authorities_);
+
+                $("[data-ca]").hide();
+
+                authorities_.map(a=>{
+                    $("[data-ca="+a+"]").show();
+                });
+
                 $("[data-treeitem]").removeClass("selected");
                 jqElm.toggleClass('selected');
 
@@ -432,6 +500,7 @@
                 init: function () {
                     this.on('success', function (file, resp) {
                         Docya.CardController.DocumentJSON.push({
+                            authSet: null,
                             filename: resp.filename,
                             originalname: resp.originalname,
                             name: resp.originalname,
@@ -514,15 +583,19 @@
                 console.log(something);
             });
 
+            Handlebars.registerHelper("jsonStringify", function (something) {
+                return JSON.stringify(something);
+            });
+
             let cb = function (data) {
-                var partial = '{{#if this}}<li data-treeitem {{#ifCond this.type "===" "folder"}}data-folder{{/ifCond}} class="context-menu-one" data-name="{{this.name}}" data-id={{this.id}}>{{this.name}}\
+                var partial = '{{#if this}}<li data-treeitem {{#ifCond this.type "===" "folder"}}data-folder{{/ifCond}} class="context-menu-one" data-name="{{this.name}}" data-id={{this.id}} data-a="{{jsonStringify this.authsetitems.0.authorities}}">{{this.name}}\
                     {{#ifCond this.childs "||" this.documents}}\
                     <ul data-parent={{this.id}}>\
                     {{#each this.childs}}\
                     {{> tree this}}\
                     {{/each}}\
                     {{#each this.documents}}\
-                    <li data-treeitem data-document class="context-menu-one2" data-name="{{this.name}}" data-f="{{this.file}}" data-ft="{{this.fileType}}" data-id={{this.id}}>{{this.name}}</li>\
+                    <li data-treeitem data-document class="context-menu-one2" data-name="{{this.name}}" data-f="{{this.file}}" data-ft="{{this.fileType}}" data-id={{this.id}}  data-a="{{jsonStringify this.authsetitems.0.authorities}}">{{this.name}}</li>\
                     {{/each}}\
                     </ul>\
                     {{/ifCond}}\
@@ -552,6 +625,7 @@
             this.initOptionClick();
             this.initTreeClick();
             this.initNameChange();
+            this.initAuthSetChange();
             this.initFormSubmit();
             this.initTableRowClick();
             this.getAuthSets();

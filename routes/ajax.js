@@ -18,7 +18,8 @@ router.post("/", (req, res, next) => {
       break;
     case 'getTree':
       route = `/folder/card/${req.body.card}`;
-      type = "GET";
+      params.userId = req.session.userId;
+      type = "POST";
       break;
     case 'getNote':
       route = "/note";
