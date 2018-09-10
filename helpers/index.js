@@ -62,7 +62,7 @@ module.exports.cHeaderText = (text) => {
 
 module.exports.isAuth = (authsetitems, auth) => {
   var auths = [];
-  authsetitems.map((x,i)=>{
+  authsetitems && authsetitems.map((x,i)=>{
     x.authorities && x.authorities.map((a,k)=>{
       if(auths.indexOf(a)===-1){
         auths.push(a);

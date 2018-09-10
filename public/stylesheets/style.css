@@ -667,4 +667,8 @@ span.tooltip:after {
 [data-ca] {
   display: none;
 }
+/* mail sender*/
+.mail-body .row {
+  margin-bottom: .5rem;
+}
 
