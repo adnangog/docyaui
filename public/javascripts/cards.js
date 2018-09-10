@@ -595,7 +595,7 @@
                     {{> tree this}}\
                     {{/each}}\
                     {{#each this.documents}}\
-                    <li data-treeitem data-document class="context-menu-one2" data-name="{{this.name}}" data-f="{{this.file}}" data-ft="{{this.fileType}}" data-id={{this.id}}  data-a="{{jsonStringify this.authsetitems.0.authorities}}">{{this.name}}</li>\
+                    <li data-treeitem data-document class="context-menu-one2" data-name="{{this.name}}" data-f="{{this.file}}" data-ft="{{this.fileType}}" data-id={{this.id}}  data-a="{{jsonStringify this.authsetitems.authorities}}">{{this.name}}</li>\
                     {{/each}}\
                     </ul>\
                     {{/ifCond}}\
