@@ -2,8 +2,18 @@
     if (w.Docya == undefined) w.Docya = {};
 
     w.Docya.AuthController = {
-        JsJSON: $("#jsJSON")[0] && $("#jsJSON").val().length > 0 ? JSON.parse($("#jsJSON").val()) : [],
-        AuthJSON: $("#json")[0] && $("#json").val().length > 0 ? JSON.parse($("#json").val()) : [],
+        JsJSON:
+            $("#jsJSON")[0] && $("#jsJSON").val().length > 0
+                ? JSON.parse($("#jsJSON").val())
+                : [],
+        AuthJSON:
+            $("#json")[0] && $("#json").val().length > 0
+                ? JSON.parse($("#json").val())
+                : [],
+        Authorities:
+            $("#authoritiesJSON")[0] && $("#authoritiesJSON").val().length > 0
+                ? JSON.parse($("#authoritiesJSON").val())
+                : [],
         InputJSON: [],
         Owners: [],
         Auths: [],
@@ -41,7 +51,11 @@
                 e.preventDefault();
 
                 if (Docya.AuthController.Owners.length < 1) {
-                    showMessageBox("danger","Uyari","Lütfen önce Kişi ya da Rol seçiniz.");
+                    showMessageBox(
+                        "danger",
+                        "Uyari",
+                        "Lütfen önce Kişi ya da Rol seçiniz."
+                    );
                     return false;
                 }
 
@@ -164,9 +178,11 @@
                 if (confirm("Silmek istediğinizden emin misiniz?")) {
                     if (ids_ !== null && ids_ !== "" && ids_.length > 0) {
                         ids_.map((x, i) => {
-                            Docya.AuthController.AuthJSON = Docya.AuthController.AuthJSON.filter(function (a) {
-                                return a.ownerId !== x;
-                            });
+                            Docya.AuthController.AuthJSON = Docya.AuthController.AuthJSON.filter(
+                                function (a) {
+                                    return a.ownerId !== x;
+                                }
+                            );
                         });
 
                         Docya.AuthController.Owners = [];
@@ -174,20 +190,19 @@
                         Docya.AuthController.createList();
                     }
                 }
-
-
             });
         },
         initAuthFilter: function () {
             $("body").on("keyup", "#authFilter", function (e) {
                 var jqElm = $(this);
-                var jqElmVal = jqElm.val()
+                var jqElmVal = jqElm.val();
                 if (jqElmVal.length > 0)
                     $("#deleteFilter").html('<i class="fas fa-times"></i>');
-                else
-                    $("#deleteFilter").html('<i class="fas fa-filter"></i>');
-                $('.auth-list .list-group-item:icontains(' + jqElmVal + ')').show();
-                $('.auth-list .list-group-item:not(:icontains(' + jqElmVal + '))').hide();
+                else $("#deleteFilter").html('<i class="fas fa-filter"></i>');
+                $(".auth-list .list-group-item:icontains(" + jqElmVal + ")").show();
+                $(
+                    ".auth-list .list-group-item:not(:icontains(" + jqElmVal + "))"
+                ).hide();
             });
         },
         initDeleteFilter: function () {
@@ -195,7 +210,66 @@
                 var jqElm = $(this);
                 jqElm.html('<i class="fas fa-filter"></i>');
                 $("#authFilter").val("");
-                $('.auth-list .list-group-item').show();
+                $(".auth-list .list-group-item").show();
+            });
+        },
+        initSelectAll: function () {
+            $("body").on("click", "[data-selectall]", function (e) {
+
+                var getOwner = item => {
+                    if (Docya.AuthController.Owners.indexOf(item.ownerId) > -1) {
+                        return true;
+                    }
+                    return false;
+                };
+
+                if (Docya.AuthController.Owners.length < 1) {
+                    showMessageBox(
+                        "danger",
+                        "Uyari",
+                        "Lütfen önce Kişi ya da Rol seçiniz."
+                    );
+                    return false;
+                }
+
+                var jqElm = $(this);
+                var current = jqElm.attr("data-selectall");
+
+                if (current === "0") {
+
+                    jqElm.attr("data-selectall","1");
+                    jqElm.addClass("selected");
+
+                    $(".list-group-flush .list-group-item").addClass("selected");
+
+                    Docya.AuthController.Authorities.map(x => {
+                        var index = Docya.AuthController.Auths.indexOf(parseInt(x));
+                        if (index < 0) {
+                            Docya.AuthController.Auths.push(parseInt(x));
+                        }
+                    });
+
+                    Docya.AuthController.AuthJSON.filter(getOwner).map((x, i) => {
+                        x.authorities = Docya.AuthController.Auths;
+                    });
+
+                } else {
+
+                    jqElm.attr("data-selectall","0");
+                    jqElm.removeClass("selected");
+
+                    Docya.AuthController.Auths = [];
+
+                    Docya.AuthController.AuthJSON.filter(getOwner).map((x, i) => {
+                        x.authorities = [];
+                    });
+
+                    $(".list-group-flush .list-group-item").removeClass("selected");
+                }
+
+                $("#json").val(JSON.stringify(Docya.AuthController.AuthJSON));
+
+                Docya.AuthController.createList();
             });
         },
         initFormSubmit: function () {
@@ -207,26 +281,38 @@
                 let errors = [];
 
                 if ($("#name").val() === "") {
-                    errors.push('Yetki seti adı boş bırakılamaz.');
-                    $("#name").css({ "border": "1px solid #f00" });
-                    $("#name").next().remove();
-                    $("#name").after('<div class="invalid-feedback">Lütfen yetki seti adı giriniz.</div>');
+                    errors.push("Yetki seti adı boş bırakılamaz.");
+                    $("#name").css({ border: "1px solid #f00" });
+                    $("#name")
+                        .next()
+                        .remove();
+                    $("#name").after(
+                        '<div class="invalid-feedback">Lütfen yetki seti adı giriniz.</div>'
+                    );
                 } else {
-                    $("#name").css({ "border": "1px solid #ced4da" });
-                    $("#name").next().remove();
+                    $("#name").css({ border: "1px solid #ced4da" });
+                    $("#name")
+                        .next()
+                        .remove();
                 }
 
                 if (Docya.AuthController.AuthJSON.length === 0) {
-                    errors.push('Yetki setine en az bir kişi ya da rol eklemelisiniz.');
+                    errors.push("Yetki setine en az bir kişi ya da rol eklemelisiniz.");
                 }
 
-                if (Docya.AuthController.AuthJSON.filter(function (a) { return a.authorities.length === 0; }).length > 0) {
-                    errors.push('Yetki atanmayan kişi ya da rol bulunuyor.');
+                if (
+                    Docya.AuthController.AuthJSON.filter(function (a) {
+                        return a.authorities.length === 0;
+                    }).length > 0
+                ) {
+                    errors.push("Yetki atanmayan kişi ya da rol bulunuyor.");
                 }
 
                 if (errors.length > 0) {
                     let errorHtml = "<ul>";
-                    errors.map(x => { errorHtml += "<li>" + x + "</li>" });
+                    errors.map(x => {
+                        errorHtml += "<li>" + x + "</li>";
+                    });
                     errorHtml += "</ul>";
                     showMessageBox("danger", "Uyari", errorHtml);
                     return false;
@@ -236,6 +322,7 @@
             });
         },
         initElements: function () {
+            this.initSelectAll();
             this.initDeleteFilter();
             this.initAuthFilter();
             this.initUserRemove();

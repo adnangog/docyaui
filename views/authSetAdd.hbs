@@ -15,6 +15,7 @@
         </div>
 
         <input type="hidden" name="json" id="json" value="{{ jsonStringify authSet.json }}" />
+        <input type="hidden" name="authoritiesJSON" id="authoritiesJSON" value="{{ jsonStringify authorities }}" />
 
         <button type="type" data-submit class="btn btn-primary">{{#if edit}}Güncelle{{ authority._id }}{{else}}Kaydet{{/if}}</button>
       </div>
@@ -39,6 +40,7 @@
                 <label>Yetkiler</label>
               </div>
               <div class="col-md-6">
+                <span data-selectall="0">Tümünü Seç</span>
                 <div class="input-group float-right filter-box" style="width:200px;">
                   <input type="text" id="authFilter" placeholder="anahtar kelime" class="form-control">
                   <div class="input-group-append">

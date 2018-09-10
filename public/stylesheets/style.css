@@ -628,6 +628,41 @@ span.tooltip:after {
   cursor: pointer;
 }
 
+[data-selectall] {
+  font-size: .75rem;
+  cursor: pointer;
+}
+[data-selectall]::before {
+  content: "";
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ccc;
+  background-color: #eee;
+  margin-right: 5px;
+  vertical-align: text-top;
+}
+[data-selectall]:hover::before {
+  background-color: #ddd;
+}
+[data-selectall].selected::before {
+  background-color: #dee2e6;
+  border-color: #babcbd;
+}
+[data-selectall].selected::after {
+  position: absolute;
+  display: block;
+  content: "";
+  left: 23px;
+  top: 10px;
+  width: 5px;
+  height: 10px;
+  border: solid #222;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
 /* yetki */
 [data-ca] {
   display: none;

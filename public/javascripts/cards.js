@@ -32,14 +32,15 @@
             docDelete: 19,
             folderView: 20,
             docView: 21,
-            folderRename: 22
+            folderRename: 22,
+            docNoteView: 23
             //...
         },
         checkAuth : function(auths, auth) {          
             return auths.indexOf(auth) > -1;
           },
         handleProcess: function (folder, action) {
-            $('#myTab a[href="#process"]').tab('show') // Select tab by name
+            // $('#myTab a[href="#process"]').tab('show') // Select tab by name
             $(".process-box").hide();
             if (folder) {
                 $("[data-folderoptions]").fadeIn();
@@ -342,7 +343,6 @@
                 var jqElm = $(this);
 
                 var authorities_ = JSON.parse(jqElm.attr("data-a"));
-                console.log(authorities_);
 
                 $("[data-ca]").hide();
 
@@ -464,11 +464,11 @@
 
                 },
                 items: {
-                    "documentEdit": { name: "Adını Değiştir", icon: "edit" },
-                    "documentOpen": { name: "Aç", icon: "fas fa-folder-open" },
-                    "documentSave": { name: "Kaydet", icon: "fas fa-file-alt" },
-                    "sep1": "---------",
-                    "documentDelete": { name: "Sil", icon: "delete" }
+                    documentEdit: { name: "Adını Değiştir", icon: "edit" },
+                    documentOpen: { name: "Aç", icon: "fas fa-folder-open" },
+                    documentSave: { name: "Kaydet", icon: "fas fa-file-alt" },
+                    sep1: "---------",
+                    documentDelete: { name: "Sil", icon: "delete" }
                 }
             });
         },

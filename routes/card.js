@@ -79,7 +79,9 @@ router.get("/:cardTemplateId/:cardId", (req, res, next) => {
 
       let total = results[0].count;
 
-      let isWrite = helper.isAuth(results[2].authsetitems,helper.auths.cardEdit)
+      let isWrite = helper.isAuth(results[2].authsetitems,helper.auths.cardEdit);
+
+      //helper.sendMail('Bay Docya <docyaapp@gmail.com>','adnangog@gmail.com', 'Docya - Bilgilendirme Maili', '<h1>Merhaba</h1><p>Docya iyi günler diler</p>');
 
       helper.paging(req.body.page, req.body.limit, total, "cards", (paging) => {
         res.render("cards", {

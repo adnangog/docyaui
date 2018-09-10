@@ -58,7 +58,7 @@
   <div class="col-md-2">...</div>
   <div class="col-md-5">
     <div class="btn-group" role="group" aria-label="Basic example">
-      <button type="button" class="btn btn-warning btn-sm" data-ca="6">
+      <button type="button" class="btn btn-warning btn-sm"  data-toggle="modal" data-target="#mailModal" data-ca="6">
         <i class="fas fa-share-square"></i>
       </button>
       <button type="button" class="btn btn-success btn-sm" data-ca="5">
@@ -90,7 +90,7 @@
       <li class="nav-item">
         <a class="nav-link active" id="process-tab" data-toggle="tab" href="#process" role="tab" aria-controls="process" aria-selected="true">İşlemler</a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item"  data-ca="23">
         <a class="nav-link" id="note-tab" data-toggle="tab" href="#notes" role="tab" aria-controls="notes" aria-selected="false">Notlar</a>
       </li>
       <li class="nav-item"  data-ca="4">
@@ -168,8 +168,8 @@
             </div>
 
           </div>
-          <div data-documentsection class="process-box"  data-ca="18">
-            <form id="upload-widget" method="post" action="/cards/upload" class="dropzone">
+          <div data-documentsection class="process-box">
+            <form id="upload-widget" method="post" action="/cards/upload" class="dropzone" data-ca="18">
               <div class="fallback">
                 <input name="file" type="file" />
               </div>
@@ -186,8 +186,8 @@
 
             </form>
           </div>
-          <div data-foldersection class="process-box" data-ca="16">
-            <form method="POST" action="/folders">
+          <div data-foldersection class="process-box">
+            <form method="POST" action="/folders" data-ca="16">
               <div class="form-row">
                 <div class="form-group col-md-6">
                   <label for="name">Klasör Adı</label>
@@ -215,8 +215,8 @@
 
             </form>
           </div>
-          <div data-folderedit class="process-box" data-ca="22">
-            <form method="POST" action="/folders/folderId">
+          <div data-folderedit class="process-box">
+            <form method="POST" action="/folders/folderId" data-ca="22">
               <div class="form-group">
                 <label for="name">Klasör Adı</label>
                 <input type="text" class="form-control form-control-sm" id="foldername" name="foldername" placeholder="Klasör adı giriniz"
@@ -228,8 +228,8 @@
 
             </form>
           </div>
-          <div data-documentedit class="process-box" data-ca="9">
-            <form method="POST" action="/documents/documentId">
+          <div data-documentedit class="process-box">
+            <form method="POST" action="/documents/documentId" data-ca="9">
               <div class="form-group">
                 <label for="name">Döküman Adı</label>
                 <input type="text" class="form-control form-control-sm" id="documentname" name="documentname" placeholder="Döküman adı giriniz"
@@ -244,9 +244,8 @@
         </div>
       </div>
       <div class="tab-pane fade" id="notes" role="tabpanel" aria-labelledby="notes-tab">
-        <div id="note-container"></div>
-        <form method="POST" action="/notes">
-
+        <div data-ca="23" id="note-container"></div>
+        <form method="POST" action="/notes" data-ca="12">
           <div class="form-group">
             <label for="roleName">Notunuz</label>
             <textarea class="form-control" id="note" name="note" placeholder="Notunuzu giriniz." rows="3"></textarea>
@@ -260,11 +259,15 @@
 
         </form>
       </div>
-      <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab" data-ca="4">
-        geçmiş
+      <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">
+        <div data-ca="4">
+          geçmiş
+        </div>
       </div>
-      <div class="tab-pane fade" id="subscription" role="tabpanel" aria-labelledby="subscription-tab" data-ca="7">
-        abonelik
+      <div class="tab-pane fade" id="subscription" role="tabpanel" aria-labelledby="subscription-tab">
+        <div data-ca="7">
+          abonelik
+        </div>
       </div>
     </div>
 
@@ -288,5 +291,25 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="mailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="mailModalTitle">Elektronik Posta Gönderimi</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+            <label for="name">Gönderen</label>
+            <span class="form-control-plaintext">Adnan Gög</span>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <input type="hidden" name="card" id="card" value="{{ card._id }}" />
 <input type="hidden" name="cardtemplate" id="cardtemplate" value="{{ cardTemplate._id }}" />

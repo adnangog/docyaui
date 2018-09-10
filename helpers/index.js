@@ -1,4 +1,5 @@
-var fs = require('fs');
+const fs = require('fs');
+const nodemailer = require('nodemailer');
 
 module.exports.paging = (page, limit, total, route, cb) => {
 
@@ -102,7 +103,8 @@ module.exports.auths = {
   docDelete: 19,
   folderView: 20,
   docView: 21,
-  folderRename: 22
+  folderRename: 22,
+  docNoteView: 23
   //...
 }
 
@@ -139,4 +141,30 @@ module.exports.moveFile = (oldPath, newPath, callback) => {
 
     readStream.pipe(writeStream);
   }
+}
+
+module.exports.sendMail = (from,to,subject,html) => {
+  let transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'docyaapp@gmail.com',
+      pass: '00002162'
+    }
+  });
+
+  let bilgiler = {
+    from: from,
+    to: to,
+    subject: subject,
+    html: html
+  };
+
+  transporter.sendMail(bilgiler, function (error, info) {
+
+    if (error) throw error;
+  
+    console.log('Eposta gönderildi ' + info.response);
+  
+  });
+
 }
