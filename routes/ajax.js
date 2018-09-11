@@ -13,6 +13,17 @@ router.post("/", (req, res, next) => {
   let cb = function () { };
 
   switch (req.body.process) {
+    case 'sendMail':
+      route = `/mail/add`;
+      params.mail = req.body.mail;
+      params.userId = req.session.userId;
+
+      var mail = JSON.parse(req.body.mail);
+
+      console.log(mail);
+
+      helper.sendMail(mail.From,mail.To, mail.Subject, mail.Message);
+      break;
     case 'getAuthSets':
       route = `/authority/set`;
       break;

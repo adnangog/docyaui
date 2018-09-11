@@ -675,10 +675,10 @@
                     case "select":
                         if (jqElm.is(':checked') === false) {
                             isPushable = false;
-                            $("[data-check='link']",jqParent).prop('checked',false);
-                            $("[data-check='zip']",jqParent).prop('checked',false);
-                            $("[data-check='password']",jqParent).prop('checked',false);
-                            $("[data-check='form']",jqParent).prop('checked',false);
+                            $("[data-check='link']", jqParent).prop('checked', false);
+                            $("[data-check='zip']", jqParent).prop('checked', false);
+                            $("[data-check='password']", jqParent).prop('checked', false);
+                            $("[data-check='form']", jqParent).prop('checked', false);
                         }
                         break;
                     case "link":
@@ -686,9 +686,9 @@
                             attachment.link = true;
                             attachment.zip = false;
                             attachment.password = false;
-                            $("[data-check='zip']",jqParent).prop('checked',false);
-                            $("[data-check='password']",jqParent).prop('checked',false);
-                            $("[data-check='select']",jqParent).prop('checked',true);
+                            $("[data-check='zip']", jqParent).prop('checked', false);
+                            $("[data-check='password']", jqParent).prop('checked', false);
+                            $("[data-check='select']", jqParent).prop('checked', true);
                         } else {
                             attachment.link = false;
                         }
@@ -697,8 +697,8 @@
                         if (jqElm.is(':checked') === true) {
                             attachment.zip = true;
                             attachment.link = false;
-                            $("[data-check='link']",jqParent).prop('checked',false);
-                            $("[data-check='select']",jqParent).prop('checked',true);
+                            $("[data-check='link']", jqParent).prop('checked', false);
+                            $("[data-check='select']", jqParent).prop('checked', true);
                         } else {
                             attachment.zip = false;
                         }
@@ -707,8 +707,8 @@
                         if (jqElm.is(':checked') === true) {
                             attachment.password = true;
                             attachment.link = false;
-                            $("[data-check='link']",jqParent).prop('checked',false);
-                            $("[data-check='select']",jqParent).prop('checked',true);
+                            $("[data-check='link']", jqParent).prop('checked', false);
+                            $("[data-check='select']", jqParent).prop('checked', true);
                         } else {
                             attachment.password = false;
                         }
@@ -716,7 +716,7 @@
                     case "form":
                         if (jqElm.is(':checked') === true) {
                             attachment.form = true;
-                            $("[data-check='select']",jqParent).prop('checked',true);
+                            $("[data-check='select']", jqParent).prop('checked', true);
                         } else {
                             attachment.form = false;
                         }
@@ -731,6 +731,48 @@
 
             });
         },
+        initMailSend: function () {
+            $("body").on("click", "[data-mailsend]", function (e) {
+                e.preventDefault();
+
+                var errors = [];
+                var obj = Docya.CardController.Email;
+
+                if (obj.To === null || obj.To === "")
+                    errors.push("Aliciyi girin.");
+
+                if (obj.Subject === null || obj.Subject === "")
+                    errors.push("Konu girin");
+
+                if (obj.Message === null || obj.Message === "")
+                    errors.push("Mesaj bos birakilamaz.");
+
+                if (obj.Attachments.length < 1)
+                    errors.push("Lutfen en az 1 dokuman ekleyin.");
+
+                if (errors.length > 0) {
+                    let errorHtml = "<ul>";
+                    errors.map(x => {
+                        errorHtml += "<li>" + x + "</li>";
+                    });
+                    errorHtml += "</ul>";
+                    showMessageBox("danger", "Uyari", errorHtml);
+                    return false;
+                }
+
+                let data = {
+                    process: "sendMail",
+                    card: Docya.CardController.CardId,
+                    mail: JSON.stringify(Docya.CardController.Email)
+                };
+
+                let cb = function (data) {
+
+                };
+
+                Docya.CardController.initAjax(data, cb);
+            })
+        },
         initAjax: function (data, cb) {
             $.ajax({
                 dataType: "json",
@@ -741,6 +783,7 @@
             });
         },
         initElements: function () {
+            this.initMailSend();
             this.initMailFields();
             this.initMailAttachments();
             this.initDropzone();
