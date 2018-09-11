@@ -5,12 +5,12 @@
     w.Docya.CardController = {
         DocumentJSON: [],
         InputJSON: [],
-        AuthSets:[],
+        AuthSets: [],
         CardId: $("#card").val(),
         CardTemplateId: $("#cardtemplate").val(),
         SelectedFolder: null,
         SelectedFolderName: null,
-        Auths : {
+        Auths: {
             cardView: 1,
             cardEdit: 2,
             cardDelete: 3,
@@ -36,9 +36,17 @@
             docNoteView: 23
             //...
         },
-        checkAuth : function(auths, auth) {          
+        Email: {
+            From: "Adnan GÖG <adnangog@gmail.com>",
+            To: null,
+            Cc: null,
+            Subject: null,
+            Message: null,
+            Attachments: []
+        },
+        checkAuth: function (auths, auth) {
             return auths.indexOf(auth) > -1;
-          },
+        },
         handleProcess: function (folder, action) {
             // $('#myTab a[href="#process"]').tab('show') // Select tab by name
             $(".process-box").hide();
@@ -125,8 +133,8 @@
                 htmlBlok += '<div class="form-row">';
                 htmlBlok += '<label for="authSet' + i + '">Yetki Seti</label>';
                 htmlBlok += '<select data-doc-authSet data-doc-index="' + i + '" id="authSet' + i + '" class="form-control form-control-sm">Yetki Seti';
-                Docya.CardController.AuthSets.map(x=>{
-                    htmlBlok += '<option value="' + x[0] + '">'+x[1]+'</option>';
+                Docya.CardController.AuthSets.map(x => {
+                    htmlBlok += '<option value="' + x[0] + '">' + x[1] + '</option>';
                 });
                 htmlBlok += '</select>';
                 htmlBlok += '</div>';
@@ -320,7 +328,7 @@
                 }
 
                 if (errors.length > 0) {
-                    showMessageBox("danger","Uyari",errors.join("<br/>"));
+                    showMessageBox("danger", "Uyari", errors.join("<br/>"));
                     return false;
                 }
 
@@ -346,8 +354,8 @@
 
                 $("[data-ca]").hide();
 
-                authorities_.map(a=>{
-                    $("[data-ca="+a+"]").show();
+                authorities_.map(a => {
+                    $("[data-ca=" + a + "]").show();
                 });
 
                 $("[data-treeitem]").removeClass("selected");
@@ -376,15 +384,15 @@
                     $("[name=folder]").val(Docya.CardController.SelectedFolder);
 
                     $(".document-title").text(jqElm.attr("data-name"));
-                    $(".document-image").attr("data-f", jqElm.attr("data-id")).html(Docya.CardController.ThumbCreator(jqElm.attr("data-ft"),jqElm.attr("data-id")));
+                    $(".document-image").attr("data-f", jqElm.attr("data-id")).html(Docya.CardController.ThumbCreator(jqElm.attr("data-ft"), jqElm.attr("data-id")));
                 };
 
                 Docya.CardController.getNotes();
             });
         },
-        ThumbCreator: function(fileType,file){
+        ThumbCreator: function (fileType, file) {
             let html = "<i class='far fa-file-image'></i>";
-            if (fileType.indexOf("image")>-1){
+            if (fileType.indexOf("image") > -1) {
                 html = "<img class='img-fluid img-thumbnail' src='/documents/view/" + file + "?height=50' />";
             }
             return html;
@@ -610,6 +618,119 @@
 
             Docya.CardController.initAjax(data, cb);
         },
+        initMailFields: function () {
+            $("body").on("blur", "[data-mailfields]", function (e) {
+
+                var jqElm = $(this);
+                var id = jqElm.attr("id");
+                var val = jqElm.val();
+
+                switch (id) {
+                    case "mailTo":
+                        Docya.CardController.Email.To = val;
+                        break;
+                    case "mailCc":
+                        Docya.CardController.Email.Cc = val;
+                        break;
+                    case "mailSubject":
+                        Docya.CardController.Email.Subject = val;
+                        break;
+                    case "mailMessage":
+                        Docya.CardController.Email.Message = val;
+                        break;
+
+                    default:
+                        break;
+                }
+
+            });
+        },
+        initMailAttachments: function () {
+            $("body").on("change", "[data-check]", function (e) {
+
+
+
+                var jqElm = $(this);
+                var jqParent = jqElm.parents(".mail-attachments");
+                var docId = jqParent.attr("data-id");
+                var docname = jqParent.attr("data-name");
+                var type = jqElm.attr("data-check");
+                var isPushable = true;
+                var attachment = {
+                    id: docId,
+                    name: docname,
+                    link: false,
+                    zip: false,
+                    password: false,
+                    form: false
+                };
+                var isExist = Docya.CardController.Email.Attachments.filter(function (a) { return a.id === docId }).length > 0;
+
+                if (isExist) {
+                    attachment = Docya.CardController.Email.Attachments.filter(function (a) { return a.id === docId })[0];
+                    Docya.CardController.Email.Attachments = Docya.CardController.Email.Attachments.filter(function (a) { return a.id !== docId });
+                }
+
+                switch (type) {
+                    case "select":
+                        if (jqElm.is(':checked') === false) {
+                            isPushable = false;
+                            $("[data-check='link']",jqParent).prop('checked',false);
+                            $("[data-check='zip']",jqParent).prop('checked',false);
+                            $("[data-check='password']",jqParent).prop('checked',false);
+                            $("[data-check='form']",jqParent).prop('checked',false);
+                        }
+                        break;
+                    case "link":
+                        if (jqElm.is(':checked') === true) {
+                            attachment.link = true;
+                            attachment.zip = false;
+                            attachment.password = false;
+                            $("[data-check='zip']",jqParent).prop('checked',false);
+                            $("[data-check='password']",jqParent).prop('checked',false);
+                            $("[data-check='select']",jqParent).prop('checked',true);
+                        } else {
+                            attachment.link = false;
+                        }
+                        break;
+                    case "zip":
+                        if (jqElm.is(':checked') === true) {
+                            attachment.zip = true;
+                            attachment.link = false;
+                            $("[data-check='link']",jqParent).prop('checked',false);
+                            $("[data-check='select']",jqParent).prop('checked',true);
+                        } else {
+                            attachment.zip = false;
+                        }
+                        break;
+                    case "password":
+                        if (jqElm.is(':checked') === true) {
+                            attachment.password = true;
+                            attachment.link = false;
+                            $("[data-check='link']",jqParent).prop('checked',false);
+                            $("[data-check='select']",jqParent).prop('checked',true);
+                        } else {
+                            attachment.password = false;
+                        }
+                        break;
+                    case "form":
+                        if (jqElm.is(':checked') === true) {
+                            attachment.form = true;
+                            $("[data-check='select']",jqParent).prop('checked',true);
+                        } else {
+                            attachment.form = false;
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+
+                if (isPushable)
+                    Docya.CardController.Email.Attachments.push(attachment);
+
+            });
+        },
         initAjax: function (data, cb) {
             $.ajax({
                 dataType: "json",
@@ -620,6 +741,8 @@
             });
         },
         initElements: function () {
+            this.initMailFields();
+            this.initMailAttachments();
             this.initDropzone();
             this.initContextMenu();
             this.initOptionClick();

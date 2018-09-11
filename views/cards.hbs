@@ -305,25 +305,25 @@
         <div class="row">
           <div class="col-md-3">Kime : </div>
           <div class="col-md-9">
-            <input type="text" class="form-control form-control-sm" id="mailTo" name="mailTo" value="" placeholder="">
+            <input type="text" class="form-control form-control-sm" id="mailTo" name="mailTo" value="" placeholder="" data-mailfields>
           </div>
         </div>
         <div class="row">
           <div class="col-md-3">Cc : </div>
           <div class="col-md-9">
-            <input type="text" class="form-control form-control-sm" id="mailTo" name="mailTo" value="" placeholder="">
+            <input type="text" class="form-control form-control-sm" id="mailCc" name="mailCc" value="" placeholder="" data-mailfields>
           </div>
         </div>
         <div class="row">
           <div class="col-md-3">Konu : </div>
           <div class="col-md-9">
-            <input type="text" class="form-control form-control-sm" id="mailTo" name="mailTo" value="" placeholder="">
+            <input type="text" class="form-control form-control-sm" id="mailSubject" name="mailSubject" value="" placeholder="" data-mailfields>
           </div>
         </div>
         <div class="row">
           <div class="col-md-3">Mesaj : </div>
           <div class="col-md-9">
-            <textarea class="form-control form-control-sm" id="mailMessage" name="mailMessage"></textarea>
+            <textarea class="form-control form-control-sm" id="mailMessage" name="mailMessage" data-mailfields></textarea>
           </div>
         </div>
         <div>
@@ -339,30 +339,18 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td><input type="checkbox"></td>
-                <td>Doe</td>
-                <td><input type="checkbox"></td>
-                <td><input type="checkbox"></td>
-                <td><input type="checkbox"></td>
-                <td><input type="checkbox"></td>
+               {{#each folders.folders }}
+               {{#each this.documents }}
+              <tr class="mail-attachments" data-id="{{this.id}}" data-name="{{this.name}}">
+                <td><input type="checkbox" data-check="select"></td>
+                <td class="text-cont-cont"><span class="text-cont">{{this.name}}</span></td>
+                <td><input type="checkbox" data-check="link"></td>
+                <td><input type="checkbox" data-check="zip"></td>
+                <td><input type="checkbox" data-check="password"></td>
+                <td><input type="checkbox" data-check="form"></td>
               </tr>
-              <tr>
-                <td><input type="checkbox"></td>
-                <td>Doe</td>
-                <td><input type="checkbox"></td>
-                <td><input type="checkbox"></td>
-                <td><input type="checkbox"></td>
-                <td><input type="checkbox"></td>
-              </tr>
-              <tr>
-                <td><input type="checkbox"></td>
-                <td>Doe</td>
-                <td><input type="checkbox"></td>
-                <td><input type="checkbox"></td>
-                <td><input type="checkbox"></td>
-                <td><input type="checkbox"></td>
-              </tr>
+              {{/each}}
+              {{/each}}
             </tbody>
           </table>
         </div>

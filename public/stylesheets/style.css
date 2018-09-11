@@ -671,4 +671,20 @@ span.tooltip:after {
 .mail-body .row {
   margin-bottom: .5rem;
 }
+.text-cont-cont {
+  position:relative;
+  width: 280px;
+}
+.text-cont {
+  position: absolute;
+  top:2px;
+  width: 250px;
+  text-overflow: ellipsis;
+  overflow:hidden;
+  display: inline-block;
+}
+.text-cont:hover {
+  overflow: visible;
+  margin-bottom: 1px;
+}
 
