@@ -20,9 +20,7 @@ router.post("/", (req, res, next) => {
 
       var mail = JSON.parse(req.body.mail);
 
-      console.log(mail);
-
-      helper.sendMail(mail.From,mail.To, mail.Subject, mail.Message);
+      helper.sendMail(mail.From, mail.To, mail.Subject, mail.Message);
       break;
     case 'getAuthSets':
       route = `/authority/set`;
