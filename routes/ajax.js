@@ -9,7 +9,7 @@ router.post("/", (req, res, next) => {
   let route = "";
   let type = "POST";
   let params = req.body.pagelimit;
-  let cb = function() {};
+  let cb = function () { };
 
   switch (req.body.process) {
     case "sendDoc":
@@ -73,7 +73,7 @@ router.post("/", (req, res, next) => {
         helper.moveFile(
           "./uploads/" + f.filename,
           "./uploads/documents/" + f.filename,
-          () => {}
+          () => { }
         );
       });
 
