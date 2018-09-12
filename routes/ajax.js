@@ -27,9 +27,6 @@ router.post("/", (req, res, next) => {
 
       var mail = JSON.parse(req.body.mail);
 
-<<<<<<< HEAD
-      helper.sendMail(mail.From, mail.To, mail.Subject, mail.Message);
-=======
       helper.sendMail(
         mail.From,
         mail.To,
@@ -37,7 +34,6 @@ router.post("/", (req, res, next) => {
         mail.Message,
         mail.Attachments
       );
->>>>>>> 559bb63f9396ec650b343d757fd71a94277a6384
       break;
     case "getAuthSets":
       route = `/authority/set`;
