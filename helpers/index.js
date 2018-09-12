@@ -1,5 +1,6 @@
 const fs = require('fs');
 const nodemailer = require('nodemailer');
+const expressHbs = require('express-handlebars');
 
 module.exports.paging = (page, limit, total, route, cb) => {
 
@@ -152,25 +153,27 @@ module.exports.sendMail = (from, to, subject, html, attachments) => {
     }
   });
 
-  let bilgiler = {
-    from: from,
-    to: to,
-    subject: subject,
-    html: html,
-    attachments: attachments.map(x => {
-      return {
-        filename: x.filename,
-        content: fs.createReadStream('./uploads/documents/' + x.file)
-      }
-    })
-  };
+  expressHbs.create().render("./views/mails/document.hbs", { html: html }).then((renderedHtml) => {
+    let bilgiler = {
+      from: from,
+      to: to,
+      subject: subject,
+      html: renderedHtml,
+      attachments: attachments.map(x => {
+        return {
+          filename: x.filename,
+          content: fs.createReadStream('./uploads/documents/' + x.file)
+        }
+      })
+    };
 
-  transporter.sendMail(bilgiler, function (error, info) {
+    transporter.sendMail(bilgiler, function (error, info) {
 
-    if (error) throw error;
+      if (error) throw error;
 
-    console.log('Eposta gönderildi ' + info.response);
+      console.log('Eposta gönderildi ' + info.response);
 
+    });
   });
 
 }
