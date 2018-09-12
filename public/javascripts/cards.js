@@ -523,6 +523,34 @@
                 }
             };
         },
+        getUsers: function () {
+
+            let data = {
+                process: "getUsers"
+            };
+
+            let cb = function (data) {
+
+                $("#docToContainer").html("");
+
+                var template = '<select class="form-control" id="docUser" name="docUser">{{# each data}}<option value="{{this.[0]}}">{{this.[1]}} {{this.[2]}}</option>{{/each}}</select>';
+                var renderedHtml = Handlebars.compile(template)(data);
+
+                $("#docToContainer").append(renderedHtml);
+
+                $('#docUser').fastselect({
+                    placeholder: 'Lütfen seçin',
+                    searchPlaceholder: 'Arama kriterinizi girin',
+                    noResultsText: 'Kayıt bulunamadı',
+                    userOptionPrefix: 'Ekle'
+                });
+
+            };
+
+            
+
+            Docya.CardController.initAjax(data, cb);
+        },
         getAuthSets: function () {
 
             let data = {
@@ -530,7 +558,7 @@
             };
 
             let cb = function (data) {
-                Docya.CardController.AuthSets = data.data.data;
+                Docya.CardController.AuthSets = data.data;
             };
 
             Docya.CardController.initAjax(data, cb);
@@ -545,7 +573,7 @@
             };
 
             let cb = function (data) {
-                var template = '{{# each data.data}}<div class="chat-box"><div class="chat-avatar"><i class="fas fa-user-tie"></i></div><div class="chat-text">{{this.[1]}}</div><div class="chat-info">{{this.[2]}} - {{this.[3]}}</div></div>{{/each}}';
+                var template = '{{# each data}}<div class="chat-box"><div class="chat-avatar"><i class="fas fa-user-tie"></i></div><div class="chat-text">{{this.[1]}}</div><div class="chat-info">{{this.[2]}} - {{this.[3]}}</div></div>{{/each}}';
                 var renderedHtml = Handlebars.compile(template)(data);
                 $("#note-container").append(renderedHtml);
             };
@@ -610,7 +638,7 @@
                 </li>{{/if}}';
                 var template = "{{> tree this }}";
                 Handlebars.registerPartial("tree", partial);
-                var renderedHtml = Handlebars.compile(template)(data.data.folders[0]);
+                var renderedHtml = Handlebars.compile(template)(data.folders[0]);
                 $("#tree2").append(renderedHtml);
                 $('#tree2').treed({ openedClass: 'fa-folder-open', closedClass: 'fa-folder' });
                 Docya.CardController.initContextMenu();
@@ -654,11 +682,15 @@
                 var jqParent = jqElm.parents(".mail-attachments");
                 var docId = jqParent.attr("data-id");
                 var docname = jqParent.attr("data-name");
+                var f = jqParent.attr("data-f");
+                var fn = jqParent.attr("data-fn");
                 var type = jqElm.attr("data-check");
                 var isPushable = true;
                 var attachment = {
                     id: docId,
                     name: docname,
+                    file: f,
+                    filename: fn,
                     link: false,
                     zip: false,
                     password: false,
@@ -739,16 +771,16 @@
                 var obj = Docya.CardController.Email;
 
                 if (obj.To === null || obj.To === "")
-                    errors.push("Aliciyi girin.");
+                    errors.push("Alıcıyı girin.");
 
                 if (obj.Subject === null || obj.Subject === "")
-                    errors.push("Konu girin");
+                    errors.push("Konu girin.");
 
                 if (obj.Message === null || obj.Message === "")
-                    errors.push("Mesaj bos birakilamaz.");
+                    errors.push("Mesaj boş bırakılamaz.");
 
                 if (obj.Attachments.length < 1)
-                    errors.push("Lutfen en az 1 dokuman ekleyin.");
+                    errors.push("Lütfen en az 1 döküman ekleyin.");
 
                 if (errors.length > 0) {
                     let errorHtml = "<ul>";
@@ -756,7 +788,7 @@
                         errorHtml += "<li>" + x + "</li>";
                     });
                     errorHtml += "</ul>";
-                    showMessageBox("danger", "Uyari", errorHtml);
+                    showMessageBox("danger", "UYARI", errorHtml);
                     return false;
                 }
 
@@ -767,6 +799,78 @@
                 };
 
                 let cb = function (data) {
+                    if(data.messageType === 1){
+                        showMessageBox("success", "BİLGİ", data.message);
+
+                        Docya.CardController.Email.To=null;
+                        Docya.CardController.Email.Cc=null;
+                        Docya.CardController.Email.Subject=null;
+                        Docya.CardController.Email.Message=null;
+                        Docya.CardController.Email.Attachments=[];
+
+                        $("[data-mailfields]").each(function(){
+                            $(this).val("");
+                        });
+
+                        $("[data-check]").each(function(){
+                            $(this).prop('checked', false);
+                        });
+
+                        $('#mailModal').modal('hide');
+
+
+                    }else{
+                        showMessageBox("danger", "UYARI", data.message);
+                    }
+
+                };
+
+                Docya.CardController.initAjax(data, cb);
+            })
+        },
+        initDocSend: function () {
+            $("body").on("click", "[data-docsend]", function (e) {
+                e.preventDefault();
+
+                var errors = [];
+
+                if ($("#docUser").val() === "")
+                    errors.push("Alıcıyı girin.");
+
+                if ($("#docMessage").val() === "")
+                    errors.push("Mesaj boş bırakılamaz.");
+
+
+                if (errors.length > 0) {
+                    let errorHtml = "<ul>";
+                    errors.map(x => {
+                        errorHtml += "<li>" + x + "</li>";
+                    });
+                    errorHtml += "</ul>";
+                    showMessageBox("danger", "UYARI", errorHtml);
+                    return false;
+                }
+
+                let data = {
+                    process: "sendDoc",
+                    user:$("#docUser").val(),
+                    document:Docya.CardController.SelectedDocument,
+                    message: $("#docMessage").val()
+                };
+
+                let cb = function (data) {
+                    if(data.messageType === 1){
+                        showMessageBox("success", "BİLGİ", data.message);
+
+                        $("#docMessage").val("");
+                        $("#docUser").val("");
+
+                        $('#docModal').modal('hide');
+
+
+                    }else{
+                        showMessageBox("danger", "UYARI", data.message);
+                    }
 
                 };
 
@@ -783,6 +887,7 @@
             });
         },
         initElements: function () {
+            this.initDocSend();
             this.initMailSend();
             this.initMailFields();
             this.initMailAttachments();
@@ -795,6 +900,7 @@
             this.initFormSubmit();
             this.initTableRowClick();
             this.getAuthSets();
+            this.getUsers();
         },
         init: function () {
             this.initElements();

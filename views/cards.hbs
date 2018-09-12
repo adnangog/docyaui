@@ -17,13 +17,16 @@
             {{#if_equal this.control "textbox"}} {{#if_equal this.type "text"}}
             <input type="text" {{#unless ../isWrite}}readonly{{/unless}} value="{{getObjectVal ../card.fields.[0] this.label ../formType}}"
               class="{{#unless ../isWrite}}form-control-plaintext{{else}}form-control{{/unless}} form-control-sm " id="{{cFormName this.label ../formType}}"
-              name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}"> {{/if_equal}} {{#if_equal this.type "datetime"}}
+              name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}"> {{/if_equal}} {{#if_equal
+            this.type "datetime"}}
             <input type="text" {{#unless ../isWrite}}readonly{{/unless}} value="{{getObjectVal ../card.fields.[0] this.label ../formType}}"
               data-datetimepicker class="{{#unless ../isWrite}}form-control-plaintext{{else}}form-control{{/unless}} form-control-sm"
-              id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}"> {{/if_equal}} {{/if_equal}} {{#if_equal this.control "textarea"}}
+              id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}">            {{/if_equal}}
+            {{/if_equal}} {{#if_equal this.control "textarea"}}
             <textarea class="{{#unless ../isWrite}}form-control-plaintext{{else}}form-control{{/unless}} form-control-sm" {{#unless ../isWrite}}readonly{{/unless}}
               id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}"
-              rows="3">{{getObjectVal ../card.fields.[0] this.label ../formType}}</textarea> {{/if_equal}} {{#if_equal this.control "dropdown"}}
+              rows="3">{{getObjectVal ../card.fields.[0] this.label ../formType}}</textarea> {{/if_equal}} {{#if_equal
+            this.control "dropdown"}}
             <select class="{{#unless ../isWrite}}form-control-plaintext{{else}}form-control{{/unless}} form-control-sm" {{#unless ../isWrite}}readonly{{/unless}}
               id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}">
               {{# each this.options }} {{#if_equal (getObjectVal ../../card.fields.[0] ../this.label ../../formType) this.val }}
@@ -54,10 +57,10 @@
   <div class="col-md-2">...</div>
   <div class="col-md-5">
     <div class="btn-group" role="group" aria-label="Basic example">
-      <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#mailModal" data-ca="6">
+      <button type="button" class="btn btn-warning btn-sm" data-ca="6" data-toggle="modal" data-target="#docModal">
         <i class="fas fa-share-square"></i>
       </button>
-      <button type="button" class="btn btn-success btn-sm" data-ca="5">
+      <button type="button" class="btn btn-success btn-sm" data-ca="5" data-toggle="modal" data-target="#mailModal">
         <i class="far fa-envelope"></i>
       </button>
       <button type="button" class="btn btn-danger btn-sm">
@@ -288,6 +291,37 @@
   </div>
 </div>
 
+<div class="modal fade" id="docModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Evrak Gönder</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mail-body">
+        <div class="row">
+          <div class="col-md-3">Kime : </div>
+          <div class="col-md-9" id="docToContainer">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-3">Mesaj : </div>
+          <div class="col-md-9">
+            <textarea class="form-control form-control-sm" id="docMessage" name="docMessage" data-docfields></textarea>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 text-right">
+            <button type="button" class="btn btn-primary" data-docsend>Gönder</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal fade" id="mailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
@@ -339,9 +373,8 @@
               </tr>
             </thead>
             <tbody>
-               {{#each folders.folders }}
-               {{#each this.documents }}
-              <tr class="mail-attachments" data-id="{{this.id}}" data-name="{{this.name}}">
+              {{#each folders.folders }} {{#each this.documents }}
+              <tr class="mail-attachments" data-id="{{this.id}}" data-name="{{this.name}}" data-f="{{this.file}}" data-fn="{{this.filename}}">
                 <td><input type="checkbox" data-check="select"></td>
                 <td class="text-cont-cont"><span class="text-cont">{{this.name}}</span></td>
                 <td><input type="checkbox" data-check="link"></td>
@@ -349,8 +382,7 @@
                 <td><input type="checkbox" data-check="password"></td>
                 <td><input type="checkbox" data-check="form"></td>
               </tr>
-              {{/each}}
-              {{/each}}
+              {{/each}} {{/each}}
             </tbody>
           </table>
         </div>

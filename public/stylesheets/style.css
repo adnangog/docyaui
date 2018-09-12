@@ -611,11 +611,20 @@ span.tooltip:after {
 }
 #messageBox .modal-header {
   padding: .75rem;
-  border-bottom-color: #bd2a38;
   color:#222;
+}
+#messageBox .modal-header.danger {
+  border-bottom-color: #bd2a38;
 }
 #messageBox .modal-content.danger {
   background-color: #dc3545;
+  color: #fff;
+}
+#messageBox .modal-header.success {
+  border-bottom-color: #60AC39;
+}
+#messageBox .modal-content.success {
+  background-color: #60AC39;
   color: #fff;
 }
 
