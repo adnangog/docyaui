@@ -62,9 +62,9 @@ module.exports.cHeaderText = (text) => {
 
 module.exports.isAuth = (authsetitems, auth) => {
   var auths = [];
-  authsetitems && authsetitems.map((x,i)=>{
-    x.authorities && x.authorities.map((a,k)=>{
-      if(auths.indexOf(a)===-1){
+  authsetitems && authsetitems.map((x, i) => {
+    x.authorities && x.authorities.map((a, k) => {
+      if (auths.indexOf(a) === -1) {
         auths.push(a);
       }
     });
@@ -143,7 +143,7 @@ module.exports.moveFile = (oldPath, newPath, callback) => {
   }
 }
 
-module.exports.sendMail = (from,to,subject,html) => {
+module.exports.sendMail = (from, to, subject, html, attachments) => {
   let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -156,15 +156,21 @@ module.exports.sendMail = (from,to,subject,html) => {
     from: from,
     to: to,
     subject: subject,
-    html: html
+    html: html,
+    attachments: attachments.map(x => {
+      return {
+        filename: x.filename,
+        content: fs.createReadStream('./uploads/documents/' + x.file)
+      }
+    })
   };
 
   transporter.sendMail(bilgiler, function (error, info) {
 
     if (error) throw error;
-  
+
     console.log('Eposta gönderildi ' + info.response);
-  
+
   });
 
 }
