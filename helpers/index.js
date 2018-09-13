@@ -1,6 +1,7 @@
 const fs = require('fs');
 const nodemailer = require('nodemailer');
 const expressHbs = require('express-handlebars');
+var archiver = require('archiver');
 
 module.exports.paging = (page, limit, total, route, cb) => {
 
