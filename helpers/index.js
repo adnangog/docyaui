@@ -168,13 +168,45 @@ module.exports.sendMail = (from, to, subject, html, attachments) => {
       })
     };
 
-    transporter.sendMail(bilgiler, function (error, info) {
-
-      if (error) throw error;
-
-      console.log('Eposta gönderildi ' + info.response);
-
+    var archive  = archiver('zip', {
+      zlib: { level: 9 } 
     });
+
+    var output = fs.createWriteStream('./uploads/mocks.zip');
+
+    archive.pipe(output);
+
+    var file1 = './Excel.xlsx';
+
+    archive.append(fs.createReadStream(file1), { name: 'Excel.xlsx' }).finalize(function (err, bytes) {
+      if (err) {
+        throw err;
+      }
+
+      console.log(bytes + ' total bytes');
+    })
+
+    archive.on('end', function (err) {
+      if (err) {
+        throw err;
+      }
+
+      bilgiler.attachments.push(
+        {
+          filename: "mocks.zip",
+          content: fs.createReadStream('./uploads/mocks.zip')
+        }
+      );
+      transporter.sendMail(bilgiler, function (error, info) {
+
+        if (error) throw error;
+  
+        console.log('Eposta gönderildi ' + info.response);
+  
+      });
+    });
+
+    
   });
 
 }
