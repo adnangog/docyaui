@@ -27,7 +27,7 @@
 
             <div class="form-row">
               <div class="form-group col-md-6">
-                <label for="roleName">Kart Tipi </label>
+                <label for="type">Kart Tipi </label>
                 <select class="form-control" id="type" name="type">
                   <option>Lütfen Seçin</option>
                   <option value="1" {{#if_equal cardtemplate.type 1 }}selected="selected" {{/if_equal}}>Dosya Kartı</option>
@@ -36,7 +36,7 @@
               </div>
 
               <div class="form-group col-md-6">
-                <label for="roleName">Form </label>
+                <label for="form">Form </label>
                 <select class="form-control" id="form" name="form">
                   <option>Lütfen Seçin</option>
                   {{# each forms }} {{#if_equal ../cardtemplate.form._id this.[0] }}

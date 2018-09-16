@@ -37,7 +37,7 @@
 
           <div class="form-row">
             <div class="form-group col-md-6">
-            <label for="roleName">Üst Klasör</label>
+            <label for="parent">Üst Klasör</label>
             <select class="form-control" id="parent" name="parent">
               <option>Lütfen Seçin</option>
               {{# each data.data }} {{#if_equal ../folder.parent this.[0] }}
@@ -49,7 +49,7 @@
           </div>
 
           <div class="form-group col-md-6">
-            <label for="roleName">Kart</label>
+            <label for="card">Kart</label>
             <select class="form-control" id="card" name="card">
               <option>Lütfen Seçin</option>
               {{# each cards }} {{#if_equal ../folder.card this.[0] }}

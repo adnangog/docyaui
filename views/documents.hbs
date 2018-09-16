@@ -31,13 +31,13 @@
         </div>
 
           <div class="form-group">
-              <label for="roleName">Döküman Adı</label>
+              <label for="name">Döküman Adı</label>
               <input type="text" class="form-control" id="name" name="name" placeholder="Döküman Adı" value="{{ document.name }}">
             </div>
 
           <div class="form-row">
             <div class="form-group col-md-6">
-              <label for="roleName">Departman</label>
+              <label for="department">Departman</label>
               <select class="form-control" id="department" name="department">
               {{# each departments }} {{#if_equal ../document.department this.[0] }}
               <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
@@ -48,7 +48,7 @@
             </div>
 
             <div class="form-group col-md-6">
-              <label for="roleName">Döküman Tipi</label>
+              <label for="type">Döküman Tipi</label>
               <select class="form-control" id="type" name="type">
               {{# each types }} {{#if_equal ../document.type this.[0] }}
               <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
@@ -61,7 +61,7 @@
 
           <div class="form-row">
             <div class="form-group col-md-6">
-              <label for="roleName">Kart</label>
+              <label for="card">Kart</label>
               <select class="form-control" id="card" name="card">
               {{# each cards }} {{#if_equal ../document.card this.[0] }}
               <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
@@ -72,7 +72,7 @@
             </div>
 
             <div class="form-group col-md-6">
-              <label for="roleName">Klasör</label>
+              <label for="folder">Klasör</label>
               <select class="form-control" id="folder" name="folder">
               {{# each folders }} {{#if_equal ../document.folder this.[0] }}
               <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
@@ -85,18 +85,18 @@
 
           <div class="form-row">
             <div class="form-group col-md-6">
-              <label for="roleName">Başlangıç Tarihi</label>
+              <label for="publishFirstDate">Başlangıç Tarihi</label>
               <input type="text" class="form-control" id="publishFirstDate" name="publishFirstDate" placeholder="Başlangıç Tarihi"  value="{{ document.publishFirstDate }}">
             </div>
 
             <div class="form-group col-md-6">
-              <label for="roleName">Bitiş Tarihi</label>
+              <label for="publishEndDate">Bitiş Tarihi</label>
               <input type="text" class="form-control" id="publishEndDate" name="publishEndDate" placeholder="Bitiş Tarihi"  value="{{ document.publishEndDate }}">
             </div>
           </div>
 
             <div class="form-group">
-              <label for="roleName">Açıklama</label>
+              <label for="description">Açıklama</label>
               <textarea class="form-control" id="description" name="description" placeholder="Açıklama giriniz." rows="3">{{ document.description }}</textarea>
             </div>
 

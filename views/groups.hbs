@@ -13,8 +13,8 @@
 {{/unless}}
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" group="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" group="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalCenterTitle">{{#if edit}}{{editTitle}}{{else}}{{addTitle}}{{/if}}</h5>
@@ -22,12 +22,12 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form method="POST" action="{{#if edit}}/roles/{{ user._id }}{{else}}/roles{{/if}}">
+      <form method="POST" action="{{#if edit}}/groups/{{ user._id }}{{else}}/groups{{/if}}">
         <div class="modal-body">
 
           <div class="form-group">
-            <label for="roleName">Rol Adı</label>
-            <input type="text" class="form-control" id="roleName" name="roleName" value="{{ role.name }}" placeholder="Rol adı giriniz.">
+            <label for="groupName">Grup Adı</label>
+            <input type="text" class="form-control" id="groupName" name="groupName" value="{{ group.name }}" placeholder="Grup adı giriniz.">
           </div>
 
         </div>

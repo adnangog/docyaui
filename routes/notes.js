@@ -76,7 +76,7 @@ router.get("/:noteId", (req, res, next) => {
             { route: "/", name: "Anasayfa" },
             { route: "/notes", name: "Notlar" },
             {
-              route: `/note/${req.params.roleId}`,
+              route: `/note/${req.params.groupId}`,
               name: "Not Düzenle"
             }
           ];

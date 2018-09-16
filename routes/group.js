@@ -4,30 +4,30 @@ const api = require("../api");
 const helper = require("../helpers/index");
 const async = require("async");
 
-// Role Add
+// Group Add
 router.post("/", (req, res, next) => {
   api.apiCall(
     req.session.token,
-    "/role/add",
+    "/group/add",
     "POST",
     {
-      name: req.body.roleName,
+      name: req.body.groupName,
       rDate: Date.now()
     },
     (result) => {
       let opt = "";
       if (result.messageType == 1)
         opt = "?messageType=1&message=Kayıt Eklendi";
-      res.redirect(`/roles${opt}`);
+      res.redirect(`/groups${opt}`);
     }
   );
 });
 
-// Role List
+// Group List
 router.get("/", (req, res, next) => {
   async.parallel([
     (callback) => {
-      api.apiCall(req.session.token, "/role", "POST", req.body.pagelimit, (result) => {
+      api.apiCall(req.session.token, "/group", "POST", req.body.pagelimit, (result) => {
         callback(null, result);
       });
     },
@@ -41,20 +41,20 @@ router.get("/", (req, res, next) => {
 
       let breadcrumb = [
         { route: "/", name: "Anasayfa" },
-        { route: "/roles", name: "Roller" }
+        { route: "/groups", name: "Roller" }
       ];
 
       let total = results[0].count;
 
-      helper.paging(req.body.page, req.body.limit, total, "roles", (paging) => {
-        res.render("roles", {
+      helper.paging(req.body.page, req.body.limit, total, "groups", (paging) => {
+        res.render("groups", {
           title: "Roller",
           addTitle: "Rol Ekle",
           data: total === undefined ? false : results[0],
           authorities: results[1].data,
           breadcrumb,
           paging,
-          route: "roles",
+          route: "groups",
           messageType: req.query.messageType,
           message: req.query.message,
           mainMenu: 1,
@@ -64,29 +64,29 @@ router.get("/", (req, res, next) => {
     });
 });
 
-// Role GetById
-router.get("/:roleId", (req, res, next) => {
-  api.apiCall(req.session.token, "/role", "POST", req.body.pagelimit, (data) => {
-    api.apiCall(req.session.token, `/role/${req.params.roleId}`, "GET", null, (role) => {
+// Group GetById
+router.get("/:groupId", (req, res, next) => {
+  api.apiCall(req.session.token, "/group", "POST", req.body.pagelimit, (data) => {
+    api.apiCall(req.session.token, `/group/${req.params.groupId}`, "GET", null, (group) => {
 
       let total = data.count;
 
-      helper.paging(req.body.page, req.body.limit, total, "roles", (paging) => {
+      helper.paging(req.body.page, req.body.limit, total, "groups", (paging) => {
         let breadcrumb = [
           { route: "/", name: "Anasayfa" },
-          { route: "/roles", name: "Roller" },
-          { route: `/role/${req.params.roleId}`, name: "Rol Düzenle" }
+          { route: "/groups", name: "Roller" },
+          { route: `/group/${req.params.groupId}`, name: "Rol Düzenle" }
         ];
-        res.render("roles", {
+        res.render("groups", {
           title: "Roller",
           addTitle: "Rol Ekle",
           editTitle: "Rol Düzenle",
           edit: true,
           data,
-          role,
+          group,
           breadcrumb,
           paging,
-          route: "roles",
+          route: "groups",
           mainMenu: 1,
           subMenu: 3
         });
@@ -95,28 +95,28 @@ router.get("/:roleId", (req, res, next) => {
   });
 });
 
-// Role Update
-router.post("/:roleId", (req, res, next) => {
+// Group Update
+router.post("/:groupId", (req, res, next) => {
   api.apiCall(
     req.session.token,
-    `/role/${req.params.roleId}`,
+    `/group/${req.params.groupId}`,
     "PATCH",
     {
-      name: req.body.roleName
+      name: req.body.groupName
     },
     (result) => {
       let opt = "";
       if (result.nModified > 0)
         opt = "?messageType=1&message=İşlem Başarılı";
-      res.redirect(`/roles${opt}`);
+      res.redirect(`/groups${opt}`);
     }
   );
 });
 
-// Role Delete
-router.get("/delete/:roleId", (req, res, next) => {
-  api.apiCall(req.session.token, `/role/delete/${req.params.roleId}`, "GET", null, (result) => {
-    res.redirect("/roles");
+// Group Delete
+router.get("/delete/:groupId", (req, res, next) => {
+  api.apiCall(req.session.token, `/group/delete/${req.params.groupId}`, "GET", null, (result) => {
+    res.redirect("/groups");
   });
 });
 

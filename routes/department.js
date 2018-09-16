@@ -70,7 +70,7 @@ router.get("/:departmentId", (req, res, next) => {
             { route: "/", name: "Anasayfa" },
             { route: "/departments", name: "Departmanlar" },
             {
-              route: `/department/${req.params.roleId}`,
+              route: `/department/${req.params.groupId}`,
               name: "Departman Düzenle"
             }
           ];

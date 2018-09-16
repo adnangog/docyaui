@@ -81,9 +81,9 @@
           </div>
 
           <div class="form-group">
-            <label for="roleName">Rol</label>
-            <select class="form-control" id="role" name="role">
-              {{# each roles }} {{#if_equal ../user.role this.[0] }}
+            <label for="groupName">Rol</label>
+            <select class="form-control" id="group" name="group">
+              {{# each groups }} {{#if_equal ../user.group this.[0] }}
               <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
               {{else}}
               <option value="{{ this.[0] }}">{{ this.[1] }}</option>

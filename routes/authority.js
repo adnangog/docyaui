@@ -13,7 +13,7 @@ router.get("/set/add", (req, res, next) => {
       });
     },
     (callback) => {
-      api.apiCall(req.session.token, `/role`, "POST", req.body.pagelimit, (result) => {
+      api.apiCall(req.session.token, `/group`, "POST", req.body.pagelimit, (result) => {
         callback(null, result);
       });
     },
@@ -128,7 +128,7 @@ router.get("/set/:authSetId", (req, res, next) => {
       });
     },
     (callback) => {
-      api.apiCall(req.session.token, `/role`, "POST", req.body.pagelimit, (result) => {
+      api.apiCall(req.session.token, `/group`, "POST", req.body.pagelimit, (result) => {
         callback(null, result);
       });
     },

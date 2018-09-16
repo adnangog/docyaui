@@ -67,7 +67,7 @@ router.post("/", (req, res, next) => {
         });
       },
       (callback) => {
-        api.apiCall(req.session.token, `/role`, "POST", req.body.pagelimit, (result) => {
+        api.apiCall(req.session.token, `/group`, "POST", req.body.pagelimit, (result) => {
           callback(null, result);
         });
       }
@@ -87,7 +87,7 @@ router.post("/", (req, res, next) => {
           addTitle: "Kullanıcı Ekle",
           route:"users",
           data: results[0],
-          roles: results[1].data,
+          groups: results[1].data,
           breadcrumb,
           paging,
           mainMenu:1,
@@ -111,7 +111,7 @@ router.post("/", (req, res, next) => {
         });
       },
       (callback) => {
-        api.apiCall(req.session.token, `/role`, "POST", req.body.pagelimit, (result) => {
+        api.apiCall(req.session.token, `/group`, "POST", req.body.pagelimit, (result) => {
           callback(null, result);
         });
       }
@@ -135,7 +135,7 @@ router.post("/", (req, res, next) => {
           edit: true,
           data: results[0],
           user: results[1],
-          roles: results[2].data,
+          groups: results[2].data,
           breadcrumb,
           paging,
           mainMenu:1,
@@ -156,7 +156,7 @@ router.post("/", (req, res, next) => {
         lName: req.body.lName,
         email: req.body.email,
         username: req.body.email,
-        role: req.body.role
+        group: req.body.group
       },
       function (result) {
         let opt="";
