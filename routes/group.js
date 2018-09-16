@@ -41,15 +41,15 @@ router.get("/", (req, res, next) => {
 
       let breadcrumb = [
         { route: "/", name: "Anasayfa" },
-        { route: "/groups", name: "Roller" }
+        { route: "/groups", name: "Gruplar" }
       ];
 
       let total = results[0].count;
 
       helper.paging(req.body.page, req.body.limit, total, "groups", (paging) => {
         res.render("groups", {
-          title: "Roller",
-          addTitle: "Rol Ekle",
+          title: "Gruplar",
+          addTitle: "Grup Ekle",
           data: total === undefined ? false : results[0],
           authorities: results[1].data,
           breadcrumb,
@@ -74,13 +74,13 @@ router.get("/:groupId", (req, res, next) => {
       helper.paging(req.body.page, req.body.limit, total, "groups", (paging) => {
         let breadcrumb = [
           { route: "/", name: "Anasayfa" },
-          { route: "/groups", name: "Roller" },
-          { route: `/group/${req.params.groupId}`, name: "Rol Düzenle" }
+          { route: "/groups", name: "Gruplar" },
+          { route: `/group/${req.params.groupId}`, name: "Grup Düzenle" }
         ];
         res.render("groups", {
-          title: "Roller",
-          addTitle: "Rol Ekle",
-          editTitle: "Rol Düzenle",
+          title: "Gruplar",
+          addTitle: "Grup Ekle",
+          editTitle: "Grup Düzenle",
           edit: true,
           data,
           group,

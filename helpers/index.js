@@ -210,3 +210,7 @@ module.exports.sendMail = (from, to, subject, html, attachments) => {
   });
 
 }
+
+module.exports.createZipFile = () => {
+  
+}
