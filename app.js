@@ -43,7 +43,7 @@ app.engine('.hbs', expressHbs({
       }
     },
     if_in: function (a, b, opts) {
-      if (a.indexOf(b)>-1) {
+      if (a && a.indexOf(b)>-1) {
         return opts.fn(this)
       } else {
         return opts.inverse(this)
