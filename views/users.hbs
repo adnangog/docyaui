@@ -82,12 +82,12 @@
 
           <div class="form-group">
             <label for="groupName">Gruplar</label>
-            <select class="form-control" multiple id="group" name="group">
-              {{# each groups }} {{#if_equal ../user.group this.[0] }}
+            <select class="form-control" multiple id="groups" name="groups">
+              {{# each groups }} {{#if_in ../user.groups this.[0] }}
               <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
               {{else}}
               <option value="{{ this.[0] }}">{{ this.[1] }}</option>
-              {{/if_equal}} {{/ each}}
+              {{/if_in}} {{/ each}}
             </select>
           </div>
 

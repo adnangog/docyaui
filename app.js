@@ -42,6 +42,13 @@ app.engine('.hbs', expressHbs({
         return opts.inverse(this)
       }
     },
+    if_in: function (a, b, opts) {
+      if (a.indexOf(b)>-1) {
+        return opts.fn(this)
+      } else {
+        return opts.inverse(this)
+      }
+    },
     jsonStringify: function (value) {
       return JSON.stringify(value);
     },

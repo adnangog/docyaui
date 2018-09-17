@@ -45,6 +45,7 @@ router.post("/", (req, res, next) => {
         password: req.body.password,
         title:req.body.title,
         position:req.body.position,
+        groups: req.body.groups,
         source:req.body.source,
         status: 1,
         rDate: Date.now()
@@ -156,7 +157,7 @@ router.post("/", (req, res, next) => {
         lName: req.body.lName,
         email: req.body.email,
         username: req.body.email,
-        group: req.body.group
+        groups: req.body.groups
       },
       function (result) {
         let opt="";
