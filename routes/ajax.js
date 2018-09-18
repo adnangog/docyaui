@@ -42,6 +42,9 @@ router.post("/", (req, res, next) => {
       route = `/user`;
       params.userId = req.session.userId;
       break;
+    case "getUsersByAuthSetId":
+      route = `/user/authset/${req.body.authsetId}`;
+      break;
     case "getTree":
       route = `/folder/card/${req.body.card}`;
       params.userId = req.session.userId;
