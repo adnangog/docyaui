@@ -642,6 +642,22 @@
                 $("#tree2").append(renderedHtml);
                 $('#tree2').treed({ openedClass: 'fa-folder-open', closedClass: 'fa-folder' });
                 Docya.CardController.initContextMenu();
+
+                $("#mailDocuments").html("");
+
+                var mailDocsTemplate = '{{#each this.folders }} {{#each this.documents }}\
+                <tr class="mail-attachments" data-id="{{this.id}}" data-name="{{this.name}}" data-f="{{this.file}}" data-fn="{{this.filename}}">\
+                  <td><input type="checkbox" data-check="select"></td>\
+                  <td class="text-cont-cont"><span class="text-cont">{{this.name}}</span></td>\
+                  <td><input type="checkbox" data-check="link"></td>\
+                  <td><input type="checkbox" data-check="zip"></td>\
+                  <td><input type="checkbox" data-check="form"></td>\
+                </tr>\
+                {{/each}} {{/each}}';
+
+                var renderedMailDocs = Handlebars.compile(mailDocsTemplate)(data);
+                $("#mailDocuments").append(renderedMailDocs);
+                
             };
 
             Docya.CardController.initAjax(data, cb);

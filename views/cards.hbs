@@ -369,7 +369,7 @@
                 <th>Form</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="mailDocuments">
               {{#each folders.folders }} {{#each this.documents }}
               <tr class="mail-attachments" data-id="{{this.id}}" data-name="{{this.name}}" data-f="{{this.file}}" data-fn="{{this.filename}}">
                 <td><input type="checkbox" data-check="select"></td>
