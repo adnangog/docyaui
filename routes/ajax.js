@@ -90,7 +90,7 @@ router.post("/", (req, res, next) => {
       params.parent = req.body.folder;
       params.card = req.body.card;
       params.user = req.session.userId;
-      params.authSet = null;
+      params.authSet = req.body.authSet;
       params.rDate = Date.now();
       break;
     case "renameFolder":

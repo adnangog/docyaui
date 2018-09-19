@@ -286,9 +286,14 @@
                         data.process = "addFolder";
                         data.foldername = $("#foldernameAdd").val();
                         data.folder = Docya.CardController.SelectedFolder;
+                        data.authSet = $("#authSet").val();
 
                         if (data.folder === "") {
                             errors.push('Lütfen klasör seçiniz.');
+                        }
+
+                        if (data.authSet === "") {
+                            errors.push('Lütfen yetki seti seçiniz.');
                         }
 
                         if (data.foldername === "") {

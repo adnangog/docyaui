@@ -194,7 +194,6 @@
                 <div class="form-group col-md-6">
                   <label for="authSet">Yetki Seti</label>
                   <select class="form-control" id="authSet" name="authSet">
-                    <option>Lütfen Seçin</option>
                     {{# each authSets }} {{#if_equal ../cardtemplate.authSet this.[0] }}
                     <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
                     {{else}}
