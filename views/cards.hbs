@@ -369,16 +369,7 @@
               </tr>
             </thead>
             <tbody id="mailDocuments">
-              {{#each folders.folders }} {{#each this.documents }}
-              <tr class="mail-attachments" data-id="{{this.id}}" data-name="{{this.name}}" data-f="{{this.file}}" data-fn="{{this.filename}}">
-                <td><input type="checkbox" data-check="select"></td>
-                <td class="text-cont-cont"><span class="text-cont">{{this.name}}</span></td>
-                <td><input type="checkbox" data-check="link"></td>
-                <td><input type="checkbox" data-check="zip"></td>
-                {{!-- <td><input type="checkbox" data-check="password"></td> --}}
-                <td><input type="checkbox" data-check="form"></td>
-              </tr>
-              {{/each}} {{/each}}
+              {{>maildocuments item=folders.folders.[0]}}
             </tbody>
           </table>
         </div>

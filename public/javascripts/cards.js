@@ -650,7 +650,7 @@
 
                 $("#mailDocuments").html("");
 
-                var mailDocsTemplate = '{{#each this.folders }} {{#each this.documents }}\
+                var mailDocsPartial = '{{#each this.childs}} {{> maildocuments this}} {{/each}} {{#each this.documents }}\
                 <tr class="mail-attachments" data-id="{{this.id}}" data-name="{{this.name}}" data-f="{{this.file}}" data-fn="{{this.filename}}">\
                   <td><input type="checkbox" data-check="select"></td>\
                   <td class="text-cont-cont"><span class="text-cont">{{this.name}}</span></td>\
@@ -658,10 +658,13 @@
                   <td><input type="checkbox" data-check="zip"></td>\
                   <td><input type="checkbox" data-check="form"></td>\
                 </tr>\
-                {{/each}} {{/each}}';
+                {{/each}}';
 
-                var renderedMailDocs = Handlebars.compile(mailDocsTemplate)(data);
-                $("#mailDocuments").append(renderedMailDocs);
+                var mailDocsTemplate = "{{> maildocuments this }}";
+                Handlebars.registerPartial("maildocuments", mailDocsPartial);
+                var renderedmailDocsHtml = Handlebars.compile(mailDocsTemplate)(data.folders[0]);
+                console.log(renderedmailDocsHtml);
+                $("#mailDocuments").append(renderedmailDocsHtml);
                 
             };
 
