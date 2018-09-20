@@ -49,6 +49,10 @@ router.post("/", (req, res, next) => {
       route = `/folder/card/${req.body.card}`;
       params.userId = req.session.userId;
       break;
+    case "getTransactionsByItemId":
+      route = `/transaction/${req.body.itemId}`;
+      type = "GET";
+      break;
     case "getNote":
       route = "/note";
       params.document = req.body.document;

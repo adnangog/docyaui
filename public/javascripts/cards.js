@@ -392,6 +392,8 @@
                     $(".document-image").attr("data-f", jqElm.attr("data-id")).html(Docya.CardController.ThumbCreator(jqElm.attr("data-ft"), jqElm.attr("data-id")));
                 };
 
+                Docya.CardController.getTransactions(jqElm.attr("data-id"));
+
                 Docya.CardController.getNotes();
             });
         },
@@ -581,6 +583,25 @@
                 var template = '{{# each data}}<div class="chat-box"><div class="chat-avatar"><i class="fas fa-user-tie"></i></div><div class="chat-text">{{this.[1]}}</div><div class="chat-info">{{this.[2]}} - {{this.[3]}}</div></div>{{/each}}';
                 var renderedHtml = Handlebars.compile(template)(data);
                 $("#note-container").append(renderedHtml);
+            };
+
+            Docya.CardController.initAjax(data, cb);
+        },
+        getTransactions: function (itemId) {
+
+            console.log("sa");
+            $("#dvTransactions").html("");
+
+            let data = {
+                process: "getTransactionsByItemId",
+                itemId: itemId
+            };
+
+            let cb = function (data) {
+                console.log(data);
+                // var template = '{{# each data}}<div class="chat-box"><div class="chat-avatar"><i class="fas fa-user-tie"></i></div><div class="chat-text">{{this.[1]}}</div><div class="chat-info">{{this.[2]}} - {{this.[3]}}</div></div>{{/each}}';
+                // var renderedHtml = Handlebars.compile(template)(data);
+                // $("#dvTransactions").append(renderedHtml);
             };
 
             Docya.CardController.initAjax(data, cb);
