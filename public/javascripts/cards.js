@@ -554,7 +554,7 @@
 
             };
 
-            
+
 
             Docya.CardController.initAjax(data, cb);
         },
@@ -589,8 +589,7 @@
         },
         getTransactions: function (itemId) {
 
-            console.log("sa");
-            $("#dvTransactions").html("");
+
 
             let data = {
                 process: "getTransactionsByItemId",
@@ -598,10 +597,13 @@
             };
 
             let cb = function (data) {
-                console.log(data);
-                // var template = '{{# each data}}<div class="chat-box"><div class="chat-avatar"><i class="fas fa-user-tie"></i></div><div class="chat-text">{{this.[1]}}</div><div class="chat-info">{{this.[2]}} - {{this.[3]}}</div></div>{{/each}}';
-                // var renderedHtml = Handlebars.compile(template)(data);
-                // $("#dvTransactions").append(renderedHtml);
+                $("#dvTransactions").html("");
+                if (data.length > 0) {
+                    var template = '<table class="table table-sm"><thead><tr><th scope="col">Detay</th><th scope="col">Kullanıcı</th><th scope="col">Tarih</th></tr></thead><tbody>{{# each this}}<tr><td scope="row">{{this.detail}}</td><td>{{this.user.fName}} {{this.user.lName}}</td><td>{{this.rDate}}</td></tr>{{/each}}</tbody></table>';
+                    var renderedHtml = Handlebars.compile(template)(data);
+                    $("#dvTransactions").append(renderedHtml);
+                }
+
             };
 
             Docya.CardController.initAjax(data, cb);
@@ -686,7 +688,7 @@
                 var renderedmailDocsHtml = Handlebars.compile(mailDocsTemplate)(data.folders[0]);
                 console.log(renderedmailDocsHtml);
                 $("#mailDocuments").append(renderedmailDocsHtml);
-                
+
             };
 
             Docya.CardController.initAjax(data, cb);
@@ -844,27 +846,27 @@
                 };
 
                 let cb = function (data) {
-                    if(data.messageType === 1){
+                    if (data.messageType === 1) {
                         showMessageBox("success", "BİLGİ", data.message);
 
-                        Docya.CardController.Email.To=null;
-                        Docya.CardController.Email.Cc=null;
-                        Docya.CardController.Email.Subject=null;
-                        Docya.CardController.Email.Message=null;
-                        Docya.CardController.Email.Attachments=[];
+                        Docya.CardController.Email.To = null;
+                        Docya.CardController.Email.Cc = null;
+                        Docya.CardController.Email.Subject = null;
+                        Docya.CardController.Email.Message = null;
+                        Docya.CardController.Email.Attachments = [];
 
-                        $("[data-mailfields]").each(function(){
+                        $("[data-mailfields]").each(function () {
                             $(this).val("");
                         });
 
-                        $("[data-check]").each(function(){
+                        $("[data-check]").each(function () {
                             $(this).prop('checked', false);
                         });
 
                         $('#mailModal').modal('hide');
 
 
-                    }else{
+                    } else {
                         showMessageBox("danger", "UYARI", data.message);
                     }
 
@@ -898,13 +900,13 @@
 
                 let data = {
                     process: "sendDoc",
-                    user:$("#docUser").val(),
-                    document:Docya.CardController.SelectedDocument,
+                    user: $("#docUser").val(),
+                    document: Docya.CardController.SelectedDocument,
                     message: $("#docMessage").val()
                 };
 
                 let cb = function (data) {
-                    if(data.messageType === 1){
+                    if (data.messageType === 1) {
                         showMessageBox("success", "BİLGİ", data.message);
 
                         $("#docMessage").val("");
@@ -913,7 +915,7 @@
                         $('#docModal').modal('hide');
 
 
-                    }else{
+                    } else {
                         showMessageBox("danger", "UYARI", data.message);
                     }
 

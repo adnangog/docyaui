@@ -88,6 +88,8 @@ router.post("/", (req, res, next) => {
     case "renameDocument":
       route = `/document/${req.body.document}`;
       params.name = req.body.documentname;
+      params.uUser = req.session.userId;
+      params.uDate = Date.now();
       type = "PATCH";
       break;
     case "addFolder":

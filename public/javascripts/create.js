@@ -36,6 +36,21 @@
                 "validationType": 0
             },
             {
+                "control": "textbox",
+                "type": "number",
+                "label": "Number",
+                "placeholder": "Açıklama.",
+                "help": "",
+                "isRequired": false,
+                "isDynamic": false,
+                "url": "",
+                "isFiltering": false,
+                "filterType": "start",
+                "filterMinLength": 3,
+                "defaultValue": "",
+                "validationType": 0
+            },
+            {
                 "control": "dropdown",
                 "label": "Selectbox",
                 "placeholder": "Lütfen seçiniz.",

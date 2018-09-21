@@ -116,6 +116,10 @@ router.post("/", (req, res, next) => {
       }
     }
 
+    for (let key in objCopy) {
+      objCopy[key]=helper.stringToType(objCopy[key]);
+    }
+
     api.apiCall(req.session.token, "/card/add", "POST",
       {
         name: req.body.name,
@@ -229,6 +233,10 @@ router.post("/:cardTemplateId/:cardId", (req, res, next) => {
         Object.defineProperty(objCopy, key.replace("dForm_", "").replace("duForm_", ""), Object.getOwnPropertyDescriptor(objCopy, key));
         delete objCopy[key];
       }
+    }
+
+    for (let key in objCopy) {
+      objCopy[key]=helper.stringToType(objCopy[key]);
     }
 
   api.apiCall(
