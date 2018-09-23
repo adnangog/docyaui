@@ -957,6 +957,159 @@
 
     $(document).ready(function () {
         w.Docya.CardController.init();
+
+        //bu kisim yukariya alinacak
+        let search = [
+            {
+                rule: "or",
+                items: [
+                    {
+                        type: "string",
+                        field: "ad_soyad",
+                        rule: "equal",
+                        value: "adnan gog"
+                    },
+                    {
+                        type: "date",
+                        field: "dogum_tarihi",
+                        rule: "greater",
+                        value: "2018-08-24"
+                    }
+                ]
+            },
+            {
+                rule: "or",
+                items: [
+                    {
+                        type: "string",
+                        field: "ad_soyad",
+                        rule: "equal",
+                        value: "adnan gog"
+                    },
+                    {
+                        type: "date",
+                        field: "dogum_tarihi",
+                        rule: "greater",
+                        value: "2018-08-24"
+                    }
+                ]
+            }
+        ];
+    
+        let fields = [
+            {
+                name: "Ad Soyad",
+                field: "ad_soyad",
+                type: "string"
+            },
+            {
+                name: "Dogum Tarihi",
+                field: "dogum_tarihi",
+                type: "date"
+            },
+            {
+                name: "TCKN",
+                field: "tckn",
+                type: "number"
+            }
+        ];
+    
+        let rules = {
+            string: [
+                {
+                    name: "Esittir",
+                    rule: "equal"
+                },
+                {
+                    name: "Esit Degildir",
+                    rule: "notequal"
+                },
+                {
+                    name: "Benzer",
+                    rule: "like"
+                },
+                {
+                    name: "Benzemez",
+                    rule: "notlike"
+                }
+            ],
+            date: [
+                {
+                    name: "Esittir",
+                    rule: "equal"
+                },
+                {
+                    name: "Esit Degildir",
+                    rule: "notequal"
+                },
+                {
+                    name: "Kucuktur",
+                    rule: "less"
+                },
+                {
+                    name: "Buyuktur",
+                    rule: "greater"
+                },
+                {
+                    name: "Arasinda",
+                    rule: "between"
+                }
+            ],
+            number: [
+                {
+                    name: "Esittir",
+                    rule: "equal"
+                },
+                {
+                    name: "Esit Degildir",
+                    rule: "notequal"
+                },
+                {
+                    name: "Kucuktur",
+                    rule: "less"
+                },
+                {
+                    name: "Buyuktur",
+                    rule: "greater"
+                },
+                {
+                    name: "Arasinda",
+                    rule: "between"
+                }
+            ]
+        };
+    
+        search.map((s) => {
+            var screen = $("#dvSearchFields");
+            var html_ = '<div class="search-box"><div class="row"><div class="col">{<i class="fas fa-plus-circle"></i></div></div>';
+            s.items.map((item) => {
+                html_ += '<div class="row"><div class="col" style="width:20px; flex-grow:inherit; padding-top:6px;"><i class="fas fa-minus-circle"></i></div>';
+                html_ += '<div class="col">';
+                html_ += '<select class="form-control form-control-sm" data-search-field>';
+                fields.map((a)=>{
+                    html_ += '<option value="'+a.field+'||'+a.type+'">'+a.name+'</option>';
+                });
+                html_ += '</select>';
+                html_ += '</div><div class="col">';
+                html_ += '<select class="form-control form-control-sm notFast" data-search-operator>';
+                rules.string.map((a)=>{
+                    html_ += '<option value="'+a.rule+'">'+a.name+'</option>';
+                });
+                html_ += '</select>';
+                html_ += '</div><div class="col">';
+                html_ += '<input type="text" class="form-control form-control-sm" data-search-value>';
+                html_ += '</div><div class="col"></div></div>';
+            });
+            html_ += '<div class="row"><div class="col-lg-2">}';
+            html_ += '<select class="form-control form-control-sm notFast" style="display:inline-block" data-search-operator>';
+            html_ += '<option val="or">Veya</option>';
+            html_ += '<option val="and">Ve</option>';
+            html_ += '</select>';
+            html_ += '</div></div></div>';
+    
+            screen.append(html_);
+        });
+
     });
 
 })(jQuery, window, document);

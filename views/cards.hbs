@@ -10,23 +10,20 @@
           <i class="fas fa-cog"></i>
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          {{ consoleLog cardTemplate }} {{# each cardTemplate.form.fields }}
+          {{# each cardTemplate.form.fields }}
 
           <div class="form-group">
             <label for="{{ this.field }}">{{ this.label }}</label>
             {{#if_equal this.control "textbox"}} {{#if_equal this.type "text"}}
             <input type="text" {{#unless ../isWrite}}readonly{{/unless}} value="{{getObjectVal ../card.fields.[0] this.label ../formType}}"
               class="{{#unless ../isWrite}}form-control-plaintext{{else}}form-control{{/unless}} form-control-sm " id="{{cFormName this.label ../formType}}"
-              name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}"> {{/if_equal}} {{#if_equal
-            this.type "datetime"}}
+              name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}"> {{/if_equal}} {{#if_equal this.type "datetime"}}
             <input type="text" {{#unless ../isWrite}}readonly{{/unless}} value="{{getObjectVal ../card.fields.[0] this.label ../formType}}"
               data-datetimepicker class="{{#unless ../isWrite}}form-control-plaintext{{else}}form-control{{/unless}} form-control-sm"
-              id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}">            {{/if_equal}}
-            {{/if_equal}} {{#if_equal this.control "textarea"}}
+              id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}"> {{/if_equal}} {{/if_equal}} {{#if_equal this.control "textarea"}}
             <textarea class="{{#unless ../isWrite}}form-control-plaintext{{else}}form-control{{/unless}} form-control-sm" {{#unless ../isWrite}}readonly{{/unless}}
               id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}"
-              rows="3">{{getObjectVal ../card.fields.[0] this.label ../formType}}</textarea> {{/if_equal}} {{#if_equal
-            this.control "dropdown"}}
+              rows="3">{{getObjectVal ../card.fields.[0] this.label ../formType}}</textarea> {{/if_equal}} {{#if_equal this.control "dropdown"}}
             <select class="{{#unless ../isWrite}}form-control-plaintext{{else}}form-control{{/unless}} form-control-sm" {{#unless ../isWrite}}readonly{{/unless}}
               id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}">
               {{# each this.options }} {{#if_equal (getObjectVal ../../card.fields.[0] ../this.label ../../formType) this.val }}
@@ -44,6 +41,7 @@
       </div>
     </div>
     <div class="max-height-div">
+      <div id="dvSearchFields"></div>
       {{> table}}
     </div>
   </div>
@@ -364,7 +362,8 @@
                 <th>Dokuman</th>
                 <th>Link</th>
                 <th>Sıkıştır</th>
-                {{!-- <th>Şifre</th> --}}
+                {{!--
+                <th>Şifre</th> --}}
                 <th>Form</th>
               </tr>
             </thead>

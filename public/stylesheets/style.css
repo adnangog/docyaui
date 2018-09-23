@@ -697,3 +697,9 @@ span.tooltip:after {
   margin-bottom: 1px;
 }
 
+.search-box {
+  border:1px solid #999;
+  padding: 15px;
+  margin: 5px 0;
+}
+

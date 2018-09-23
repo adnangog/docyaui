@@ -9,7 +9,7 @@ $(function () {
         $(".nav-side-menu, .right-side, .toggle-right, .breadcrumb").toggleClass("gizli");
     });
 
-    $('select.form-control').fastselect({
+    $('select.form-control:not(.notFast)').fastselect({
         placeholder: 'Lütfen seçin',
         searchPlaceholder: 'Arama kriterinizi girin',
         noResultsText: 'Kayıt bulunamadı',
