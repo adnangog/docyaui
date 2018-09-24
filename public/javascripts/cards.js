@@ -6,6 +6,113 @@
         DocumentJSON: [],
         InputJSON: [],
         AuthSets: [],
+        FormFields: JSON.parse($("#formFields").val()).map((x) => {
+            return {
+                name: x.label,
+                field: slugify(x.label),
+                type: x.type || "string"
+            }
+        }),
+        SearchRules: {
+            string: [
+                {
+                    name: "Esittir",
+                    rule: "equal"
+                },
+                {
+                    name: "Esit Degildir",
+                    rule: "notequal"
+                },
+                {
+                    name: "Benzer",
+                    rule: "like"
+                },
+                {
+                    name: "Benzemez",
+                    rule: "notlike"
+                }
+            ],
+            date: [
+                {
+                    name: "Esittir",
+                    rule: "equal"
+                },
+                {
+                    name: "Esit Degildir",
+                    rule: "notequal"
+                },
+                {
+                    name: "Kucuktur",
+                    rule: "less"
+                },
+                {
+                    name: "Buyuktur",
+                    rule: "greater"
+                },
+                {
+                    name: "Arasinda",
+                    rule: "between"
+                }
+            ],
+            number: [
+                {
+                    name: "Esittir",
+                    rule: "equal"
+                },
+                {
+                    name: "Esit Degildir",
+                    rule: "notequal"
+                },
+                {
+                    name: "Kucuktur",
+                    rule: "less"
+                },
+                {
+                    name: "Buyuktur",
+                    rule: "greater"
+                },
+                {
+                    name: "Arasinda",
+                    rule: "between"
+                }
+            ]
+        },
+        SearchJSON: [
+            {
+                rule: "or",
+                items: [
+                    {
+                        type: "string",
+                        field: "ad_soyad",
+                        rule: "equal",
+                        value: "adnan gog"
+                    },
+                    {
+                        type: "date",
+                        field: "dogum_tarihi",
+                        rule: "greater",
+                        value: "2018-08-24"
+                    }
+                ]
+            },
+            {
+                rule: "or",
+                items: [
+                    {
+                        type: "string",
+                        field: "ad_soyad",
+                        rule: "equal",
+                        value: "adnan gog"
+                    },
+                    {
+                        type: "date",
+                        field: "dogum_tarihi",
+                        rule: "greater",
+                        value: "2018-08-24"
+                    }
+                ]
+            }
+        ],
         CardId: $("#card").val(),
         CardTemplateId: $("#cardtemplate").val(),
         SelectedFolder: null,
@@ -113,6 +220,62 @@
                     break;
                 default:
             }
+        },
+        createSearchForm: function () {
+            var screen = $("#dvSearchFields");
+            screen.html("");
+            Docya.CardController.SearchJSON.map((s) => {
+                var html_ = '<div class="search-box"><div class="row"><div class="col">{<button class="btn btn-warning btn-sm" style="margin-left:5px;" data-search-add><i class="fas fa-plus-circle"></i> Yeni Koşul Ekle</button></div></div>';
+                s.items.map((item) => {
+                    html_ += '<div class="row"><div class="col" style="width:40px; flex-grow:inherit;"><button class="btn btn-danger btn-sm2" data-search-remove><i class="fas fa-minus-circle"></i></button></div>';
+                    html_ += '<div class="col">';
+                    html_ += '<select class="form-control form-control-sm" data-search-field>';
+                    Docya.CardController.FormFields.map((a) => {
+                        if (item.field === a.field) {
+                            html_ += '<option selected="selected" value="' + a.field + '||' + a.type + '">' + a.name + '</option>';
+                        } else {
+                            html_ += '<option value="' + a.field + '||' + a.type + '">' + a.name + '</option>';
+                        }
+                    });
+                    html_ += '</select>';
+                    html_ += '</div><div class="col">';
+                    html_ += '<select class="form-control form-control-sm notFast" data-search-operator>';
+
+                    var obj_ = Docya.CardController.SearchRules.string;
+                    switch (item.type) {
+                        case "date":
+                            obj_ = Docya.CardController.SearchRules.date;
+                            break;
+                        case "number":
+                            obj_ = Docya.CardController.SearchRules.number;
+                            break;
+
+                        default:
+                            obj_ = Docya.CardController.SearchRules.string;
+                            break;
+                    }
+
+                    obj_.map((a) => {
+                        if (item.rule === a.rule) {
+                            html_ += '<option selected="selected" value="' + a.rule + '">' + a.name + '</option>';
+                        } else {
+                            html_ += '<option value="' + a.rule + '">' + a.name + '</option>';
+                        }
+                    });
+                    html_ += '</select>';
+                    html_ += '</div><div class="col">';
+                    html_ += '<input type="text" class="form-control form-control-sm" value="' + item.value + '" data-search-value>';
+                    html_ += '</div><div class="col"></div></div>';
+                });
+                html_ += '<div class="row"><div class="col-lg-2">}';
+                html_ += '<select class="form-control form-control-sm notFast" style="display:inline-block" data-search-operator>';
+                html_ += '<option val="or">Veya</option>';
+                html_ += '<option val="and">Ve</option>';
+                html_ += '</select>';
+                html_ += '</div></div></div>';
+
+                screen.append(html_);
+            });
         },
         createDocumentItems: function () {
             $("#DocumentItems").html("");
@@ -924,6 +1087,117 @@
                 Docya.CardController.initAjax(data, cb);
             })
         },
+        initSearchRemove: function () {
+            $("body").on("click", "[data-search-remove]", function (e) {
+                e.preventDefault();
+
+                var jqElm = $(this);
+                var itemIndex = (jqElm.closest(".row").index() - 1);
+                var groupIndex = jqElm.closest(".search-box").index();
+
+                Docya.CardController.SearchJSON[groupIndex].items.splice(itemIndex, 1);
+
+                if (Docya.CardController.SearchJSON[groupIndex].items.length === 0 && Docya.CardController.SearchJSON.length>1) {
+                    Docya.CardController.SearchJSON.splice(groupIndex, 1);
+                }
+
+                Docya.CardController.createSearchForm();
+
+            })
+        },
+        initSearchAdd: function () {
+            $("body").on("click", "[data-search-add]", function (e) {
+                e.preventDefault();
+
+                var jqElm = $(this);
+                var parent_ = jqElm.closest(".row");
+                var group = jqElm.closest(".search-box");
+
+                Docya.CardController.SearchJSON[group.index()].items.push({
+                    type: Docya.CardController.FormFields[0].type,
+                    field: Docya.CardController.FormFields[0].field,
+                    rule: Docya.CardController.FormFields[0].type === "string" ? Docya.CardController.SearchRules.string[0].rule : Docya.CardController.SearchRules.number[0].rule,
+                    value: ""
+                });
+
+                Docya.CardController.createSearchForm();
+
+            })
+        },
+        initSearchGroupAdd: function () {
+            $("body").on("click", "[data-search-grupadd]", function (e) {
+                e.preventDefault();
+
+                var jqElm = $(this);
+
+                Docya.CardController.SearchJSON.push(
+                    {
+                        rule: "or",
+                        items: [
+                            {
+                                type: Docya.CardController.FormFields[0].type,
+                                field: Docya.CardController.FormFields[0].field,
+                                rule: Docya.CardController.FormFields[0].type === "string" ? Docya.CardController.SearchRules.string[0].rule : Docya.CardController.SearchRules.number[0].rule,
+                                value: ""
+                            }
+                        ]
+                    }
+                );
+
+
+                Docya.CardController.createSearchForm();
+
+            })
+        },
+        initSearchFieldChange: function () {
+            $("body").on("change", "[data-search-field]", function (e) {
+                e.preventDefault();
+
+                var jqElm = $(this);
+                var values = jqElm.val().split("||");
+                var field_ = values[0];
+                var type_ = values[1];
+
+                var parent_ = jqElm.closest(".row");
+
+                var jqOperatorElm = parent_.find("[data-search-operator]");
+                var jqValueElm = parent_.find("[data-search-value]");
+
+                var itemIndex = (parent_.index() - 1);
+                var groupIndex = jqElm.closest(".search-box").index();
+
+                Docya.CardController.SearchJSON[groupIndex].items[itemIndex].field = field_;
+                Docya.CardController.SearchJSON[groupIndex].items[itemIndex].type = type_;
+
+                var obj_ = Docya.CardController.SearchRules.string;
+                switch (type_) {
+                    case "datetime":
+                        obj_ = Docya.CardController.SearchRules.date;
+                        jqValueElm.attr("data-datetimepicker").attr("type","text");
+                        break;
+                    case "number":
+                        obj_ = Docya.CardController.SearchRules.number;
+                        jqValueElm.removeAttr("data-datetimepicker").attr("type","number");
+                        break;
+                    default:
+                        obj_ = Docya.CardController.SearchRules.string;
+                        jqValueElm.removeAttr("data-datetimepicker").attr("type","text");
+                        break;
+                }
+
+                Docya.CardController.SearchJSON[groupIndex].items[itemIndex].rule = obj_[0].rule;
+                Docya.CardController.SearchJSON[groupIndex].items[itemIndex].value = "";
+
+                jqValueElm.val("");
+
+                jqOperatorElm.empty();
+
+                obj_.map((a) => {
+                    jqOperatorElm.append('<option value="' + a.rule + '">' + a.name + '</option>');
+                });
+
+            })
+        },
         initAjax: function (data, cb) {
             $.ajax({
                 dataType: "json",
@@ -934,6 +1208,11 @@
             });
         },
         initElements: function () {
+            this.initSearchFieldChange();
+            this.initSearchRemove();
+            this.initSearchAdd();
+            this.initSearchGroupAdd();
+            this.createSearchForm();
             this.initDocSend();
             this.initMailSend();
             this.initMailFields();
@@ -957,159 +1236,25 @@
 
     $(document).ready(function () {
         w.Docya.CardController.init();
-
-        //bu kisim yukariya alinacak
-        let search = [
-            {
-                rule: "or",
-                items: [
-                    {
-                        type: "string",
-                        field: "ad_soyad",
-                        rule: "equal",
-                        value: "adnan gog"
-                    },
-                    {
-                        type: "date",
-                        field: "dogum_tarihi",
-                        rule: "greater",
-                        value: "2018-08-24"
-                    }
-                ]
-            },
-            {
-                rule: "or",
-                items: [
-                    {
-                        type: "string",
-                        field: "ad_soyad",
-                        rule: "equal",
-                        value: "adnan gog"
-                    },
-                    {
-                        type: "date",
-                        field: "dogum_tarihi",
-                        rule: "greater",
-                        value: "2018-08-24"
-                    }
-                ]
-            }
-        ];
-    
-        let fields = [
-            {
-                name: "Ad Soyad",
-                field: "ad_soyad",
-                type: "string"
-            },
-            {
-                name: "Dogum Tarihi",
-                field: "dogum_tarihi",
-                type: "date"
-            },
-            {
-                name: "TCKN",
-                field: "tckn",
-                type: "number"
-            }
-        ];
-    
-        let rules = {
-            string: [
-                {
-                    name: "Esittir",
-                    rule: "equal"
-                },
-                {
-                    name: "Esit Degildir",
-                    rule: "notequal"
-                },
-                {
-                    name: "Benzer",
-                    rule: "like"
-                },
-                {
-                    name: "Benzemez",
-                    rule: "notlike"
-                }
-            ],
-            date: [
-                {
-                    name: "Esittir",
-                    rule: "equal"
-                },
-                {
-                    name: "Esit Degildir",
-                    rule: "notequal"
-                },
-                {
-                    name: "Kucuktur",
-                    rule: "less"
-                },
-                {
-                    name: "Buyuktur",
-                    rule: "greater"
-                },
-                {
-                    name: "Arasinda",
-                    rule: "between"
-                }
-            ],
-            number: [
-                {
-                    name: "Esittir",
-                    rule: "equal"
-                },
-                {
-                    name: "Esit Degildir",
-                    rule: "notequal"
-                },
-                {
-                    name: "Kucuktur",
-                    rule: "less"
-                },
-                {
-                    name: "Buyuktur",
-                    rule: "greater"
-                },
-                {
-                    name: "Arasinda",
-                    rule: "between"
-                }
-            ]
-        };
-    
-        search.map((s) => {
-            var screen = $("#dvSearchFields");
-            var html_ = '<div class="search-box"><div class="row"><div class="col">{<i class="fas fa-plus-circle"></i></div></div>';
-            s.items.map((item) => {
-                html_ += '<div class="row"><div class="col" style="width:20px; flex-grow:inherit; padding-top:6px;"><i class="fas fa-minus-circle"></i></div>';
-                html_ += '<div class="col">';
-                html_ += '<select class="form-control form-control-sm" data-search-field>';
-                fields.map((a)=>{
-                    html_ += '<option value="'+a.field+'||'+a.type+'">'+a.name+'</option>';
-                });
-                html_ += '</select>';
-                html_ += '</div><div class="col">';
-                html_ += '<select class="form-control form-control-sm notFast" data-search-operator>';
-                rules.string.map((a)=>{
-                    html_ += '<option value="'+a.rule+'">'+a.name+'</option>';
-                });
-                html_ += '</select>';
-                html_ += '</div><div class="col">';
-                html_ += '<input type="text" class="form-control form-control-sm" data-search-value>';
-                html_ += '</div><div class="col"></div></div>';
-            });
-            html_ += '<div class="row"><div class="col-lg-2">}';
-            html_ += '<select class="form-control form-control-sm notFast" style="display:inline-block" data-search-operator>';
-            html_ += '<option val="or">Veya</option>';
-            html_ += '<option val="and">Ve</option>';
-            html_ += '</select>';
-            html_ += '</div></div></div>';
-    
-            screen.append(html_);
-        });
-
     });
 
 })(jQuery, window, document);
+
+function slugify(text) {
+    var trMap = {
+        'çÇ': 'c',
+        'ğĞ': 'g',
+        'şŞ': 's',
+        'üÜ': 'u',
+        'ıİ': 'i',
+        'öÖ': 'o'
+    };
+    for (var key in trMap) {
+        text = text.replace(new RegExp('[' + key + ']', 'g'), trMap[key]);
+    }
+    return text.replace(/[^-a-zA-Z0-9\s]+/ig, '')
+        .replace(/\s/gi, "_")
+        .replace(/[_]+/gi, "_")
+        .toLowerCase();
+
+}

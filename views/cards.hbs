@@ -41,7 +41,11 @@
       </div>
     </div>
     <div class="max-height-div">
+      <div id="dvSearchBar">
+        <button class="btn btn-primary btn-sm" data-search-grupadd><i class="fas fa-plus-circle"></i> Yeni Grup Ekle</button> 
+        <button class="btn btn-success btn-sm"><i class="fas fa-plus-circle"></i> Aramayı Kaydet</button>
       <div id="dvSearchFields"></div>
+      </div>
       {{> table}}
     </div>
   </div>
@@ -384,3 +388,4 @@
 
 <input type="hidden" name="card" id="card" value="{{ card._id }}" />
 <input type="hidden" name="cardtemplate" id="cardtemplate" value="{{ cardTemplate._id }}" />
+<input type="hidden" id="formFields" value="{{ jsonStringify cardTemplate.form.fields }}" />

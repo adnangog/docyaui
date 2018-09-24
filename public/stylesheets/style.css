@@ -703,3 +703,15 @@ span.tooltip:after {
   margin: 5px 0;
 }
 
+.search-box .row {
+  margin-bottom: .2rem;
+}
+
+/* bootstrap owerride */
+.btn-group-sm2>.btn, .btn-sm2 {
+  padding: .2rem .2rem;
+  font-size: 1rem;
+  line-height: 1;
+  border-radius: .2rem;
+  margin-left: 5px;
+} 
