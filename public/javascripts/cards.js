@@ -79,7 +79,6 @@
         },
         SearchJSON: [
             {
-                rule: "or",
                 items: [
                     {
                         type: "string",
@@ -96,7 +95,6 @@
                 ]
             },
             {
-                rule: "or",
                 items: [
                     {
                         type: "string",
@@ -268,11 +266,8 @@
                     html_ += '</div><div class="col"></div></div>';
                 });
                 html_ += '<div class="row"><div class="col-lg-2">}';
-                html_ += '<select class="form-control form-control-sm notFast" style="display:inline-block" data-search-operator>';
-                html_ += '<option val="or">Veya</option>';
-                html_ += '<option val="and">Ve</option>';
-                html_ += '</select>';
                 html_ += '</div></div></div>';
+                html_ += '<div class="search-box-or"> { OR } </div>';
 
                 screen.append(html_);
             });
@@ -1087,6 +1082,18 @@
                 Docya.CardController.initAjax(data, cb);
             })
         },
+        initSearchValueChange: function () {
+            $("body").on("blur", "[data-search-value]", function (e) {
+                e.preventDefault();
+
+                var jqElm = $(this);
+                var parent_ = jqElm.closest(".row");
+                var group = jqElm.closest(".search-box");
+
+                Docya.CardController.SearchJSON[group.index()].items[(parent_.index()-1)].value=jqElm.val();
+
+            })
+        },
         initSearchRemove: function () {
             $("body").on("click", "[data-search-remove]", function (e) {
                 e.preventDefault();
@@ -1094,6 +1101,8 @@
                 var jqElm = $(this);
                 var itemIndex = (jqElm.closest(".row").index() - 1);
                 var groupIndex = jqElm.closest(".search-box").index();
+
+                groupIndex = groupIndex === 0 ? 0 : (groupIndex-1);
 
                 Docya.CardController.SearchJSON[groupIndex].items.splice(itemIndex, 1);
 
@@ -1209,6 +1218,7 @@
         },
         initElements: function () {
             this.initSearchFieldChange();
+            this.initSearchValueChange();
             this.initSearchRemove();
             this.initSearchAdd();
             this.initSearchGroupAdd();
