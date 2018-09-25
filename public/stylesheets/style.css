@@ -700,16 +700,26 @@ span.tooltip:after {
 .search-box {
   border:1px solid #999;
   padding: 15px;
-  margin: 5px 0;
+  margin: 5px 0 52px 0;
+  position: relative;
 }
-.search-box-or {
+.search-box::after {
+  content: '{ OR }';
+  display: block;
+  position: absolute;
+  bottom: -50px;
+  left:0;
+  right:0;
   border:1px solid #ccc;
   padding: 5px 15px;
   margin: 5px 0;
 }
-
-.search-box-or:last-child {
+.search-box:last-child {
+  margin: 5px 0;
+}
+.search-box:last-child::after {
   display: none;
+  content: '';
 }
 
 .search-box .row {

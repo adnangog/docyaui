@@ -21,7 +21,7 @@ $(function () {
 });
 
 function showMessageBox(type, title, message) {
-    $('#messageBox .modal-content').addClass(type);
+    $('#messageBox .modal-content').attr("class","modal-content "+type);
     $('#messageBox #myModalLabel').text(title);
     $('#messageBox .modal-body').html(message);
     $('#messageBox').modal('show');

@@ -262,12 +262,11 @@
                     });
                     html_ += '</select>';
                     html_ += '</div><div class="col">';
-                    html_ += '<input type="text" class="form-control form-control-sm" value="' + item.value + '" data-search-value>';
+                    html_ += '<input type="text" class="form-control form-control-sm" value="' + item.value + '" placeholder="Değer girin..." data-search-value>';
                     html_ += '</div><div class="col"></div></div>';
                 });
                 html_ += '<div class="row"><div class="col-lg-2">}';
                 html_ += '</div></div></div>';
-                html_ += '<div class="search-box-or"> { OR } </div>';
 
                 screen.append(html_);
             });
@@ -1082,6 +1081,71 @@
                 Docya.CardController.initAjax(data, cb);
             })
         },
+        initSearchGet: function () {
+            $("body").on("click", "[data-search-get]", function (e) {
+                e.preventDefault();
+
+                var jqElm = $(this);
+
+                var isValid = true;
+                var errorMessage = "Lütfen değer alanlarını boş bırakmayın.";
+
+                Docya.CardController.SearchJSON.map(x=>{
+                    if(x.items.length===0){
+                        isValid = false;
+                        errorMessage = "Arama en az bir koşul içermelidir.";
+                    }else{
+                        x.items.map(y=>{
+                            if(y.value==="" || y.value === null){
+                                isValid = false;
+                            }
+                        });
+                    }
+                });
+
+                if(isValid){
+                    showMessageBox("success", "BİLGİ", "Arama başarılı");
+                }else{
+                    showMessageBox("danger", "UYARI", errorMessage);
+                }
+
+            })
+        },
+        initSearchSave: function () {
+            $("body").on("click", "[data-search-save]", function (e) {
+                e.preventDefault();
+
+                var jqElm = $(this);
+
+                var isValid = true;
+                var errorMessage = "Lütfen değer alanlarını boş bırakmayın.";
+
+                if($("#searchName").val()===""){
+                    showMessageBox("danger", "UYARI", "Lütfen arama adı giriniz.");
+                    return false;
+                }
+
+                Docya.CardController.SearchJSON.map(x=>{
+                    if(x.items.length===0){
+                        isValid = false;
+                        errorMessage = "Arama en az bir koşul içermelidir.";
+                    }else{
+                        x.items.map(y=>{
+                            if(y.value==="" || y.value === null){
+                                isValid = false;
+                            }
+                        });
+                    }
+                });
+
+                if(isValid){
+                    showMessageBox("success", "BİLGİ", "Arama başarılı");
+                }else{
+                    showMessageBox("danger", "UYARI", errorMessage);
+                }
+
+            })
+        },
         initSearchValueChange: function () {
             $("body").on("blur", "[data-search-value]", function (e) {
                 e.preventDefault();
@@ -1101,8 +1165,6 @@
                 var jqElm = $(this);
                 var itemIndex = (jqElm.closest(".row").index() - 1);
                 var groupIndex = jqElm.closest(".search-box").index();
-
-                groupIndex = groupIndex === 0 ? 0 : (groupIndex-1);
 
                 Docya.CardController.SearchJSON[groupIndex].items.splice(itemIndex, 1);
 
@@ -1182,7 +1244,7 @@
                 switch (type_) {
                     case "datetime":
                         obj_ = Docya.CardController.SearchRules.date;
-                        jqValueElm.attr("data-datetimepicker").attr("type","text");
+                        jqValueElm.attr("data-datetimepicker","").attr("type","text");
                         break;
                     case "number":
                         obj_ = Docya.CardController.SearchRules.number;
@@ -1217,6 +1279,8 @@
             });
         },
         initElements: function () {
+            this.initSearchSave();
+            this.initSearchGet();
             this.initSearchFieldChange();
             this.initSearchValueChange();
             this.initSearchRemove();

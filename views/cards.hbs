@@ -1,50 +1,47 @@
 <div class="row" style="margin:0;">
   <div class="col-md-12 light-theme">
-    <div class="table-top col-md-12">
+    <div class="row">
+      <div class="table-top col-md-12">
+      <div style="display: inline-block; width:300px;">
+      <div class="input-group">
+        <input type="text" class="form-control form-control-sm" aria-label="Text input with segmented dropdown button">
+        <div class="input-group-append">
+          <button type="button" class="btn btn-outline-secondary btn-sm">Action</button>
+          <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split  btn-sm" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">Something else here</a>
+            <div role="separator" class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Separated link</a>
+          </div>
+        </div>
+      </div>
+      </div>
       <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#cardModal">
         <i class="far fa-file"></i>
       </button>
-      <div class="dropdown" style="display:inline-block">
-        <button class="btn btn-warning btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-          aria-expanded="false">
-          <i class="fas fa-cog"></i>
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          {{# each cardTemplate.form.fields }}
-
-          <div class="form-group">
-            <label for="{{ this.field }}">{{ this.label }}</label>
-            {{#if_equal this.control "textbox"}} {{#if_equal this.type "text"}}
-            <input type="text" {{#unless ../isWrite}}readonly{{/unless}} value="{{getObjectVal ../card.fields.[0] this.label ../formType}}"
-              class="{{#unless ../isWrite}}form-control-plaintext{{else}}form-control{{/unless}} form-control-sm " id="{{cFormName this.label ../formType}}"
-              name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}"> {{/if_equal}} {{#if_equal this.type "datetime"}}
-            <input type="text" {{#unless ../isWrite}}readonly{{/unless}} value="{{getObjectVal ../card.fields.[0] this.label ../formType}}"
-              data-datetimepicker class="{{#unless ../isWrite}}form-control-plaintext{{else}}form-control{{/unless}} form-control-sm"
-              id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}"> {{/if_equal}} {{/if_equal}} {{#if_equal this.control "textarea"}}
-            <textarea class="{{#unless ../isWrite}}form-control-plaintext{{else}}form-control{{/unless}} form-control-sm" {{#unless ../isWrite}}readonly{{/unless}}
-              id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}"
-              rows="3">{{getObjectVal ../card.fields.[0] this.label ../formType}}</textarea> {{/if_equal}} {{#if_equal this.control "dropdown"}}
-            <select class="{{#unless ../isWrite}}form-control-plaintext{{else}}form-control{{/unless}} form-control-sm" {{#unless ../isWrite}}readonly{{/unless}}
-              id="{{cFormName this.label ../formType}}" name="{{cFormName this.label ../formType}}">
-              {{# each this.options }} {{#if_equal (getObjectVal ../../card.fields.[0] ../this.label ../../formType) this.val }}
-              <option value="{{ this.val }}" selected="selected">{{ this.option }}</option>
-              {{else}}
-              <option value="{{ this.val }}">{{ this.option }}</option>
-              {{/if_equal}} {{/ each}}
-            </select>
-            {{/if_equal}}
-
-          </div>
-
-          {{/ each }}
-        </div>
-      </div>
     </div>
+    </div>
+    
     <div class="max-height-div">
       <div id="dvSearchBar">
-        <button class="btn btn-primary btn-sm" data-search-grupadd><i class="fas fa-plus-circle"></i> Yeni Grup Ekle</button> 
-        <button class="btn btn-success btn-sm"><i class="fas fa-plus-circle"></i> Aramayı Kaydet</button>
-      <div id="dvSearchFields"></div>
+        <div class="row">
+          <div class="col-lg-6">
+            <button class="btn btn-primary btn-sm" data-search-grupadd><i class="fas fa-plus-circle"></i> Yeni Grup
+              Ekle</button>
+          </div>
+          <div class="col-lg-6 text-right">
+            <input class="form-control form-control-sm" placeholder="Arama adı..." style="width:200px; display:inline-block;"
+              id="searchName" />
+            <button class="btn btn-success btn-sm" data-search-save><i class="fas fa-save"></i> Aramayı Kaydet</button>
+          </div>
+        </div>
+        <div id="dvSearchFields"></div>
+        <button class="btn btn-success btn-sm" data-search-get><i class="fas fa-sync-alt"></i> Arama Sonuçlarını Getir</button>
       </div>
       {{> table}}
     </div>
@@ -86,13 +83,16 @@
     <div class="doc-subtitle" data-itemName></div>
     <ul class="nav nav-tabs" id="myTab" role="tablist">
       <li class="nav-item">
-        <a class="nav-link active" id="process-tab" data-toggle="tab" href="#process" role="tab" aria-controls="process" aria-selected="true">İşlemler</a>
+        <a class="nav-link active" id="process-tab" data-toggle="tab" href="#process" role="tab" aria-controls="process"
+          aria-selected="true">İşlemler</a>
       </li>
       <li class="nav-item" data-ca="23">
-        <a class="nav-link" id="note-tab" data-toggle="tab" href="#notes" role="tab" aria-controls="notes" aria-selected="false">Notlar</a>
+        <a class="nav-link" id="note-tab" data-toggle="tab" href="#notes" role="tab" aria-controls="notes"
+          aria-selected="false">Notlar</a>
       </li>
       <li class="nav-item" data-ca="4">
-        <a class="nav-link" id="history-tab" data-toggle="tab" href="#history" role="tab" aria-controls="history" aria-selected="false">Geçmiş</a>
+        <a class="nav-link" id="history-tab" data-toggle="tab" href="#history" role="tab" aria-controls="history"
+          aria-selected="false">Geçmiş</a>
       </li>
       <li class="nav-item" data-ca="7">
         <a class="nav-link" id="subscription-tab" data-toggle="tab" href="#subscription" role="tab" aria-controls="subscription"
@@ -106,37 +106,39 @@
       <div class="tab-pane fade show active" id="process" role="tabpanel" aria-labelledby="process-tab">
         <div class="process-boxes">
           <div data-folderoptions class="process-box">
-            <button data-ca="22" data-optionitem data-key="folderEdit" type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip"
-              data-placement="top" title="Adını Değiştir">
+            <button data-ca="22" data-optionitem data-key="folderEdit" type="button" class="btn btn-secondary btn-sm"
+              data-toggle="tooltip" data-placement="top" title="Adını Değiştir">
               <i class="far fa-edit"></i>
             </button>
-            <button data-ca="16" data-optionitem data-key="folderAdd" type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip"
-              data-placement="top" title="Alt Klasör Ekle">
+            <button data-ca="16" data-optionitem data-key="folderAdd" type="button" class="btn btn-secondary btn-sm"
+              data-toggle="tooltip" data-placement="top" title="Alt Klasör Ekle">
               <i class="fas fa-folder-open"></i>
             </button>
-            <button data-ca="18" data-optionitem data-key="documentAdd" type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip"
-              data-placement="top" title="Döküman Ekle">
+            <button data-ca="18" data-optionitem data-key="documentAdd" type="button" class="btn btn-secondary btn-sm"
+              data-toggle="tooltip" data-placement="top" title="Döküman Ekle">
               <i class="fas fa-file-invoice"></i>
             </button>
-            <button data-ca="17" data-optionitem data-key="folderDelete" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip"
-              data-placement="top" title="Sil">
+            <button data-ca="17" data-optionitem data-key="folderDelete" type="button" class="btn btn-danger btn-sm"
+              data-toggle="tooltip" data-placement="top" title="Sil">
               <i class="far fa-trash-alt"></i>
             </button>
             <hr>
           </div>
           <div data-documentoptions class="process-box">
-            <button data-ca="9" data-optionitem data-key="documentEdit" type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip"
-              data-placement="top" title="Adını Değiştir">
+            <button data-ca="9" data-optionitem data-key="documentEdit" type="button" class="btn btn-secondary btn-sm"
+              data-toggle="tooltip" data-placement="top" title="Adını Değiştir">
               <i class="far fa-edit"></i>
             </button>
-            <button data-ca="14" data-optionitem data-key="documentPrint" type="button" class="btn btn-info btn-sm" data-toggle="tooltip"
-              data-placement="top" title="Yazdır">
+            <button data-ca="14" data-optionitem data-key="documentPrint" type="button" class="btn btn-info btn-sm"
+              data-toggle="tooltip" data-placement="top" title="Yazdır">
               <i class="fas fa-print"></i>
             </button>
-            <button data-ca="10" type="button" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Check in">
+            <button data-ca="10" type="button" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top"
+              title="Check in">
               <i class="fas fa-user-check"></i>
             </button>
-            <button data-ca="10" type="button" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Check out">
+            <button data-ca="10" type="button" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top"
+              title="Check out">
               <i class="fas fa-user-times"></i>
             </button>
             <hr>
@@ -148,17 +150,17 @@
                   <i class="far fa-file-image"></i>
                 </div>
                 <span class="document-title"></span>
-                <br/>
-                <button data-ca="8" data-optionitem data-key="documentOpen" type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip"
-                  data-placement="top" title="Aç">
+                <br />
+                <button data-ca="8" data-optionitem data-key="documentOpen" type="button" class="btn btn-secondary btn-sm"
+                  data-toggle="tooltip" data-placement="top" title="Aç">
                   <i class="fas fa-folder-open"></i> Aç
                 </button>
-                <button data-ca="13" data-optionitem data-key="documentSave" type="button" class="btn btn-success btn-sm" data-toggle="tooltip"
-                  data-placement="top" title="Kaydet">
+                <button data-ca="13" data-optionitem data-key="documentSave" type="button" class="btn btn-success btn-sm"
+                  data-toggle="tooltip" data-placement="top" title="Kaydet">
                   <i class="fas fa-download"></i> İndir
                 </button>
-                <button data-ca="19" data-optionitem data-key="documentDelete" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip"
-                  data-placement="top" title="Sil">
+                <button data-ca="19" data-optionitem data-key="documentDelete" type="button" class="btn btn-danger btn-sm"
+                  data-toggle="tooltip" data-placement="top" title="Sil">
                   <i class="far fa-trash-alt"></i> Sil
                 </button>
               </div>
@@ -189,8 +191,8 @@
               <div class="form-row">
                 <div class="form-group col-md-6">
                   <label for="name">Klasör Adı</label>
-                  <input type="text" class="form-control form-control-sm" id="foldernameAdd" name="foldername" placeholder="Klasör adı giriniz"
-                    autocomplete="off">
+                  <input type="text" class="form-control form-control-sm" id="foldernameAdd" name="foldername"
+                    placeholder="Klasör adı giriniz" autocomplete="off">
                 </div>
 
                 <div class="form-group col-md-6">
@@ -229,8 +231,8 @@
             <form method="POST" action="/documents/documentId" data-ca="9">
               <div class="form-group">
                 <label for="name">Döküman Adı</label>
-                <input type="text" class="form-control form-control-sm" id="documentname" name="documentname" placeholder="Döküman adı giriniz"
-                  autocomplete="off">
+                <input type="text" class="form-control form-control-sm" id="documentname" name="documentname"
+                  placeholder="Döküman adı giriniz" autocomplete="off">
               </div>
 
               <button type="button" class="btn btn-outline-success btn-sm">
@@ -273,7 +275,8 @@
 {{/if}}
 
 <!-- Modal -->
-<div class="modal fade" id="cardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="cardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -320,7 +323,8 @@
   </div>
 </div>
 
-<div class="modal fade" id="mailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="mailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -337,19 +341,22 @@
         <div class="row">
           <div class="col-md-3">Kime : </div>
           <div class="col-md-9">
-            <input type="text" class="form-control form-control-sm" id="mailTo" name="mailTo" value="" placeholder="" data-mailfields>
+            <input type="text" class="form-control form-control-sm" id="mailTo" name="mailTo" value="" placeholder=""
+              data-mailfields>
           </div>
         </div>
         <div class="row">
           <div class="col-md-3">Cc : </div>
           <div class="col-md-9">
-            <input type="text" class="form-control form-control-sm" id="mailCc" name="mailCc" value="" placeholder="" data-mailfields>
+            <input type="text" class="form-control form-control-sm" id="mailCc" name="mailCc" value="" placeholder=""
+              data-mailfields>
           </div>
         </div>
         <div class="row">
           <div class="col-md-3">Konu : </div>
           <div class="col-md-9">
-            <input type="text" class="form-control form-control-sm" id="mailSubject" name="mailSubject" value="" placeholder="" data-mailfields>
+            <input type="text" class="form-control form-control-sm" id="mailSubject" name="mailSubject" value=""
+              placeholder="" data-mailfields>
           </div>
         </div>
         <div class="row">
