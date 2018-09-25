@@ -1,13 +1,16 @@
 <div class="row" style="margin:0;">
   <div class="col-md-12 light-theme">
     <div class="row">
-      <div class="table-top col-md-12">
-      <div style="display: inline-block; width:300px;">
+      <div class="table-top">
+        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#cardModal">
+        <i class="fas fa-file"></i> Yeni Dosya Kartı Oluştur
+      </button>
+      <div style="display: inline-block; width:250px;">
       <div class="input-group">
-        <input type="text" class="form-control form-control-sm" aria-label="Text input with segmented dropdown button">
+        <input type="text" class="form-control form-control-sm" placeholder="aranacak kelime...">
         <div class="input-group-append">
-          <button type="button" class="btn btn-outline-secondary btn-sm">Action</button>
-          <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split  btn-sm" data-toggle="dropdown"
+          <button type="button" class="btn btn-outline-secondary btn-sm"><i class="fas fa-search"></i></button>
+          <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split  btn-sm dropleft" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
             <span class="sr-only">Toggle Dropdown</span>
           </button>
@@ -21,9 +24,7 @@
         </div>
       </div>
       </div>
-      <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#cardModal">
-        <i class="far fa-file"></i>
-      </button>
+      
     </div>
     </div>
     
@@ -31,7 +32,7 @@
       <div id="dvSearchBar">
         <div class="row">
           <div class="col-lg-6">
-            <button class="btn btn-primary btn-sm" data-search-grupadd><i class="fas fa-plus-circle"></i> Yeni Grup
+            <button class="btn btn-secondary btn-sm" data-search-grupadd><i class="fas fa-plus-circle"></i> Yeni Grup
               Ekle</button>
           </div>
           <div class="col-lg-6 text-right">

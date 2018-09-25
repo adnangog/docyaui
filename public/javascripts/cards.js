@@ -223,7 +223,7 @@
             var screen = $("#dvSearchFields");
             screen.html("");
             Docya.CardController.SearchJSON.map((s) => {
-                var html_ = '<div class="search-box"><div class="row"><div class="col">{<button class="btn btn-warning btn-sm" style="margin-left:5px;" data-search-add><i class="fas fa-plus-circle"></i> Yeni Koşul Ekle</button></div></div>';
+                var html_ = '<div class="search-box"><div class="row"><div class="col">{<button class="btn btn-secondary btn-sm" style="margin-left:5px;" data-search-add><i class="fas fa-plus-circle"></i> Yeni Koşul Ekle</button></div></div>';
                 s.items.map((item) => {
                     html_ += '<div class="row"><div class="col" style="width:40px; flex-grow:inherit;"><button class="btn btn-danger btn-sm2" data-search-remove><i class="fas fa-minus-circle"></i></button></div>';
                     html_ += '<div class="col">';
