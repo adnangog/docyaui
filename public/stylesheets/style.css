@@ -699,11 +699,19 @@ span.tooltip:after {
   margin-bottom: 1px;
 }
 
+#dvSearchBar {
+  border: 1px solid #4aa0f1;
+  padding: 15px;
+  margin-bottom: 15px;
+  background-color: #f7f7f7;
+  display: none;
+}
 .search-box {
   border:1px solid #999;
   padding: 15px;
   margin: 5px 0 52px 0;
   position: relative;
+  background-color: #fff;
 }
 .search-box::after {
   content: '{ OR }';
@@ -715,6 +723,7 @@ span.tooltip:after {
   border:1px solid #ccc;
   padding: 5px 15px;
   margin: 5px 0;
+  background-color: #fff;
 }
 .search-box:last-child {
   margin: 5px 0;
@@ -726,6 +735,10 @@ span.tooltip:after {
 
 .search-box .row {
   margin-bottom: .2rem;
+}
+
+[data-search-delete] {
+  display: none;
 }
 
 /* bootstrap owerride */

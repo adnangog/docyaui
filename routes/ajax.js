@@ -12,6 +12,23 @@ router.post("/", (req, res, next) => {
   let cb = function () { };
 
   switch (req.body.process) {
+    case "deleteSearch":
+      route = `/search/delete/${req.body.search}`;
+      type = "GET";
+      break;
+    case "getSearch":
+      route = `/search`;
+      params.user = req.session.userId;
+      params.form = req.body.form;
+      break;
+    case "addSearch":
+      route = "/search/add";
+      params.name = req.body.name;
+      params.fields = JSON.parse(req.body.fields);
+      params.user = req.session.userId;
+      params.form = req.body.form;
+      params.rDate = Date.now();
+      break;
     case "sendDoc":
       route = `/user/document/add`;
       params.from = req.session.userId;

@@ -3,31 +3,32 @@
     <div class="row">
       <div class="table-top">
         <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#cardModal">
-        <i class="fas fa-file"></i> Yeni Dosya Kartı Oluştur
-      </button>
-      <div style="display: inline-block; width:250px;">
-      <div class="input-group">
-        <input type="text" class="form-control form-control-sm" placeholder="aranacak kelime...">
-        <div class="input-group-append">
-          <button type="button" class="btn btn-outline-secondary btn-sm"><i class="fas fa-search"></i></button>
-          <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split  btn-sm dropleft" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">
-            <span class="sr-only">Toggle Dropdown</span>
-          </button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-            <div role="separator" class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
+          <i class="fas fa-file"></i> Yeni Dosya Kartı Oluştur
+        </button>
+        <div style="display: inline-block; width:350px;">
+          <div class="input-group">
+            <input type="text" class="form-control form-control-sm" placeholder="aranacak kelime...">
+            <div class="input-group-append">
+              <button type="button" class="btn btn-outline-secondary btn-sm"><i class="fas fa-search"></i></button>
+              <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split  btn-sm dropleft"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Gelişmiş
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <div class="dropdown-menu dropdown-menu-rleft">
+                <h6 class="dropdown-header text-danger">Kayıtlı Aramalar</h6>
+                <div id="dvSearches">
+                </div>
+                <div role="separator" class="dropdown-divider"></div>
+                <a class="dropdown-item text-success" href="#" data-search-new>Yeni Oluştur</a>
+              </div>
+            </div>
           </div>
         </div>
+
       </div>
-      </div>
-      
     </div>
-    </div>
-    
+
     <div class="max-height-div">
       <div id="dvSearchBar">
         <div class="row">
@@ -39,10 +40,11 @@
             <input class="form-control form-control-sm" placeholder="Arama adı..." style="width:200px; display:inline-block;"
               id="searchName" />
             <button class="btn btn-success btn-sm" data-search-save><i class="fas fa-save"></i> Aramayı Kaydet</button>
+            <button class="btn btn-danger btn-sm" data-search-delete><i class="fas fa-trash-alt"></i> Sil</button>
           </div>
         </div>
         <div id="dvSearchFields"></div>
-        <button class="btn btn-success btn-sm" data-search-get><i class="fas fa-sync-alt"></i> Arama Sonuçlarını Getir</button>
+        <button class="btn btn-primary btn-sm" data-search-get><i class="fas fa-sync-alt"></i> Arama Sonuçlarını Getir</button>
       </div>
       {{> table}}
     </div>
@@ -397,3 +399,4 @@
 <input type="hidden" name="card" id="card" value="{{ card._id }}" />
 <input type="hidden" name="cardtemplate" id="cardtemplate" value="{{ cardTemplate._id }}" />
 <input type="hidden" id="formFields" value="{{ jsonStringify cardTemplate.form.fields }}" />
+<input type="hidden" id="formId" value="{{ cardTemplate.form._id }}" />

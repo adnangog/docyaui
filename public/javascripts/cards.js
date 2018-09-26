@@ -3,6 +3,7 @@
         w.Docya = {};
 
     w.Docya.CardController = {
+        FormId: $("#formId").val(),
         DocumentJSON: [],
         InputJSON: [],
         AuthSets: [],
@@ -77,40 +78,9 @@
                 }
             ]
         },
-        SearchJSON: [
-            {
-                items: [
-                    {
-                        type: "string",
-                        field: "ad_soyad",
-                        rule: "equal",
-                        value: "adnan gog"
-                    },
-                    {
-                        type: "date",
-                        field: "dogum_tarihi",
-                        rule: "greater",
-                        value: "2018-08-24"
-                    }
-                ]
-            },
-            {
-                items: [
-                    {
-                        type: "string",
-                        field: "ad_soyad",
-                        rule: "equal",
-                        value: "adnan gog"
-                    },
-                    {
-                        type: "date",
-                        field: "dogum_tarihi",
-                        rule: "greater",
-                        value: "2018-08-24"
-                    }
-                ]
-            }
-        ],
+        SearchJSON: [],
+        Searches:[],
+        SelectedSearch:null,
         CardId: $("#card").val(),
         CardTemplateId: $("#cardtemplate").val(),
         SelectedFolder: null,
@@ -850,6 +820,23 @@
 
             Docya.CardController.initAjax(data, cb);
         },
+        getSearches: function () {
+
+            let data = {
+                process: "getSearch",
+                form: Docya.CardController.FormId
+            };
+
+            let cb = function (data) {
+                $("#dvSearches").html("");
+                var template = '{{# each this}}<a class="dropdown-item" href="#{{this._id}}" data-sid="{{this._id}}">{{this.name}}</a>{{/each}}';
+                var renderedHtml = Handlebars.compile(template)(data);
+                $("#dvSearches").append(renderedHtml);
+                Docya.CardController.Searches = data;
+            };
+
+            Docya.CardController.initAjax(data, cb);
+        },
         initMailFields: function () {
             $("body").on("blur", "[data-mailfields]", function (e) {
 
@@ -1081,31 +1068,78 @@
                 Docya.CardController.initAjax(data, cb);
             })
         },
+        initNewSearch: function () {
+            $("body").on("click", "[data-search-new]", function (e) {
+                e.preventDefault();
+
+                Docya.CardController.clearSearch();
+                $("#dvSearchBar").slideDown();
+            })
+        },
+        initSelectSearch: function () {
+            $("body").on("click", "#dvSearches a", function (e) {
+                e.preventDefault();
+                var jqElm = $(this);
+                Docya.CardController.SelectedSearch = jqElm.attr("data-sid");
+                var search = Docya.CardController.Searches.find(function(a){return a._id===Docya.CardController.SelectedSearch});
+
+                $("#searchName").val(search.name);
+                Docya.CardController.SearchJSON = search.fields;
+                Docya.CardController.createSearchForm();
+                $("[data-search-delete]").show();
+                $("#dvSearchBar").slideDown();
+
+            })
+        },
+        initDeleteSearch: function () {
+            $("body").on("click", "[data-search-delete]", function (e) {
+                e.preventDefault();
+
+                let data = {
+                    process: "deleteSearch",
+                    search: Docya.CardController.SelectedSearch
+                };
+
+                let cb = function (data) {
+                    if (data.messageType === 1) {
+
+                        Docya.CardController.getSearches();
+                        Docya.CardController.clearSearch();
+
+                        showMessageBox("success", "BİLGİ", data.message);
+                    } else {
+                        showMessageBox("danger", "UYARI", data.message);
+                    }
+
+                };
+
+                Docya.CardController.initAjax(data, cb);
+
+            })
+        },
         initSearchGet: function () {
             $("body").on("click", "[data-search-get]", function (e) {
                 e.preventDefault();
 
-                var jqElm = $(this);
-
                 var isValid = true;
                 var errorMessage = "Lütfen değer alanlarını boş bırakmayın.";
 
-                Docya.CardController.SearchJSON.map(x=>{
-                    if(x.items.length===0){
+                Docya.CardController.SearchJSON.map(x => {
+                    if (x.items.length === 0) {
                         isValid = false;
                         errorMessage = "Arama en az bir koşul içermelidir.";
-                    }else{
-                        x.items.map(y=>{
-                            if(y.value==="" || y.value === null){
+                    } else {
+                        x.items.map(y => {
+                            if (y.value === "" || y.value === null) {
                                 isValid = false;
                             }
                         });
                     }
                 });
 
-                if(isValid){
+                if (isValid) {
                     showMessageBox("success", "BİLGİ", "Arama başarılı");
-                }else{
+                } else {
                     showMessageBox("danger", "UYARI", errorMessage);
                 }
 
@@ -1120,31 +1154,66 @@
                 var isValid = true;
                 var errorMessage = "Lütfen değer alanlarını boş bırakmayın.";
 
-                if($("#searchName").val()===""){
+                if ($("#searchName").val() === "") {
                     showMessageBox("danger", "UYARI", "Lütfen arama adı giriniz.");
                     return false;
                 }
 
-                Docya.CardController.SearchJSON.map(x=>{
-                    if(x.items.length===0){
+                Docya.CardController.SearchJSON.map(x => {
+                    if (x.items.length === 0) {
                         isValid = false;
                         errorMessage = "Arama en az bir koşul içermelidir.";
-                    }else{
-                        x.items.map(y=>{
-                            if(y.value==="" || y.value === null){
+                    } else {
+                        x.items.map(y => {
+                            if (y.value === "" || y.value === null) {
                                 isValid = false;
                             }
                         });
                     }
                 });
 
-                if(isValid){
-                    showMessageBox("success", "BİLGİ", "Arama başarılı");
-                }else{
+                if (isValid) {
+                    let data = {
+                        process: "addSearch",
+                        name: $("#searchName").val(),
+                        fields: JSON.stringify(Docya.CardController.SearchJSON),
+                        form: Docya.CardController.FormId
+                    };
+
+                    let cb = function (data) {
+                        if (data.messageType === 1) {
+                            showMessageBox("success", "BİLGİ", data.message);
+                            Docya.CardController.clearSearch();
+                            Docya.CardController.getSearches();
+
+                        } else {
+                            showMessageBox("danger", "UYARI", data.message);
+                        }
+
+                    };
+
+                    Docya.CardController.initAjax(data, cb);
+                } else {
                     showMessageBox("danger", "UYARI", errorMessage);
                 }
 
             })
+        },
+        clearSearch: function () {
+            $("#searchName").val("");
+            $("[data-search-delete]").hide();
+            Docya.CardController.SelectedSearch=null;
+            Docya.CardController.SearchJSON = [{
+                items: [
+                    {
+                        type: Docya.CardController.FormFields[0].type,
+                        field: Docya.CardController.FormFields[0].field,
+                        rule: Docya.CardController.FormFields[0].type === "string" ? Docya.CardController.SearchRules.string[0].rule : Docya.CardController.SearchRules.number[0].rule,
+                        value: ""
+                    }
+                ]
+            }];
+            Docya.CardController.createSearchForm();
         },
         initSearchValueChange: function () {
             $("body").on("blur", "[data-search-value]", function (e) {
@@ -1154,7 +1223,7 @@
                 var parent_ = jqElm.closest(".row");
                 var group = jqElm.closest(".search-box");
 
-                Docya.CardController.SearchJSON[group.index()].items[(parent_.index()-1)].value=jqElm.val();
+                Docya.CardController.SearchJSON[group.index()].items[(parent_.index() - 1)].value = jqElm.val();
 
             })
         },
@@ -1168,7 +1237,7 @@
 
                 Docya.CardController.SearchJSON[groupIndex].items.splice(itemIndex, 1);
 
-                if (Docya.CardController.SearchJSON[groupIndex].items.length === 0 && Docya.CardController.SearchJSON.length>1) {
+                if (Docya.CardController.SearchJSON[groupIndex].items.length === 0 && Docya.CardController.SearchJSON.length > 1) {
                     Docya.CardController.SearchJSON.splice(groupIndex, 1);
                 }
 
@@ -1203,7 +1272,6 @@
 
                 Docya.CardController.SearchJSON.push(
                     {
-                        rule: "or",
                         items: [
                             {
                                 type: Docya.CardController.FormFields[0].type,
@@ -1244,15 +1312,15 @@
                 switch (type_) {
                     case "datetime":
                         obj_ = Docya.CardController.SearchRules.date;
-                        jqValueElm.attr("data-datetimepicker","").attr("type","text");
+                        jqValueElm.attr("data-datetimepicker", "").attr("type", "text");
                         break;
                     case "number":
                         obj_ = Docya.CardController.SearchRules.number;
-                        jqValueElm.removeAttr("data-datetimepicker").attr("type","number");
+                        jqValueElm.removeAttr("data-datetimepicker").attr("type", "number");
                         break;
                     default:
                         obj_ = Docya.CardController.SearchRules.string;
-                        jqValueElm.removeAttr("data-datetimepicker").attr("type","text");
+                        jqValueElm.removeAttr("data-datetimepicker").attr("type", "text");
                         break;
                 }
 
@@ -1279,6 +1347,9 @@
             });
         },
         initElements: function () {
+            this.initNewSearch();
+            this.initDeleteSearch();
+            this.initSelectSearch();
             this.initSearchSave();
             this.initSearchGet();
             this.initSearchFieldChange();
@@ -1301,6 +1372,7 @@
             this.initTableRowClick();
             this.getAuthSets();
             this.getUsers();
+            this.getSearches();
         },
         init: function () {
             this.initElements();
