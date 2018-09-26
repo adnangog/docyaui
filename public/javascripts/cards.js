@@ -79,8 +79,8 @@
             ]
         },
         SearchJSON: [],
-        Searches:[],
-        SelectedSearch:null,
+        Searches: [],
+        SelectedSearch: null,
         CardId: $("#card").val(),
         CardTemplateId: $("#cardtemplate").val(),
         SelectedFolder: null,
@@ -837,6 +837,29 @@
 
             Docya.CardController.initAjax(data, cb);
         },
+        getCards: function () {
+
+            let data = {
+                process: "getCards",
+                cardTemplateId: Docya.CardController.CardTemplateId
+            };
+
+            let cb = function (data) {
+
+                // $("#example-table").tabulator({
+                //         height: "311px",
+                //         data: data.data[0],
+                //         columns: [
+                //             { title: "Name", field: "name" },
+                //             { title: "Tarih", field: "rDate", align: "center", sorter: "date" },
+                //         ],
+                //     });
+
+            };
+
+
+            Docya.CardController.initAjax(data, cb);
+        },
         initMailFields: function () {
             $("body").on("blur", "[data-mailfields]", function (e) {
 
@@ -1081,7 +1104,7 @@
                 e.preventDefault();
                 var jqElm = $(this);
                 Docya.CardController.SelectedSearch = jqElm.attr("data-sid");
-                var search = Docya.CardController.Searches.find(function(a){return a._id===Docya.CardController.SelectedSearch});
+                var search = Docya.CardController.Searches.find(function (a) { return a._id === Docya.CardController.SelectedSearch });
 
                 $("#searchName").val(search.name);
                 Docya.CardController.SearchJSON = search.fields;
@@ -1202,7 +1225,7 @@
         clearSearch: function () {
             $("#searchName").val("");
             $("[data-search-delete]").hide();
-            Docya.CardController.SelectedSearch=null;
+            Docya.CardController.SelectedSearch = null;
             Docya.CardController.SearchJSON = [{
                 items: [
                     {
@@ -1373,6 +1396,7 @@
             this.getAuthSets();
             this.getUsers();
             this.getSearches();
+            this.getCards();
         },
         init: function () {
             this.initElements();

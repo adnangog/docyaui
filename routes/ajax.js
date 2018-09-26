@@ -12,6 +12,11 @@ router.post("/", (req, res, next) => {
   let cb = function () { };
 
   switch (req.body.process) {
+    case "getCards":
+      route = `/card/d`;
+      params.userId = req.session.userId;
+      params.cardTemplateId = req.body.cardTemplateId
+      break;
     case "deleteSearch":
       route = `/search/delete/${req.body.search}`;
       type = "GET";
