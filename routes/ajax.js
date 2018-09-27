@@ -15,7 +15,8 @@ router.post("/", (req, res, next) => {
     case "getCards":
       route = `/card/d`;
       params.userId = req.session.userId;
-      params.cardTemplateId = req.body.cardTemplateId
+      params.cardTemplateId = req.body.cardTemplateId;
+      params.searches = JSON.parse(req.body.searches);
       break;
     case "deleteSearch":
       route = `/search/delete/${req.body.search}`;

@@ -837,19 +837,15 @@
 
             Docya.CardController.initAjax(data, cb);
         },
-        getCards: function () {
+        getCards: function (type) {
 
             let data = {
                 process: "getCards",
-                cardTemplateId: Docya.CardController.CardTemplateId
+                cardTemplateId: Docya.CardController.CardTemplateId,
+                searches: JSON.stringify(Docya.CardController.SearchJSON)
             };
 
             let cb = function (data) {
-
-                //custom formatter definition
-                var openIcon = function (value, data, cell, row, options) { //plain text value
-                    return "<i class='fa fa-search'></i>"
-                };
 
                 var columns = [
                     { title: "Id", field: "_id", headerSort: false, sortable: false, visible: false },
@@ -861,56 +857,60 @@
                 data.data.map(function (item) {
                     Object.keys(item.fields[0]).map((a, i) => {
                         item[Object.keys(item.fields[0])[i]] = item.fields[0][a];
-                        columns.push({ title: cHeaderText(Object.keys(item.fields[0])[i]), field: Object.keys(item.fields[0])[i], headerSort: false, sortable: false, responsive: 0, align: "left" });
+                        if (columns.filter(function (a) { return a.field === Object.keys(item.fields[0])[i] }).length === 0) {
+                            columns.push({ title: cHeaderText(Object.keys(item.fields[0])[i]), field: Object.keys(item.fields[0])[i], headerSort: false, sortable: false, responsive: 0, align: "left" });
+                        }
                     });
                 });
 
-                Tabulator.extendExtension("format", "formatters", {
-                    ft2mt: function (cell, formatterParams) {              // Feet to Meters
-                        return (0.3048 * cell.getValue()).toFixed(0);
-                    },
-                    kn2km: function (cell, formatterParams) {              // Knots to Kilometers
-                        return (1.852 * cell.getValue()).toFixed(0);
-                    },
-                    ep2time: function (cell, formatterParams) {            // POSIX epoch to hh:mm:ss
-                        let date = new Date(cell.getValue());
-                        return date.toLocaleString('tr-TR', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
-                    },
-                    frmtType: function (cell, formatterParams) {
-                        var str = "";
-                        switch (cell.getValue()) {
-                            case 1:
-                                str = "Dosya Kartı";
-                                break;
-                            case 2:
-                                str = "Kabinet";
-                                break;
-                            default:
-                                str = "Diğer";
-                        }
-                        return str;
-                    },
-                });
+                if (type === 0) {
 
-                $("#DataTable").tabulator({
-                    layout: "fitColumns",              // Fit columns to width of table (optional)
-                    //headerSort:false,                   // Disable header sorter
-                    resizableColumns: false,             // Disable column resize
-                    responsiveLayout: true,              // Enable responsive layouts
-                    placeholder: "No Data Available",    // Display message to user on empty table
-                    columns: columns,
-                    rowClick: function (e, id, data, row) {
-                        document.location.href = "/cards/"+Docya.CardController.CardTemplateId+"/"+id.row.data._id;
-                    },
-                });
+                    Tabulator.extendExtension("format", "formatters", {
+                        ft2mt: function (cell, formatterParams) {              // Feet to Meters
+                            return (0.3048 * cell.getValue()).toFixed(0);
+                        },
+                        kn2km: function (cell, formatterParams) {              // Knots to Kilometers
+                            return (1.852 * cell.getValue()).toFixed(0);
+                        },
+                        ep2time: function (cell, formatterParams) {            // POSIX epoch to hh:mm:ss
+                            let date = new Date(cell.getValue());
+                            return date.toLocaleString('tr-TR', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
+                        },
+                        frmtType: function (cell, formatterParams) {
+                            var str = "";
+                            switch (cell.getValue()) {
+                                case 1:
+                                    str = "Dosya Kartı";
+                                    break;
+                                case 2:
+                                    str = "Kabinet";
+                                    break;
+                                default:
+                                    str = "Diğer";
+                            }
+                            return str;
+                        },
+                    });
 
+                    $("#DataTable").tabulator({
+                        layout: "fitColumns",              // Fit columns to width of table (optional)
+                        //headerSort:false,                   // Disable header sorter
+                        resizableColumns: false,             // Disable column resize
+                        responsiveLayout: true,              // Enable responsive layouts
+                        placeholder: "No Data Available",    // Display message to user on empty table
+                        columns: columns,
+                        rowClick: function (e, id, data, row) {
+                            document.location.href = "/cards/" + Docya.CardController.CardTemplateId + "/" + id.row.data._id;
+                        },
+                    });
 
+                    $(window).resize(function () {
+                        $("#DataTable").tabulator("redraw");
+                    });
+
+                }
 
                 $("#DataTable").tabulator("setData", data.data);
-
-                $(window).resize(function () {
-                    $("#DataTable").tabulator("redraw");
-                });
 
             };
 
@@ -1156,6 +1156,14 @@
                 $("#dvSearchBar").slideDown();
             })
         },
+        initCloseSearch: function () {
+            $("body").on("click", "[data-search-close]", function (e) {
+                e.preventDefault();
+
+                Docya.CardController.clearSearch();
+                $("#dvSearchBar").slideUp();
+            })
+        },
         initSelectSearch: function () {
             $("body").on("click", "#dvSearches a", function (e) {
                 e.preventDefault();
@@ -1218,6 +1226,7 @@
                 });
 
                 if (isValid) {
+                    Docya.CardController.getCards(1);
                     showMessageBox("success", "BİLGİ", "Arama başarılı");
                 } else {
                     showMessageBox("danger", "UYARI", errorMessage);
@@ -1417,6 +1426,23 @@
 
             })
         },
+        initSearchOperatorChange: function () {
+            $("body").on("change", "[data-search-operator]", function (e) {
+                e.preventDefault();
+
+                var jqElm = $(this);
+
+                var parent_ = jqElm.closest(".row");
+
+                var jqValueElm = parent_.find("[data-search-value]");
+
+                var itemIndex = (parent_.index() - 1);
+                var groupIndex = jqElm.closest(".search-box").index();
+
+                Docya.CardController.SearchJSON[groupIndex].items[itemIndex].rule = jqElm.val();
+
+            })
+        },
         initAjax: function (data, cb) {
             $.ajax({
                 dataType: "json",
@@ -1427,12 +1453,14 @@
             });
         },
         initElements: function () {
+            this.initCloseSearch();
             this.initNewSearch();
             this.initDeleteSearch();
             this.initSelectSearch();
             this.initSearchSave();
             this.initSearchGet();
             this.initSearchFieldChange();
+            this.initSearchOperatorChange();
             this.initSearchValueChange();
             this.initSearchRemove();
             this.initSearchAdd();
@@ -1453,7 +1481,7 @@
             this.getAuthSets();
             this.getUsers();
             this.getSearches();
-            this.getCards();
+            this.getCards(0);
         },
         init: function () {
             this.initElements();

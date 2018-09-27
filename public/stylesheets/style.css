@@ -140,6 +140,9 @@ table.table tbody tr td, table.table thead tr th {
     width: 100%;
     margin: 0 15px 15px;
 }
+.table-top .col-lg-4, .table-top .col-lg-8 {
+  padding: 0;
+}
 .table-infos {
   padding: .3rem;
   font-size: .8rem;
