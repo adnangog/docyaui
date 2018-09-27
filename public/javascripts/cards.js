@@ -846,14 +846,71 @@
 
             let cb = function (data) {
 
-                // $("#example-table").tabulator({
-                //         height: "311px",
-                //         data: data.data[0],
-                //         columns: [
-                //             { title: "Name", field: "name" },
-                //             { title: "Tarih", field: "rDate", align: "center", sorter: "date" },
-                //         ],
-                //     });
+                //custom formatter definition
+                var openIcon = function (value, data, cell, row, options) { //plain text value
+                    return "<i class='fa fa-search'></i>"
+                };
+
+                var columns = [
+                    { title: "Id", field: "_id", headerSort: false, sortable: false, visible: false },
+                    { title: "Adı", field: "name", headerSort: false, sortable: false, responsive: 0, align: "left" },
+                    { title: "Tipi", field: "type", headerSort: false, sortable: false, responsive: 2, formatter: "frmtType" },
+                    { title: "Kayıt Tarihi", field: "rDate", headerSort: false, sortable: false, responsive: 2, formatter: "ep2time" }
+                ];
+
+                data.data.map(function (item) {
+                    Object.keys(item.fields[0]).map((a, i) => {
+                        item[Object.keys(item.fields[0])[i]] = item.fields[0][a];
+                        columns.push({ title: cHeaderText(Object.keys(item.fields[0])[i]), field: Object.keys(item.fields[0])[i], headerSort: false, sortable: false, responsive: 0, align: "left" });
+                    });
+                });
+
+                Tabulator.extendExtension("format", "formatters", {
+                    ft2mt: function (cell, formatterParams) {              // Feet to Meters
+                        return (0.3048 * cell.getValue()).toFixed(0);
+                    },
+                    kn2km: function (cell, formatterParams) {              // Knots to Kilometers
+                        return (1.852 * cell.getValue()).toFixed(0);
+                    },
+                    ep2time: function (cell, formatterParams) {            // POSIX epoch to hh:mm:ss
+                        let date = new Date(cell.getValue());
+                        return date.toLocaleString('tr-TR', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
+                    },
+                    frmtType: function (cell, formatterParams) {
+                        var str = "";
+                        switch (cell.getValue()) {
+                            case 1:
+                                str = "Dosya Kartı";
+                                break;
+                            case 2:
+                                str = "Kabinet";
+                                break;
+                            default:
+                                str = "Diğer";
+                        }
+                        return str;
+                    },
+                });
+
+                $("#DataTable").tabulator({
+                    layout: "fitColumns",              // Fit columns to width of table (optional)
+                    //headerSort:false,                   // Disable header sorter
+                    resizableColumns: false,             // Disable column resize
+                    responsiveLayout: true,              // Enable responsive layouts
+                    placeholder: "No Data Available",    // Display message to user on empty table
+                    columns: columns,
+                    rowClick: function (e, id, data, row) {
+                        document.location.href = "/cards/"+Docya.CardController.CardTemplateId+"/"+id.row.data._id;
+                    },
+                });
+
+
+
+                $("#DataTable").tabulator("setData", data.data);
+
+                $(window).resize(function () {
+                    $("#DataTable").tabulator("redraw");
+                });
 
             };
 
@@ -1426,5 +1483,15 @@ function slugify(text) {
         .replace(/\s/gi, "_")
         .replace(/[_]+/gi, "_")
         .toLowerCase();
+
+}
+
+function cHeaderText(text) {
+    var texts = text.split("_");
+    var returnString = "";
+
+    texts.map(x => returnString += x.substring(0, 1).toUpperCase() + x.substring(1, x.length) + " ");
+
+    return returnString;
 
 }
