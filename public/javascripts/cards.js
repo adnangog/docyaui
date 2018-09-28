@@ -849,9 +849,9 @@
 
                 var columns = [
                     { title: "Id", field: "_id", headerSort: false, sortable: false, visible: false },
-                    { title: "Adı", field: "name", headerSort: false, sortable: false, responsive: 0, align: "left" },
-                    { title: "Tipi", field: "type", headerSort: false, sortable: false, responsive: 2, formatter: "frmtType" },
-                    { title: "Kayıt Tarihi", field: "rDate", headerSort: false, sortable: false, responsive: 2, formatter: "ep2time" }
+                    { title: "Adı", field: "name", headerSort: true, sortable: true, responsive: 0, align: "left" },
+                    { title: "Tipi", field: "type", headerSort: true, sortable: true, responsive: 2, formatter: "frmtType" },
+                    { title: "Kayıt Tarihi", field: "rDate", headerSort: true, sortable: true, responsive: 2, formatter: "ep2time" }
                 ];
 
                 data.data.map(function (item) {
@@ -893,11 +893,11 @@
                     });
 
                     $("#DataTable").tabulator({
-                        layout: "fitColumns",              // Fit columns to width of table (optional)
-                        //headerSort:false,                   // Disable header sorter
-                        resizableColumns: false,             // Disable column resize
-                        responsiveLayout: true,              // Enable responsive layouts
-                        placeholder: "No Data Available",    // Display message to user on empty table
+                        layout: "fitColumns",   
+                        headerSort:false,
+                        resizableColumns: false,
+                        responsiveLayout: true,
+                        placeholder: "Her hangi bir sonuç bulunamadı.",
                         columns: columns,
                         rowClick: function (e, id, data, row) {
                             document.location.href = "/cards/" + Docya.CardController.CardTemplateId + "/" + id.row.data._id;
@@ -1227,18 +1227,28 @@
 
                 if (isValid) {
                     Docya.CardController.getCards(1);
-                    showMessageBox("success", "BİLGİ", "Arama başarılı");
+                    $("#dvSearchBar").slideUp();
                 } else {
                     showMessageBox("danger", "UYARI", errorMessage);
                 }
+
+
+
+            })
+        },
+        initSearchAll: function () {
+            $("body").on("click", "[data-search-all]", function (e) {
+                e.preventDefault();
+
+                Docya.CardController.clearSearch();
+                Docya.CardController.getCards(1);
+                $("#dvSearchBar").slideUp();
 
             })
         },
         initSearchSave: function () {
             $("body").on("click", "[data-search-save]", function (e) {
                 e.preventDefault();
-
-                var jqElm = $(this);
 
                 var isValid = true;
                 var errorMessage = "Lütfen değer alanlarını boş bırakmayın.";
@@ -1458,6 +1468,7 @@
             this.initDeleteSearch();
             this.initSelectSearch();
             this.initSearchSave();
+            this.initSearchAll();
             this.initSearchGet();
             this.initSearchFieldChange();
             this.initSearchOperatorChange();

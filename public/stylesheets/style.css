@@ -744,6 +744,14 @@ span.tooltip:after {
   display: none;
 }
 
+.tabulator .tabulator-tableHolder {
+  min-height: 55px;
+}
+.tabulator .tabulator-tableHolder .tabulator-placeholder span {
+  font-weight: normal;
+  font-size: 20px;
+}
+
 /* bootstrap owerride */
 .btn-group-sm2>.btn, .btn-sm2 {
   padding: .2rem .2rem;
