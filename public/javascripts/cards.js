@@ -813,7 +813,6 @@
                 var mailDocsTemplate = "{{> maildocuments this }}";
                 Handlebars.registerPartial("maildocuments", mailDocsPartial);
                 var renderedmailDocsHtml = Handlebars.compile(mailDocsTemplate)(data.folders[0]);
-                console.log(renderedmailDocsHtml);
                 $("#mailDocuments").append(renderedmailDocsHtml);
 
             };
