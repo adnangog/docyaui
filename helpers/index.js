@@ -217,6 +217,9 @@ module.exports.createZipFile = () => {
 
 module.exports.stringToType = (text) => {
   if (isNumeric(text)) {
+    if(Number.isInteger(text)){
+      return parseFloat(text);
+    }
     return parseFloat(text);
   }
 

@@ -14,6 +14,9 @@
                 type: x.type || "string"
             }
         }),
+        FormHeaders: JSON.parse($("#formFields").val()).map((x) => {
+            return slugify(x.label)
+        }),
         SearchRules: {
             string: [
                 {
@@ -841,7 +844,10 @@
             let data = {
                 process: "getCards",
                 cardTemplateId: Docya.CardController.CardTemplateId,
-                searches: JSON.stringify(Docya.CardController.SearchJSON)
+                searches: JSON.stringify(Docya.CardController.SearchJSON),
+                fields: JSON.stringify(Docya.CardController.FormHeaders),
+                value: $("[data-search-text]").val(),
+                type:type
             };
 
             let cb = function (data) {
@@ -1226,6 +1232,7 @@
 
                 if (isValid) {
                     Docya.CardController.getCards(1);
+                    $("[data-search-all]").show();
                     $("#dvSearchBar").slideUp();
                 } else {
                     showMessageBox("danger", "UYARI", errorMessage);
@@ -1235,11 +1242,26 @@
 
             })
         },
+        initSearchBasic: function () {
+            $("body").on("click", "[data-search-basic]", function (e) {
+                e.preventDefault();
+
+                if($("[data-search-text]").val()===""){
+                    showMessageBox("danger", "UYARI", "Lutfen aranacak kelimeyi girin.");
+                    return false;
+                }
+
+                Docya.CardController.getCards(2);
+                $("[data-search-all]").show();
+
+            })
+        },
         initSearchAll: function () {
             $("body").on("click", "[data-search-all]", function (e) {
                 e.preventDefault();
 
                 Docya.CardController.clearSearch();
+                Docya.CardController.SearchJSON=[];
                 Docya.CardController.getCards(1);
                 $("#dvSearchBar").slideUp();
 
@@ -1311,6 +1333,7 @@
                     }
                 ]
             }];
+            $("[data-search-all]").hide();
             Docya.CardController.createSearchForm();
         },
         initSearchValueChange: function () {
@@ -1469,6 +1492,7 @@
             this.initSearchSave();
             this.initSearchAll();
             this.initSearchGet();
+            this.initSearchBasic();
             this.initSearchFieldChange();
             this.initSearchOperatorChange();
             this.initSearchValueChange();

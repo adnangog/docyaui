@@ -140,7 +140,7 @@ table.table tbody tr td, table.table thead tr th {
     width: 100%;
     margin: 0 15px 15px;
 }
-.table-top .col-lg-4, .table-top .col-lg-8 {
+.table-top .col-lg-5, .table-top .col-lg-7 {
   padding: 0;
 }
 .table-infos {
@@ -741,6 +741,10 @@ span.tooltip:after {
 }
 
 [data-search-delete] {
+  display: none;
+}
+
+[data-search-all] {
   display: none;
 }
 

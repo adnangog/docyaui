@@ -6,6 +6,7 @@ const api = require("../api");
 // AJAX page
 // UI uzerindeki tum ajax istekleri bu sayfa uzerinden api'ye iletilir.
 router.post("/", (req, res, next) => {
+
   let route = "";
   let type = "POST";
   let params = req.body.pagelimit;
@@ -17,6 +18,9 @@ router.post("/", (req, res, next) => {
       params.userId = req.session.userId;
       params.cardTemplateId = req.body.cardTemplateId;
       params.searches = JSON.parse(req.body.searches);
+      params.fields = JSON.parse(req.body.fields);
+      params.value = helper.stringToType(req.body.value);
+      params.type = req.body.type;
       break;
     case "deleteSearch":
       route = `/search/delete/${req.body.search}`;
