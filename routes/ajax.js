@@ -39,6 +39,12 @@ router.post("/", (req, res, next) => {
       params.form = req.body.form;
       params.rDate = Date.now();
       break;
+    case "updateSearch":
+      route = `/search/${req.body.searchId}`;
+      params.name = req.body.name;
+      params.fields = JSON.parse(req.body.fields);
+      type = "PATCH";
+      break;
     case "sendDoc":
       route = `/user/document/add`;
       params.from = req.session.userId;

@@ -847,7 +847,7 @@
                 searches: JSON.stringify(Docya.CardController.SearchJSON),
                 fields: JSON.stringify(Docya.CardController.FormHeaders),
                 value: $("[data-search-text]").val(),
-                type:type
+                type: type
             };
 
             let cb = function (data) {
@@ -898,8 +898,8 @@
                     });
 
                     $("#DataTable").tabulator({
-                        layout: "fitColumns",   
-                        headerSort:false,
+                        layout: "fitColumns",
+                        headerSort: false,
                         resizableColumns: false,
                         responsiveLayout: true,
                         placeholder: "Her hangi bir sonuç bulunamadı.",
@@ -1246,7 +1246,7 @@
             $("body").on("click", "[data-search-basic]", function (e) {
                 e.preventDefault();
 
-                if($("[data-search-text]").val()===""){
+                if ($("[data-search-text]").val() === "") {
                     showMessageBox("danger", "UYARI", "Lutfen aranacak kelimeyi girin.");
                     return false;
                 }
@@ -1261,7 +1261,7 @@
                 e.preventDefault();
 
                 Docya.CardController.clearSearch();
-                Docya.CardController.SearchJSON=[];
+                Docya.CardController.SearchJSON = [];
                 Docya.CardController.getCards(1);
                 $("#dvSearchBar").slideUp();
 
@@ -1293,12 +1293,19 @@
                 });
 
                 if (isValid) {
-                    let data = {
+
+                    var data = {
                         process: "addSearch",
                         name: $("#searchName").val(),
                         fields: JSON.stringify(Docya.CardController.SearchJSON),
                         form: Docya.CardController.FormId
                     };
+
+                    if (Docya.CardController.SelectedSearch !== null) {
+                        data.process = "updateSearch";
+                        data.searchId = Docya.CardController.SelectedSearch;
+                    }
+
 
                     let cb = function (data) {
                         if (data.messageType === 1) {

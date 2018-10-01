@@ -1,0 +1,40 @@
+{
+    "flows": [
+        {
+            "name": "test",
+            "user":123,
+            "rDate": null,
+            "currentStep":0,
+            "status":1, // -1 iptal, 1 aktif, 2 bitti
+            "steps": [
+                {
+                    "id": 0,
+                    "name": "Giriş",
+                    "type": "start",
+                    "next": 1
+                },
+                {
+                    "id": 1,
+                    "name": "Adım",
+                    "type": "process",
+                    "next": 2,
+                    "inputs": [
+                        {
+                            "name":"age",
+                            "val":null
+                        },
+                        {
+                            "name":"name",
+                            "val":null
+                        }
+                    ]
+                },
+                {
+                    "id": 2,
+                    "name": "Bitiş",
+                    "type": "end"
+                }
+            ]
+        }
+    ]
+}
