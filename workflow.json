@@ -1,36 +1,255 @@
 {
     "flows": [
         {
+            "id": 123,
+            "parentId": 123,
             "name": "test",
-            "user":123,
+            "user": 123,
+            "type": 1,
+            "form": 123,
+            "formVer": 123,
+            "schema": 123,
+            "calendar": 123,
+            "authSet": 123,
             "rDate": null,
-            "currentStep":0,
-            "status":1, // -1 iptal, 1 aktif, 2 bitti
+            "currentStep": 0,
+            "status": 1,
             "steps": [
                 {
                     "id": 0,
                     "name": "Giriş",
                     "type": "start",
-                    "next": 1
-                },
-                {
-                    "id": 1,
-                    "name": "Adım",
-                    "type": "process",
-                    "next": 2,
-                    "inputs": [
+                    "description": "",
+                    "assignmentDate": "01/01/2012",
+                    "next": 1,
+                    "jobs": [
                         {
-                            "name":"age",
-                            "val":null
-                        },
-                        {
-                            "name":"name",
-                            "val":null
+                            "type": "email",
+                            "to": ""
                         }
                     ]
                 },
                 {
+                    "id": 1,
+                    "name": "Manuel Adım",
+                    "type": "manuel",
+                    "description": "",
+                    "schema": 123,
+                    "form": 123,
+                    "formVer": 123,
+                    "showDiagram": true,
+                    "showNote": true,
+                    "showDirection": false,
+                    "showAttachments": false,
+                    "assignmentDate": "01/01/2012",
+                    "assignmentType": "User,Group,Department",
+                    "assignmentRule": 1,
+                    "assignedUser": 123,
+                    "isTimer": true,
+                    "timer": {
+                        "type": 1,
+                        "value": 1440,
+                        "dateType": 1,
+                        "formField": "aciklama",
+                        "formValue": "#date# tarihinde sistem tarafından otomatik güncellenmiştir."
+                    },
+                    "isEmailProcess": true,
+                    "email": {
+                        "title": "#form.fatura_no# numaralı fatura hakkında",
+                        "body": "....",
+                        "actions": [
+                            {
+                                "name": "ONAY",
+                                "value": "1"
+                            },
+                            {
+                                "name": "RED",
+                                "value": "0"
+                            }
+                        ]
+                    },
+                    "next": 2
+                },
+                {
                     "id": 2,
+                    "name": "Otomatik Adım",
+                    "type": "auto",
+                    "method": 123,
+                    "assignmentDate": "01/01/2012",
+                    "description": "",
+                    "next": 3
+                },
+                {
+                    "id": 3,
+                    "name": "Alt iş Akışı",
+                    "type": "subflow",
+                    "flowId": 123,
+                    "flowName": "Satın Alma",
+                    "isWaiting": false,
+                    "showAttachments": true,
+                    "onAbortedSubFlow": false,
+                    "subResult": "satin_alma",
+                    "mapping": true,
+                    "map": {
+                        "before": [
+                            {
+                                "main": "email",
+                                "sub": "email"
+                            },
+                            {
+                                "main": "fatura_no",
+                                "sub": "aciklama"
+                            }
+                        ],
+                        "after": [
+                            {
+                                "main": "aciklama",
+                                "sub": "birim"
+                            }
+                        ]
+                    },
+                    "assignmentDate": "01/01/2012",
+                    "description": "",
+                    "next": 4
+                },
+                {
+                    "id": 4,
+                    "name": "Web servis",
+                    "type": "webservice",
+                    "assignmentDate": "01/01/2012",
+                    "description": "",
+                    "wsdl": "http://localhost:1235/service.asmx?WSDL",
+                    "serviceName": "",
+                    "serviceMethod": "",
+                    "clientName": "",
+                    "username": "",
+                    "password": "",
+                    "send": [
+                        {
+                            "local": "email",
+                            "service": "email"
+                        },
+                        {
+                            "local": "fatura_no",
+                            "service": "fatura"
+                        }
+                    ],
+                    "recive": [
+                        {
+                            "local": "email",
+                            "service": "email"
+                        },
+                        {
+                            "local": "fatura_no",
+                            "service": "fatura"
+                        }
+                    ],
+                    "next": 5
+                },
+                {
+                    "id": 5,
+                    "name": "Bekleme",
+                    "type": "wait",
+                    "assignmentDate": "01/01/2012",
+                    "description": "",
+                    "timer": {
+                        "type": 1,
+                        "value": 1440
+                    },
+                    "next": 6
+                },
+                {
+                    "id": 6,
+                    "name": "Karar",
+                    "type": "decision",
+                    "assignmentDate": "01/01/2012",
+                    "description": "",
+                    "decisions": [
+                        {
+                            "items": [
+                                {
+                                    "type": "string",
+                                    "field": "ad_soyad",
+                                    "rule": "like",
+                                    "value": "adnan gog"
+                                },
+                                {
+                                    "type": "date",
+                                    "field": "dogum_tarihi",
+                                    "rule": "greater",
+                                    "value": "2018-08-24"
+                                }
+                            ],
+                            "next": 7
+                        },
+                        {
+                            "items": [
+                                {
+                                    "type": "string",
+                                    "field": "ad_soyad",
+                                    "rule": "like",
+                                    "value": "adnan gog"
+                                },
+                                {
+                                    "type": "date",
+                                    "field": "dogum_tarihi",
+                                    "rule": "greater",
+                                    "value": "2018-08-24"
+                                }
+                            ],
+                            "next": 8
+                        }
+                    ],
+                    "next": 7
+                },
+                {
+                    "id": 7,
+                    "name": "Birleşim",
+                    "type": "combination",
+                    "assignmentDate": "01/01/2012",
+                    "description": "",
+                    "next": 8
+                },
+                {
+                    "id": 8,
+                    "name": "Dağıtım",
+                    "type": "distribution",
+                    "assignmentDate": "01/01/2012",
+                    "description": "",
+                    "next": [9,10]
+                },
+                {
+                    "id": 9,
+                    "name": "E-mail Gönder",
+                    "type": "email",
+                    "assignmentDate": "01/01/2012",
+                    "description": "",
+                    "email": {
+                        "toType":1,
+                        "users":[1,2,3],
+                        "groups":[1,2,3],
+                        "statics":["a@b.com","a@b.com"],
+                        "title":"mesaj başlığı",
+                        "body":"mesaj içeriği"
+                    },
+                    "next": 10
+                },
+                {
+                    "id": 10,
+                    "name": "Mesaj",
+                    "type": "message",
+                    "assignmentDate": "01/01/2012",
+                    "description": "",
+                    "message": {
+                        "toType":1,
+                        "users":[1,2,3],
+                        "groups":[1,2,3],
+                        "message":"mesaj içeriği"
+                    },
+                    "next": 11
+                },
+                {
+                    "id": 12,
                     "name": "Bitiş",
                     "type": "end"
                 }
