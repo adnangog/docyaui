@@ -1,0 +1,27 @@
+{
+    "id": 1,
+    "name": "Kullanici",
+    "type":1,
+    "props": [
+        {
+            "name": "Adi",
+            "field": "c_adi",
+            "type": "string"
+        },
+        {
+            "name": "Soyadi",
+            "field": "c_soyadi",
+            "type": "string"
+        },
+        {
+            "name": "TCKN",
+            "field": "c_tckn",
+            "type": "int"
+        },
+        {
+            "name": "Dogum Tarihi",
+            "field": "c_dogum_tarihi",
+            "type": "date"
+        }
+    ]
+}
