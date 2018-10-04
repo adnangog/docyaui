@@ -70,9 +70,9 @@ router.get("/:cardTemplateId/:cardId", (req, res, next) => {
     (err, results) => {
       let breadcrumb = [
         { route: "/", name: "Anasayfa" },
-        { route: "/forms", name: "Dosya Kartları" },
+        { route: `/cards/${req.params.cardTemplateId}`, name: "Dosya Kartları" },
         {
-          route: `/forms/${req.params.cardTemplateId}`,
+          route: `/cards/${req.params.cardTemplateId}`,
           name: results[1].name
         }
       ];
@@ -147,9 +147,9 @@ router.get("/", (req, res, next) => {
 
   let breadcrumb = [
     { route: "/", name: "Anasayfa" },
-    { route: "/cards", name: "Dosya Kartlari" },
+    { route: `/cards/${req.params.cardTemplateId}`, name: "Dosya Kartlari" },
     {
-      route: `/cards/${req.params.formId}`,
+      route: `/cards/${req.params.cardTemplateId}`,
       name: "Dosya Karti Detay"
     }
   ];
@@ -190,9 +190,9 @@ router.get("/:cardTemplateId", (req, res, next) => {
     (err, results) => {
       let breadcrumb = [
         { route: "/", name: "Anasayfa" },
-        { route: "/forms", name: "Dosya Kartları" },
+        { route: `/cards/${req.params.cardTemplateId}`, name: "Dosya Kartları" },
         {
-          route: `/forms/${req.params.cardTemplateId}`,
+          route: `/cards/${req.params.cardTemplateId}`,
           name: results[1].name
         }
       ];
