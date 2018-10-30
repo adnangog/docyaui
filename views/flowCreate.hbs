@@ -1,0 +1,1090 @@
+<div class="taskbuttons" data-taskbuttons>
+        <div class="menu_button_container">
+            <div class="btn-oval" data-flowbtn data-optiontype="t-oval" data-flowtype="manual" title="Manual Adım">
+                Manuel Adım
+                <div class="rb">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+            <div class="btn-oval" data-flowbtn data-optiontype="t-oval" data-flowtype="auto" title="Otomatik Adım">
+                Otomatik Adım
+                <div class="rb">
+                    <i class="fas fa-robot"></i>
+                </div>
+            </div>
+            <div class="btn-oval" data-flowbtn data-optiontype="t-oval" data-flowtype="subflow" title="Alt Akış">
+                Alt Akış
+                <div class="rb">
+                    <i class="fas fa-sitemap"></i>
+                </div>
+            </div>
+            <div class="btn-oval" data-flowbtn data-optiontype="t-oval" data-flowtype="webservice" title="Web Service">
+                Web Service
+                <div class="rb">
+                    <i class="fas fa-cogs"></i>
+                </div>
+            </div>
+            <div class="btn-container">
+                <div class="diamond" data-flowbtn data-optiontype="t-diamond" data-flowtype="decision" title="Karar Adımı">
+                    <div class="graph"></div>
+                    <div class="normalize">Karar Adımı</div>
+                </div>
+            </div>
+            <div class="btn-container">
+                <div class="circle" data-flowbtn data-optiontype="t-circle" data-flowtype="waiting" title="Bekle">
+                    <i class="far fa-clock"></i>
+                    <div class="filigran">Bekle</div>
+                </div>
+            </div>
+            <div class="btn-container">
+                <div class="circle" data-flowbtn data-optiontype="t-circle" data-flowtype="email" title="Email">
+                    <i class="far fa-envelope"></i>
+                    <div class="filigran">Email</div>
+                </div>
+            </div>
+            <div class="btn-container">
+                <div class="circle" data-flowbtn data-optiontype="t-circle" data-flowtype="message" title="Mesaj">
+                    <i class="far fa-envelope"></i>
+                    <div class="filigran">Mesaj</div>
+                </div>
+            </div>
+            <div class="btn-container">
+                <div class="diamond diamondFull" data-flowbtn data-optiontype="t-diamond" data-flowtype="combination" title="Birleşim">
+                    <div class="graph"></div>
+                    <div class="normalize">
+                        <i class="fas fa-compress"></i>
+                    </div>
+                    <div class="filigran">Birleşim</div>
+                </div>
+            </div>
+            <div class="btn-container">
+                <div class="diamond diamondFull" data-flowbtn data-optiontype="t-diamond" data-flowtype="distribution" title="Dağıtım">
+                    <div class="graph"></div>
+                    <div class="normalize">
+                        <i class="fas fa-expand"></i>
+                    </div>
+                    <div class="filigran">Dağıtım</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="main">
+        <!-- demo -->
+        <div class="demo" id="FlowScene">
+            <div class="startpoint point node" style="left: 150px; top:20px" data-nodetype="startpoint" id="flowchartStartpoint" data-title="Başlangıç">Başlangıç</div>
+
+            <div class="endpoint point node" style="left: 150px; top:400px" data-nodetype="endpoint" id="flowchartEndpoint" data-title="Bitiş">
+                <div>Bitiş</div>
+            </div>
+        </div>
+        <!-- /demo -->
+    </div>
+    <div class="properties">
+        <button class="btn btn-secondry btn-sm" data-closeproperties>
+            <i class="fas fa-times"></i>
+        </button>
+        <div data-properties="manual" class="d-none">
+            <h2>Manuel Adım</h2>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="genel-tab" data-toggle="tab" href="#genel" role="tab" aria-controls="genel" aria-selected="true">Genel</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="atanan-tab" data-toggle="tab" href="#atanan" role="tab" aria-controls="atanan" aria-selected="false">Atanan Kişi</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="zamanlayici-tab" data-toggle="tab" href="#zamanlayici" role="tab" aria-controls="zamanlayici" aria-selected="false">Zamanlayıcı</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="eposta-tab" data-toggle="tab" href="#eposta" role="tab" aria-controls="eposta" aria-selected="false">E-posta</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="genel" role="tabpanel" aria-labelledby="genel-tab">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Adı :
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Adı" data-field="name">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Orgnzsyn :</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control form-control-sm" data-target="schema" data-field="schema">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Form :
+                                </label>
+                                <div class="col-sm-10">
+                                    <select class="form-control form-control-sm" data-target="form" data-field="form">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <input class="form-check-input" type="checkbox" value="" id="showDiagram" data-field="showDiagram">
+                                    <label class="form-check-label col-form-label-sm" for="showDiagram">
+                                        Diagramı Göster
+                                    </label>
+                                </div>
+                                <div class="col-sm-6">
+                                    <input class="form-check-input" type="checkbox" value="" id="showDirection" data-field="showDirection">
+                                    <label class="form-check-label col-form-label-sm" for="showDirection">
+                                        Yönlendirmeyi Göster
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <input class="form-check-input" type="checkbox" value="" id="showNote" data-field="showNote">
+                                    <label class="form-check-label col-form-label-sm" for="showNote">
+                                        Notları Göster
+                                    </label>
+                                </div>
+                                <div class="col-sm-6">
+                                    <input class="form-check-input" type="checkbox" value="" id="showAttachments" data-field="showAttachments">
+                                    <label class="form-check-label col-form-label-sm" for="showAttachments">
+                                        Ekleri Göster
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Form Ver :
+                                </label>
+                                <div class="col-sm-10">
+                                    <select class="form-control form-control-sm" data-target="formVer" data-field="formVer">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label-sm col-sm-1"> Notlar : </label>
+                        <div class="col-sm-11">
+                            <textarea class="form-control form-control-sm" rows="2" data-field="description"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="atanan" role="tabpanel" aria-labelledby="atanan-tab">
+                    <div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="assignmentType" id="currentUsers" data-field="assignmentType" value="user"
+                                data-rel="user">
+                            <label class="form-check-label col-form-label-sm" for="currentUsers">Kullanıcı</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="assignmentType" id="currentGroups" data-field="assignmentType" value="group"
+                                data-rel="group">
+                            <label class="form-check-label col-form-label-sm" for="currentGroups">Grup</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="assignmentType" id="currentForm" data-field="assignmentType" value="form"
+                                data-rel="form">
+                            <label class="form-check-label col-form-label-sm" for="currentForm">Form</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="assignmentType" id="currentDepartments" data-field="assignmentType" value="department"
+                                data-rel="department">
+                            <label class="form-check-label col-form-label-sm" for="currentDepartments">Departman</label>
+                        </div>
+                    </div>
+                    <hr />
+                    <div data-section="user" class="d-none">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="assignmentRule" id="SelectUser" value="1" data-field="assignmentRule"
+                                data-sub-rel="users">
+                            <label class="form-check-label col-form-label-sm" for="SelectUser">Kullanıcı Seç</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="assignmentRule" id="PrevUser" value="2" data-field="assignmentRule" data-sub-rel>
+                            <label class="form-check-label col-form-label-sm" for="PrevUser">Önceki Kullanıcı</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="assignmentRule" id="PrevUserManager" data-field="assignmentRule" value="3"
+                                data-sub-rel>
+                            <label class="form-check-label col-form-label-sm" for="PrevUserManager">Önceki Kullanıcının Yöneticisi
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="assignmentRule" id="FlowOwner" value="4" data-field="assignmentRule" data-sub-rel>
+                            <label class="form-check-label col-form-label-sm" for="FlowOwner">Akış Sahibi</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="assignmentRule" id="FlowOwnerManager" data-field="assignmentRule" value="5"
+                                data-sub-rel>
+                            <label class="form-check-label col-form-label-sm" for="FlowOwnerManager">Akış Sahibi Yöneticisi
+                            </label>
+                        </div>
+                    </div>
+                    <div data-sub-section="users" class="d-none">
+
+                        <label for="colFormLabelSm" class="col-form-label col-form-label-sm">Kullanıcılar :
+                        </label>
+
+                        <select class="form-control form-control-sm" data-target="user" data-field="assignedUser">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+
+
+                    </div>
+                    <div data-section="group" class="d-none">
+
+                        <label for="colFormLabelSm" class="col-form-label col-form-label-sm">Gruplar :
+                        </label>
+
+                        <select class="form-control form-control-sm" data-target="group" data-field="assignedUser">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+
+                        <hr />
+
+                        <div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="groupRule" data-field="groupRule" id="GroupAny" value="1">
+                                <label class="form-check-label col-form-label-sm" for="GroupAny">Herhangi Biri</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="groupRule" data-field="groupRule" id="GroupEqual" value="2">
+                                <label class="form-check-label col-form-label-sm" for="GroupEqual">Sistem Dağıtsın</label>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div data-section="form" class="d-none">
+
+                        <label for="colFormLabelSm" class="col-form-label col-form-label-sm">Form Alanları :
+                        </label>
+
+                        <select class="form-control form-control-sm" data-target="formFields" data-field="assignedUser">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+
+                        <div class="alert alert-warning" role="alert">Seçilen form alanı kullanıcı bilgisi içermelidir.</div>
+
+                    </div>
+
+                    <div data-section="department" class="d-none">
+
+                        <label for="colFormLabelSm" class="col-form-label col-form-label-sm">Departmanlar :
+                        </label>
+
+                        <select class="form-control form-control-sm" data-target="department" data-field="assignedUser">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+
+                        <div class="alert alert-warning" role="alert">Seçilen departman yöneticisinin onayına düşecektir.
+                        </div>
+
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="zamanlayici" role="tabpanel" aria-labelledby="zamanlayici-tab">
+
+                    <div class="row">
+                        <label class="col-sm-1 col-form-label col-form-label-sm">Zaman :
+                        </label>
+                        <div class="col-sm-11">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="timerType" data-field="timer.type" id="timerHour" value="1">
+                                <label class="form-check-label col-form-label-sm" for="timerHour">Saat</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="timerType" data-field="timer.type" id="timerDay" value="2">
+                                <label class="form-check-label col-form-label-sm" for="timerDay">Gün</label>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row form-group">
+                        <label class="col-sm-1 col-form-label col-form-label-sm">Değer :
+                        </label>
+                        <div class="col-sm-11">
+                            <input type="number" class="form-control form-control-sm" placeholder="Değer" data-field="timer.value">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-1 col-form-label col-form-label-sm">Başlangıç :
+                        </label>
+                        <div class="col-sm-10">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="dateType" data-field="timer.dateType" id="RegDate" value="1">
+                                <label class="form-check-label col-form-label-sm" for="RegDate">Oluşma Tarihi</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="dateType" data-field="timer.dateType" id="assignmentDate" value="2">
+                                <label class="form-check-label col-form-label-sm" for="assignmentDate">Atanma Tarihi</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-1 col-form-label col-form-label-sm">Form Güncelle :
+                        </label>
+                        <div class="col-sm-11">
+                            <div class="row">
+                                <div class="col">
+                                    <select class="form-control form-control-sm" data-target="formFields" data-field="timer.formField">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Değer" data-field="timer.formValue">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="eposta" role="tabpanel" aria-labelledby="eposta-tab">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="isEmailProcess" id="isEmailProcess" data-field="isEmailProcess" value="1">
+                        <label class="form-check-label col-form-label-sm" for="isEmailProcess">E-Posta ile onay ?</label>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label col-form-label-sm">Konu :
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Konu" data-field="email.title">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            ...
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+
+                            <textarea class="form-control" id="mailMesage" rows="3" data-field="email.body"></textarea>
+                        </div>
+                        <div class="col-sm-6">
+
+                            ...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div data-properties="auto" class="d-none">
+            <h2>Otomatik Adım</h2>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="genel2-tab" data-toggle="tab" href="#genel2" role="tab" aria-controls="genel2" aria-selected="true">Genel</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="method-tab" data-toggle="tab" href="#method" role="tab" aria-controls="method" aria-selected="false">Method</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="genel2" role="tabpanel" aria-labelledby="genel2-tab">
+
+                    <div class="form-group row">
+                        <label for="colFormLabelSm" class="col-sm-1 col-form-label col-form-label-sm">Adı :
+                        </label>
+                        <div class="col-sm-11">
+                            <input type="text" class="form-control form-control-sm" placeholder="Adı" data-field="name">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label-sm col-sm-1"> Notlar : </label>
+                        <div class="col-sm-11">
+                            <textarea class="form-control form-control-sm" rows="2" data-field="description"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="method" role="tabpanel" aria-labelledby="method-tab">
+                    <div class="form-group row">
+
+                        <label class="col-form-label col-form-label-sm col-sm-1">Methodlar :
+                        </label>
+
+                        <div class="col-sm-11">
+                            <select class="form-control form-control-sm" data-target="method" data-field="method">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div data-properties="subflow" class="d-none">
+            <h2>Alt Akış</h2>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="genel3-tab" data-toggle="tab" href="#genel3" role="tab" aria-controls="genel3" aria-selected="true">Genel</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="datasync-tab" data-toggle="tab" href="#datasync" role="tab" aria-controls="datasync" aria-selected="false">Veri Eşleme</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="genel3" role="tabpanel" aria-labelledby="genel3-tab">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Adı :
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Adı" data-field="name">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label col-form-label-sm">Akış : </label>
+                                <div class="col-sm-10">
+                                    <select class="form-control form-control-sm" data-target="subflow" data-field="flowId">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Eşle :</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control form-control-sm" data-target="formFields" data-field="subResult">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <input class="form-check-input" type="checkbox" value="" id="isWaiting" data-field="isWaiting">
+                                    <label class="form-check-label col-form-label-sm" for="isWaiting">
+                                        Alt Akışı Bekleme
+                                    </label>
+                                </div>
+                                <div class="col-sm-6">
+                                    <input class="form-check-input" type="checkbox" value="" id="showAttachments" data-field="showAttachments">
+                                    <label class="form-check-label col-form-label-sm" for="showAttachments">
+                                        Eklenti varsa ekle
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label col-form-label-sm">Akış Adı:
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Alt Akış Adı" data-field="flowName">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <input class="form-check-input" type="checkbox" value="" id="onAbortedSubFlow" data-field="onAbortedSubFlow">
+                                    <label class="form-check-label col-form-label-sm" for="onAbortedSubFlow">
+                                        Alt Akış iptalinde sonucu eşleme
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label-sm col-sm-1"> Notlar : </label>
+                        <div class="col-sm-11">
+                            <textarea class="form-control form-control-sm" rows="2" data-field="description"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="datasync" role="tabpanel" aria-labelledby="datasync-tab">
+                    Veri Eşleme
+                </div>
+            </div>
+        </div>
+        <div data-properties="webservice" class="d-none">
+            <h2>Web Servis</h2>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="genel4-tab" data-toggle="tab" href="#genel4" role="tab" aria-controls="genel4" aria-selected="true">Genel</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="webservice-tab" data-toggle="tab" href="#webservice" role="tab" aria-controls="webservice" aria-selected="false">Web Service</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="genel4" role="tabpanel" aria-labelledby="genel4-tab">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Adı :
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Adı" data-field="name">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Servis Adı :
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Servis Adı" data-field="serviceName">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Client Adı :
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Client Adı" data-field="clientName">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">K. Adı :
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Kullanıcı Adı" data-field="username">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">WSDL :
+                                </label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control form-control-sm" placeholder="WSDL" data-field="wsdl">
+                                </div>
+                                <div class="col-sm-2">
+                                    <button type="button" class="btn btn-dark btn-sm">
+                                        <i class="fas fa-search-plus"></i>
+                                        Wsdl</button>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Metod :</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Servis Metodu" data-field="serviceMethod">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    &nbsp;
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Şifre :
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Şifre" data-field="password">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-form-label-sm col-sm-1">Notlar : </label>
+                        <div class="col-sm-11">
+                            <textarea class="form-control form-control-sm" id="serviceDescription" rows="2" data-field="description"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="webservice" role="tabpanel" aria-labelledby="webservice-tab">
+                    Web Service
+                </div>
+            </div>
+        </div>
+        <div data-properties="decision" class="d-none">
+            <h2>Karar Adımı</h2>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="genel5-tab" data-toggle="tab" href="#genel5" role="tab" aria-controls="genel5" aria-selected="true">Genel</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="decision-tab" data-toggle="tab" href="#decision" role="tab" aria-controls="decision" aria-selected="false">Kararlar</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="genel5" role="tabpanel" aria-labelledby="genel5-tab">
+                    Genel
+                </div>
+                <div class="tab-pane fade" id="decision" role="tabpanel" aria-labelledby="decision-tab">
+                    Kararlar
+                </div>
+            </div>
+        </div>
+        <div data-properties="waiting" class="d-none">
+            <h2>Bekleme</h2>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="genel6-tab" data-toggle="tab" href="#genel6" role="tab" aria-controls="genel5" aria-selected="true">Genel</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="genel6" role="tabpanel" aria-labelledby="genel6-tab">
+                    <div class="form-group row">
+                        <label for="colFormLabelSm" class="col-sm-1 col-form-label col-form-label-sm">Adı :
+                        </label>
+                        <div class="col-sm-11">
+                            <input type="text" class="form-control form-control-sm" placeholder="Adı" data-field="name">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-1 col-form-label col-form-label-sm">Zaman Tipi :
+                        </label>
+                        <div class="col-sm-11">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="timerType" data-field="timer.type" id="timerStatic" value="1" data-rel>
+                                <label class="form-check-label col-form-label-sm" for="timerStatic">Sabit</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="timerType" data-field="timer.type" id="timerForm" value="2" data-rel="formDate">
+                                <label class="form-check-label col-form-label-sm" for="timerForm">Form</label>
+                            </div>
+                            <div class="form-check form-check-inline d-none" data-section="formDate">
+                                <input class="form-check-input" type="radio" name="formDate" data-field="timer.formDate" id="timerFormMinute" value="1">
+                                <label class="form-check-label col-form-label-sm" for="timerFormMinute">Dakika</label>
+                            </div>
+                            <div class="form-check form-check-inline d-none" data-section="formDate">
+                                <input class="form-check-input" type="radio" name="formDate" data-field="timer.formDate" id="timerFormHour" value="2">
+                                <label class="form-check-label col-form-label-sm" for="timerFormHour">Saat</label>
+                            </div>
+                            <div class="form-check form-check-inline d-none" data-section="formDate">
+                                <input class="form-check-input" type="radio" name="formDate" data-field="timer.formDate" id="timerFormDay" value="3">
+                                <label class="form-check-label col-form-label-sm" for="timerFormDay">Gün</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div data-section="formDate" class="form-group row d-none">
+
+                        <label for="colFormLabelSm" class="col-sm-1 col-form-label col-form-label-sm">Form Alanları :
+                        </label>
+
+                        <div class="col-sm-11">
+                            <select class="form-control form-control-sm" data-target="formFields" data-field="formField">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="row form-group">
+                        <label class="col-sm-1 col-form-label col-form-label-sm">Değer :
+                        </label>
+                        <div class="col-sm-11">
+                            <input type="number" class="form-control form-control-sm" placeholder="Değer" data-field="timer.value">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-1 col-form-label col-form-label-sm">Notlar :
+                        </label>
+                        <div class="col-sm-11">
+                            <textarea class="form-control form-control-sm" id="waitNotes" rows="2" data-field="description"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div data-properties="email" class="d-none">
+            <h2>E-posta</h2>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="genel7-tab" data-toggle="tab" href="#genel7" role="tab" aria-controls="genel7" aria-selected="true">Genel</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="email-tab" data-toggle="tab" href="#email" role="tab" aria-controls="email" aria-selected="false">Email Ayarları</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="genel7" role="tabpanel" aria-labelledby="genel7-tab">
+                    <div class="form-group row">
+                        <label for="colFormLabelSm" class="col-sm-1 col-form-label col-form-label-sm">Adı :
+                        </label>
+                        <div class="col-sm-11">
+                            <input type="text" class="form-control form-control-sm" placeholder="Adı" data-field="name">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="toType" id="emailoption1" value="1" data-rel="emailgroup1">
+                                <label class="form-check-label col-form-label-sm" for="emailoption1">Kişiler</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="toType" id="emailoption2" value="2" data-rel="emailgroup2">
+                                <label class="form-check-label col-form-label-sm" for="emailoption2">Form Verisi</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="toType" id="emailoption3" value="3" data-rel="emailgroup3">
+                                <label class="form-check-label col-form-label-sm" for="emailoption3">Sabit Değer</label>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group row">
+                        <div class="col-sm-4 d-none" data-section="emailgroup1">
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="assignmentRule" id="EmailSelectUser" value="1" data-field="assignmentRule"
+                                    data-sub-rel="users">
+                                <label class="form-check-label col-form-label-sm" for="EmailSelectUser">Kullanıcı Seç</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="assignmentRule" id="EmailPrevUser" value="2" data-field="assignmentRule"
+                                    data-sub-rel>
+                                <label class="form-check-label col-form-label-sm" for="EmailPrevUser">Önceki Kullanıcı</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="assignmentRule" id="EmailPrevUserManager" data-field="assignmentRule"
+                                    value="3" data-sub-rel>
+                                <label class="form-check-label col-form-label-sm" for="EmailPrevUserManager">Önceki Kullanıcının Yöneticisi
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="assignmentRule" id="EmailFlowOwner" value="4" data-field="assignmentRule"
+                                    data-sub-rel>
+                                <label class="form-check-label col-form-label-sm" for="EmailFlowOwner">Akış Sahibi</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="assignmentRule" id="EmailFlowOwnerManager" data-field="assignmentRule"
+                                    value="5" data-sub-rel>
+                                <label class="form-check-label col-form-label-sm" for="EmailFlowOwnerManager">Akış Sahibi Yöneticisi
+                                </label>
+                            </div>
+
+                        </div>
+
+                        <div class="col-sm-4 d-none" data-section="emailgroup1">
+                            <div data-sub-section="users" class="d-none">
+
+                                <label for="colFormLabelSm" class="col-form-label col-form-label-sm">Kullanıcılar :
+                                </label>
+
+                                <select class="custom-select custom-select-sm" size="7">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                </select>
+
+
+                            </div>
+                        </div>
+
+                        <div class="col-sm-8 d-none" data-section="emailgroup2">
+                            <label for="colFormLabelSm" class="col-form-label col-form-label-sm">Form Alanları :
+                            </label>
+
+                            <select class="custom-select custom-select-sm" size="7">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                            </select>
+
+                            <div class="alert alert-warning" role="alert">Seçilen form alanı kullanıcı bilgisi içermelidir.
+                            </div>
+                        </div>
+
+                        <div class="col-sm-8 d-none" data-section="emailgroup3">
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-1 col-form-label col-form-label-sm">Kime :
+                                </label>
+                                <div class="col-sm-11">
+                                    <input type="email" class="form-control form-control-sm" placeholder="Kime" data-field="addresses" data-actiontype="push">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group row">
+                                <div class="col-sm-1">
+                                    <button class="btn btn-sm btn-primary" style="margin-top:70px;">
+                                        <i class="fas fa-angle-double-right"></i>
+                                    </button>
+                                </div>
+                                <div class="col-sm-11">
+                                    <label for="colFormLabelSm" class="col-form-label col-form-label-sm">Seçilenler :</label>
+                                    <select class="custom-select custom-select-sm" size="7">
+                                        <option value="a@b.com">a@b.com</option>
+                                        <option value="a@b.com">a@b.com</option>
+                                        <option value="a@b.com">a@b.com</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="email" role="tabpanel" aria-labelledby="email-tab">
+                    <div class="form-group row">
+                        <label class="col-sm-1 col-form-label col-form-label-sm">Konu :
+                        </label>
+                        <div class="col-sm-11">
+                            <input type="text" class="form-control form-control-sm" placeholder="Konu" data-field="title">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-1 col-form-label col-form-label-sm">Mesaj :
+                        </label>
+                        <div class="col-sm-11">
+                            <textarea class="form-control form-control-sm" id="mailBody" rows="2" data-field="body"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div data-properties="message" class="d-none">
+            <h2>Mesaj</h2>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="genel8-tab" data-toggle="tab" href="#genel8" role="tab" aria-controls="genel8" aria-selected="true">Genel</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="message-tab" data-toggle="tab" href="#message" role="tab" aria-controls="message" aria-selected="false">Mesaj Ayarları</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="genel8" role="tabpanel" aria-labelledby="genel8-tab">
+                    <div class="form-group row">
+                        <label for="colFormLabelSm" class="col-sm-1 col-form-label col-form-label-sm">Adı :
+                        </label>
+                        <div class="col-sm-11">
+                            <input type="text" class="form-control form-control-sm" placeholder="Adı" data-field="name">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="toType" id="messageoption1" value="1" data-rel="messagegroup1">
+                                <label class="form-check-label col-form-label-sm" for="messageoption1">Kişiler</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="toType" id="messageoption2" value="2" data-rel="messagegroup2">
+                                <label class="form-check-label col-form-label-sm" for="messageoption2">Gruplar</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="toType" id="messageoption3" value="3" data-rel="messagegroup3">
+                                <label class="form-check-label col-form-label-sm" for="messageoption3">Form Verisi</label>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group row">
+                        <div class="col-sm-4 d-none" data-section="messagegroup1">
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="assignmentRule" id="EmailSelectUser" value="1" data-field="assignmentRule"
+                                    data-sub-rel="users">
+                                <label class="form-check-label col-form-label-sm" for="EmailSelectUser">Kullanıcı Seç</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="assignmentRule" id="EmailPrevUser" value="2" data-field="assignmentRule"
+                                    data-sub-rel>
+                                <label class="form-check-label col-form-label-sm" for="EmailPrevUser">Önceki Kullanıcı</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="assignmentRule" id="EmailPrevUserManager" data-field="assignmentRule"
+                                    value="3" data-sub-rel>
+                                <label class="form-check-label col-form-label-sm" for="EmailPrevUserManager">Önceki Kullanıcının Yöneticisi
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="assignmentRule" id="EmailFlowOwner" value="4" data-field="assignmentRule"
+                                    data-sub-rel>
+                                <label class="form-check-label col-form-label-sm" for="EmailFlowOwner">Akış Sahibi</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="assignmentRule" id="EmailFlowOwnerManager" data-field="assignmentRule"
+                                    value="5" data-sub-rel>
+                                <label class="form-check-label col-form-label-sm" for="EmailFlowOwnerManager">Akış Sahibi Yöneticisi
+                                </label>
+                            </div>
+
+                        </div>
+
+                        <div class="col-sm-4 d-none" data-section="messagegroup1">
+                            <div data-sub-section="users" class="d-none">
+
+                                <label for="colFormLabelSm" class="col-form-label col-form-label-sm">Kullanıcılar :
+                                </label>
+
+                                <select class="custom-select custom-select-sm" size="7">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                </select>
+
+
+                            </div>
+                        </div>
+                        <div class="col-sm-8 d-none" data-section="messagegroup2">
+                            <label for="colFormLabelSm" class="col-form-label col-form-label-sm">Gruplar :
+                            </label>
+
+                            <select class="custom-select custom-select-sm" size="7">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                            </select>
+
+                        </div>
+                        <div class="col-sm-8 d-none" data-section="messagegroup3">
+                            <label for="colFormLabelSm" class="col-form-label col-form-label-sm">Form Alanları :
+                            </label>
+
+                            <select class="custom-select custom-select-sm" size="7">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                            </select>
+
+                            <div class="alert alert-warning" role="alert">Seçilen form alanı kullanıcı bilgisi içermelidir.
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group row">
+                                <div class="col-sm-1">
+                                    <button class="btn btn-sm btn-primary" style="margin-top:70px;">
+                                        <i class="fas fa-angle-double-right"></i>
+                                    </button>
+                                </div>
+                                <div class="col-sm-11">
+                                    <label for="colFormLabelSm" class="col-form-label col-form-label-sm">Seçilenler :</label>
+                                    <select class="custom-select custom-select-sm" size="7">
+                                        <option value="kullanici 1">kullanici 1</option>
+                                        <option value="kullanici 2">kullanici 2</option>
+                                        <option value="kullanici 3">kullanici 3</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="message" role="tabpanel" aria-labelledby="message-tab">
+                    <div class="row form-group">
+                        <label class="col-sm-1 col-form-label col-form-label-sm">Mesaj :
+                        </label>
+                        <div class="col-sm-11">
+                            <textarea class="form-control form-control-sm" id="messagemessage" rows="2" data-field="message"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div data-properties="combination" class="d-none">
+            <h2>Birleşim</h2>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="genel9-tab" data-toggle="tab" href="#genel9" role="tab" aria-controls="genel5" aria-selected="true">Genel</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="genel9" role="tabpanel" aria-labelledby="genel9-tab">
+                    <div class="form-group row">
+                        <label for="colFormLabelSm" class="col-sm-1 col-form-label col-form-label-sm">Adı :
+                        </label>
+                        <div class="col-sm-11">
+                            <input type="text" class="form-control form-control-sm" placeholder="Adı" data-field="name">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-1 col-form-label col-form-label-sm">Notlar :
+                        </label>
+                        <div class="col-sm-11">
+                            <textarea class="form-control form-control-sm" id="waitNotes" rows="2" data-field="description"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div data-properties="distribution" class="d-none">
+            <h2>Dağıtım</h2>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="genel10-tab" data-toggle="tab" href="#genel10" role="tab" aria-controls="genel5" aria-selected="true">Genel</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="genel10" role="tabpanel" aria-labelledby="genel10-tab">
+                    <div class="form-group row">
+                        <label for="colFormLabelSm" class="col-sm-1 col-form-label col-form-label-sm">Adı :
+                        </label>
+                        <div class="col-sm-11">
+                            <input type="text" class="form-control form-control-sm" placeholder="Adı" data-field="name">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-1 col-form-label col-form-label-sm">Notlar :
+                        </label>
+                        <div class="col-sm-11">
+                            <textarea class="form-control form-control-sm" id="waitNotes" rows="2" data-field="description"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="actionbuttons">
+        <button id="saveButton" class="button menu_button">Save</button>
+        <button id="loadButton" class="button menu_button">Load</button>
+    </div>
+
+
+    <div>
+        <textarea id="jsonOutput" value="" style="width:800px;height:100px; margin: 0 auto; display: block;"></textarea>
+    </div>

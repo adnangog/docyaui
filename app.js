@@ -20,6 +20,8 @@ const folderRouter = require('./routes/folder');
 const groupRouter = require('./routes/group');
 const userRouter = require('./routes/user');
 const formRouter = require('./routes/form');
+const flowRouter = require('./routes/flow');
+const flowTemplateRouter = require('./routes/flowTemplate');
 const ajaxRouter = require('./routes/ajax');
 const loginRouter = require('./routes/login');
 const checkAuth = require("./middleware/checkAuth");
@@ -118,6 +120,8 @@ app.use('/folders', checkAuth, folderRouter);
 app.use('/groups', checkAuth, groupRouter);
 app.use('/users', checkAuth, userRouter);
 app.use('/forms', checkAuth, formRouter);
+app.use('/flows', checkAuth, flowRouter);
+app.use('/flowTemplates', checkAuth, flowTemplateRouter);
 app.use('/ajax', checkAuth, ajaxRouter);
 
 // catch 404 and forward to error handler
