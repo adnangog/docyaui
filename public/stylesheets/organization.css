@@ -1,0 +1,26 @@
+.organizatinBox {
+    border:1px solid #d1d1d1;
+    width: 220px;
+    height: 110px;
+    padding: 10px;
+    border-radius: .3rem;
+    font-size: .875rem;
+    position: absolute;
+    background-color: #f9f9f9;
+}
+.organizatinBox .box-title {
+    font-size: 1rem;
+    font-weight: 600;
+}
+.buttons {
+    position: absolute;
+    left: 0;
+    right: 3px;
+    bottom: 3px;
+    text-align: right;
+}
+.buttons .btn {
+    min-width: 25px;
+    padding: .05rem .1rem;
+    border-radius: 1rem;
+}
