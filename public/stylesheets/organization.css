@@ -7,10 +7,19 @@
     font-size: .875rem;
     position: absolute;
     background-color: #f9f9f9;
+    z-index: 1;
+}
+.organizatinBox:hover {
+    z-index: 2;
 }
 .organizatinBox .box-title {
     font-size: 1rem;
     font-weight: 600;
+}
+.organization-delete {
+    position: absolute;
+    top:5px;
+    right: 5px;
 }
 .buttons {
     position: absolute;
@@ -19,7 +28,7 @@
     bottom: 3px;
     text-align: right;
 }
-.buttons .btn {
+.buttons .btn, .organization-delete {
     min-width: 25px;
     padding: .05rem .1rem;
     border-radius: 1rem;

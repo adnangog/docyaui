@@ -23,7 +23,31 @@
                 id:3,
                 parent:0,
                 index:1,
-                title:'PAZARLAMA',
+                title:'PAZARLAMA2',
+                name:'Adnan GOG',
+                sub:'Satış'
+            },
+            {
+                id:6,
+                parent:3,
+                index:2,
+                title:'PAZARLAMA3',
+                name:'Adnan GOG',
+                sub:'Satış'
+            },
+            {
+                id:7,
+                parent:3,
+                index:2,
+                title:'PAZARLAMA4',
+                name:'Adnan GOG',
+                sub:'Satış'
+            },
+            {
+                id:8,
+                parent:3,
+                index:2,
+                title:'PAZARLAMA5',
                 name:'Adnan GOG',
                 sub:'Satış'
             },
@@ -57,7 +81,7 @@
             parent.html("");
             Docya.OrganizationController.Tree.map(x => {
                 var parentWidth = parent.width();
-                var group = Docya.OrganizationController.Tree.filter(function(a){ return a.index === x.index});
+                var group = Docya.OrganizationController.Tree.filter(function(a){ return a.index === x.index && a.parent === x.parent});
                 var parents = Docya.OrganizationController.Tree.filter(function(a){ return a.index === (x.index-1)});
 
                 var index=0;
@@ -87,6 +111,7 @@
                 parent.append(
                     $(
                         '<div class="organizatinBox" style="left:'+left+'px; top: '+top+'px;"> \
+                                <button class="btn btn-danger btn-sm organization-delete"><i class="fas fa-times"></i></button>\
                                 <div class="box-title">'+x.title+'</div>\
                                 <div class="person">'+x.name+'</div>\
                                 <div class="title">'+x.sub+'</div>\
@@ -94,7 +119,6 @@
                                     <button class="btn btn-secondary btn-sm"><i class="fas fa-pencil-alt"></i></button>\
                                     <button class="btn btn-success btn-sm"><i class="fas fa-users"></i></button>\
                                     <button class="btn btn-success btn-sm"><i class="fas fa-user-plus"></i></button>\
-                                    <button class="btn btn-danger btn-sm"><i class="fas fa-times"></i></button>\
                                     </div>\
                             </div>'
                     )
