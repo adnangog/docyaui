@@ -128,9 +128,9 @@
                                 <div class="person">'+ x.name + '</div>\
                                 <div class="title">'+ x.sub + '</div>\
                                 <div class="buttons">\
-                                    <button class="btn btn-secondary btn-sm"><i class="fas fa-pencil-alt"></i></button>\
-                                    <button class="btn btn-success btn-sm"><i class="fas fa-users"></i></button>\
-                                    <button class="btn btn-success btn-sm"><i class="fas fa-user-plus"></i></button>\
+                                    <button class="btn btn-secondary btn-sm" data-edit><i class="fas fa-pencil-alt"></i></button>\
+                                    <button class="btn btn-success btn-sm" data-add data-type="1"><i class="fas fa-users"></i></button>\
+                                    <button class="btn btn-success btn-sm" data-add data-type="2"><i class="fas fa-user-plus"></i></button>\
                                     </div>\
                             </div>'
                         )
@@ -168,9 +168,29 @@
 
             });
         },
+        initNodeEdit: function () {
+            $("body").on("click", "[data-edit]", function (e) {
+                e.preventDefault();
+                var id = parseInt($(this).parents(".organizatinBox").attr("data-id"));
+
+                $('#organizationModal').modal('show');
+            });
+        },
+        initNodeAdd: function () {
+            $("body").on("click", "[data-add]", function (e) {
+                e.preventDefault();
+                var id = parseInt($(this).parents(".organizatinBox").attr("data-id"));
+                var type = parseInt($(this).attr("data-type"));
+
+                $('#organizationModal').modal('show');
+
+            });
+        },
         initElements: function () {
             this.createTree();
             this.initNodeDelete();
+            this.initNodeEdit();
+            this.initNodeAdd();
         },
         init: function () {
             this.initElements();

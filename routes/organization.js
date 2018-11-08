@@ -5,22 +5,39 @@ const helper = require("../helpers/index");
 const async = require("async");
 
 router.get("/add", (req, res, next) => {
-  let breadcrumb = [
-    { route: "/", name: "Anasayfa" },
-    { route: "/organizations", name: "Organizasyon Şemaları" },
-    {
-      route: `/organization/add}`,
-      name: "Organizasyon Şeması Oluştur"
+  async.parallel([
+    (callback) => {
+      api.apiCall(req.session.token, "/user", "POST", req.body.pagelimit, (result) => {
+        callback(null, result);
+      });
+    },
+    (callback) => {
+      api.apiCall(req.session.token, `/department`, "POST", req.body.pagelimit, (result) => {
+        callback(null, result);
+      });
     }
-  ];
-  res.render("organizationCreate", {
-    breadcrumb,
-    route: "organizations/add",
-    tree:"[]",
-    organization:true,
-    mainMenu:1,
-    subMenu:14
-  });
+  ],
+    (err, results) => {
+      let breadcrumb = [
+        { route: "/", name: "Anasayfa" },
+        { route: "/organizations", name: "Organizasyon Şemaları" },
+        {
+          route: `/organization/add}`,
+          name: "Organizasyon Şeması Oluştur"
+        }
+      ];
+      res.render("organizationCreate", {
+        breadcrumb,
+        route: "organizations/add",
+        tree: "[]",
+        organization: true,
+        users: results[0].data,
+        departments: results[1].data,
+        mainMenu: 1,
+        subMenu: 14
+      });
+
+    });
 });
 
 // Organization Add
@@ -31,7 +48,7 @@ router.post("/", (req, res, next) => {
     "POST",
     {
       name: req.body.organizationName,
-      tree : JSON.parse(req.body.tree),
+      tree: JSON.parse(req.body.tree),
       rDate: Date.now()
     },
     (result) => {
@@ -65,8 +82,8 @@ router.get("/", (req, res, next) => {
           route: "organizations",
           messageType: req.query.messageType,
           message: req.query.message,
-          mainMenu:1,
-          subMenu:14
+          mainMenu: 1,
+          subMenu: 14
         });
       });
     }
@@ -104,8 +121,8 @@ router.get("/:organizationId", (req, res, next) => {
             breadcrumb,
             paging,
             route: "organizations",
-            mainMenu:1,
-            subMenu:14
+            mainMenu: 1,
+            subMenu: 14
           });
         })
       }
