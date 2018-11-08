@@ -45,6 +45,7 @@ router.post("/", (req, res, next) => {
         password: req.body.password,
         title:req.body.title,
         position:req.body.position,
+        department: req.body.department,
         groups: req.body.groups,
         source:req.body.source,
         status: 1,
@@ -115,6 +116,11 @@ router.post("/", (req, res, next) => {
         api.apiCall(req.session.token, `/group`, "POST", req.body.pagelimit, (result) => {
           callback(null, result);
         });
+      },
+      (callback) => {
+        api.apiCall(req.session.token, `/department`, "POST", req.body.pagelimit, (result) => {
+          callback(null, result);
+        });
       }
     ],
       (err, results) => {
@@ -137,6 +143,7 @@ router.post("/", (req, res, next) => {
           data: results[0],
           user: results[1],
           groups: results[2].data,
+          departments: results[3].data,
           breadcrumb,
           paging,
           mainMenu:1,

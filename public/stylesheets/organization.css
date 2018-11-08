@@ -7,6 +7,7 @@
     font-size: .875rem;
     position: absolute;
     background-color: #f9f9f9;
+    cursor: move;
     z-index: 1;
 }
 .organizatinBox:hover {
@@ -32,4 +33,8 @@
     min-width: 25px;
     padding: .05rem .1rem;
     border-radius: 1rem;
+}
+
+[data-parent] {
+    min-height: 600px;
 }

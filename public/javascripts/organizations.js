@@ -82,6 +82,8 @@
 
             jsPlumb.ready(function () {
 
+                jsPlumb.deleteEveryEndpoint();
+
                 var common = {
                     connector: ["Flowchart"],
                     anchors: ["BottomCenter", "Top"],
@@ -120,8 +122,8 @@
                     }
                     parent.append(
                         $(
-                            '<div class="organizatinBox" style="left:' + left + 'px; top: ' + top + 'px;" id="Element' + x.id + '"> \
-                                <button class="btn btn-danger btn-sm organization-delete"><i class="fas fa-times"></i></button>\
+                            '<div class="organizatinBox" style="left:' + left + 'px; top: ' + top + 'px;" id="Element' + x.id + '" data-id="' + x.id + '"> \
+                                <button class="btn btn-danger btn-sm organization-delete" data-delete><i class="fas fa-times"></i></button>\
                                 <div class="box-title">'+ x.title + '</div>\
                                 <div class="person">'+ x.name + '</div>\
                                 <div class="title">'+ x.sub + '</div>\
@@ -147,8 +149,28 @@
 
             });
         },
+        initNodeDelete: function () {
+            $("body").on("click", "[data-delete]", function (e) {
+                e.preventDefault();
+
+                var id = parseInt($(this).parent().attr("data-id"));
+
+                if(id===0){
+                    showMessageBox(
+                        "danger",
+                        "Uyari",
+                        "Kök elementi silemezsiniz!"
+                    );
+                }else{
+                    Docya.OrganizationController.Tree = Docya.OrganizationController.Tree.filter(function(a){return a.id !== id && a.parent !== id});
+                Docya.OrganizationController.createTree();
+                }
+
+            });
+        },
         initElements: function () {
             this.createTree();
+            this.initNodeDelete();
         },
         init: function () {
             this.initElements();
