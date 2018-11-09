@@ -7,75 +7,16 @@
                 id: 0,
                 parent: 0,
                 index: 0,
-                title: 'AGOG',
-                name: 'Adnan GOG',
-                sub: 'Satış'
-            },
-            {
-                id: 1,
-                parent: 0,
-                index: 1,
-                title: 'SATIŞ',
-                name: 'Adnan GOG',
-                sub: 'Satış'
-            },
-            {
-                id: 3,
-                parent: 0,
-                index: 1,
-                title: 'PAZARLAMA2',
-                name: 'Adnan GOG',
-                sub: 'Satış'
-            },
-            {
-                id: 6,
-                parent: 3,
-                index: 2,
-                title: 'PAZARLAMA3',
-                name: 'Adnan GOG',
-                sub: 'Satış'
-            },
-            {
-                id: 7,
-                parent: 3,
-                index: 2,
-                title: 'PAZARLAMA4',
-                name: 'Adnan GOG',
-                sub: 'Satış'
-            },
-            {
-                id: 8,
-                parent: 3,
-                index: 2,
-                title: 'PAZARLAMA5',
-                name: 'Adnan GOG',
-                sub: 'Satış'
-            },
-            {
-                id: 4,
-                parent: 0,
-                index: 1,
-                title: 'IT',
-                name: 'Adnan GOG',
-                sub: 'Satış'
-            },
-            {
-                id: 2,
-                parent: 4,
-                index: 2,
-                title: 'Adnan GOG',
-                name: 'Adnan GOG',
-                sub: 'Satış'
-            },
-            {
-                id: 5,
-                parent: 4,
-                index: 2,
-                title: 'Ahmet Muhip',
-                name: 'Ahmet Muhip',
-                sub: 'Satış'
+                type: 0,
+                department: null,
+                user: null,
+                position: null,
+                title: 'Şema Adı',
+                name: null,
+                sub: null
             }
         ],
+        Name: null,
         createTree: function () {
             var parent = $("[data-parent]");
             parent.html("");
@@ -111,7 +52,6 @@
                         }
                     })
 
-
                     if (x.index === 0) {
                         left = (parentWidth / 2) - (180 / 2);
                         top = 0;
@@ -120,20 +60,25 @@
                         var left = (parentIndex * parentWidth) + (((parentWidth / group.length) * (index)) + (parentWidth / group.length) / 2) - (180 / 2);
                         var top = x.index * 130;
                     }
+
+                    var delHtml = '<button class="btn btn-danger btn-sm organization-delete" data-delete><i class="fas fa-times"></i></button>';
+                    var bodyHtml = '<div class="person">'+ x.name + '</div><div class="title">'+ x.sub + '</div>';
+                    var btnzHtml = '<div class="buttons"><button class="btn btn-secondary btn-sm" data-edit><i class="fas fa-pencil-alt"></i></button><button class="btn btn-success btn-sm" data-add data-type="1"><i class="fas fa-users"></i></button><button class="btn btn-success btn-sm" data-add data-type="2"><i class="fas fa-user-plus"></i></button></div>';
+
+                    if (x.id === 0) {
+                        delHtml = "";
+                        bodyHtml="";
+                        btnzHtml = '<div class="buttons"><button class="btn btn-success btn-sm" data-add data-type="1"><i class="fas fa-users"></i></button><button class="btn btn-success btn-sm" data-add data-type="2"><i class="fas fa-user-plus"></i></button></div>';
+                    }
+
+                    if (x.type === 2) {
+                        btnzHtml = '<div class="buttons"><button class="btn btn-secondary btn-sm" data-edit><i class="fas fa-pencil-alt"></i></button></div>';
+                    }
+
                     parent.append(
-                        $(
-                            '<div class="organizatinBox" style="left:' + left + 'px; top: ' + top + 'px;" id="Element' + x.id + '" data-id="' + x.id + '"> \
-                                <button class="btn btn-danger btn-sm organization-delete" data-delete><i class="fas fa-times"></i></button>\
-                                <div class="box-title">'+ x.title + '</div>\
-                                <div class="person">'+ x.name + '</div>\
-                                <div class="title">'+ x.sub + '</div>\
-                                <div class="buttons">\
-                                    <button class="btn btn-secondary btn-sm" data-edit><i class="fas fa-pencil-alt"></i></button>\
-                                    <button class="btn btn-success btn-sm" data-add data-type="1"><i class="fas fa-users"></i></button>\
-                                    <button class="btn btn-success btn-sm" data-add data-type="2"><i class="fas fa-user-plus"></i></button>\
-                                    </div>\
-                            </div>'
-                        )
+                        $('<div class="organizatinBox" style="left:' + left + 'px; top: ' + top + 'px;" id="Element' + x.id + '" data-id="' + x.id + '">' + delHtml + ' \
+                                <div class="box-title">'+ x.title + '</div>' + bodyHtml + btnzHtml + '\
+                            </div >')
                     );
 
                     if (x.id !== 0) {
@@ -155,15 +100,15 @@
 
                 var id = parseInt($(this).parent().attr("data-id"));
 
-                if(id===0){
+                if (id === 0) {
                     showMessageBox(
                         "danger",
                         "Uyari",
                         "Kök elementi silemezsiniz!"
                     );
-                }else{
-                    Docya.OrganizationController.Tree = Docya.OrganizationController.Tree.filter(function(a){return a.id !== id && a.parent !== id});
-                Docya.OrganizationController.createTree();
+                } else {
+                    Docya.OrganizationController.Tree = Docya.OrganizationController.Tree.filter(function (a) { return a.id !== id && a.parent !== id });
+                    Docya.OrganizationController.createTree();
                 }
 
             });
@@ -172,6 +117,10 @@
             $("body").on("click", "[data-edit]", function (e) {
                 e.preventDefault();
                 var id = parseInt($(this).parents(".organizatinBox").attr("data-id"));
+                var elmType = parseInt($(this).parents(".organizatinBox").attr("data-type"));
+
+                $("#organizationModalLabel").text("Düzenle");
+                $("[data-save]").attr("data-process", "1").attr("data-target", id).attr("data-type", elmType).removeClass("btn-success").addClass("btn-secondary").text("Güncelle");
 
                 $('#organizationModal').modal('show');
             });
@@ -180,10 +129,101 @@
             $("body").on("click", "[data-add]", function (e) {
                 e.preventDefault();
                 var id = parseInt($(this).parents(".organizatinBox").attr("data-id"));
+                var elmType = parseInt($(this).parents(".organizatinBox").attr("data-type"));
                 var type = parseInt($(this).attr("data-type"));
+
+                $("[data-save]").attr("data-process", "2").attr("data-target", id).attr("data-type", elmType).removeClass("btn-secondary").addClass("btn-success").text("Ekle");
+
+                if (type === 1) {
+                    $("#organizationModalLabel").text("Departman Ekle");
+                    $("[data-user-title]").text("Yönetici");
+                    $("[data-department]").parents(".form-group").show();
+                } else {
+                    $("#organizationModalLabel").text("Kullanıcı Ekle");
+                    $("[data-user-title]").text("Kullanıcı");
+                    $("[data-department]").parents(".form-group").hide();
+                }
 
                 $('#organizationModal').modal('show');
 
+            });
+        },
+        initSave: function () {
+            $("body").on("click", "[data-save]", function (e) {
+                e.preventDefault();
+                var jqElm = $(this);
+
+                var target = parseInt(jqElm.attr("data-target"));
+                var processType = parseInt(jqElm.attr("data-process"));
+                var type = parseInt(jqElm.attr("data-type"));
+
+                var errors = [];
+
+                if ($("[data-user]").val() === "") {
+                    errors.push(type === 1 ? "Yönetici seçiniz." : "Kullanıcı seçiniz.");
+                }
+
+                if (type === 1 && $("[data-department]").val() === "") {
+                    errors.push("Departman seçiniz.");
+                }
+
+                if ($("[data-position]").val() === "") {
+                    errors.push("Pozisyon giriniz.");
+                }
+
+                var elm = Docya.OrganizationController.Tree.filter(function (a) { return a.id === target })[0];
+
+                if (errors.length === 0) {
+                    if (processType === 1) {
+
+                        elm.department = type === 1 ? $("[data-department]").val() : elm.department;
+                        elm.user = $("[data-user]").val();
+                        elm.position = $("[data-position]").val();
+                        elm.title = type === 1 ? $("[data-department][selected]").text() : $("[data-user][selected]").text();
+                        elm.name = type === 1 ? $("[data-user][selected]").text() : $("[data-position]").val();
+                        elm.sub = type === 1 ? elm.title : $("[data-position]").val();
+
+                    } else {
+                        Docya.OrganizationController.Tree.push({
+                            id: Math.max.apply(Math, Docya.OrganizationController.Tree.map(function (o) { return o.id; })) + 1,
+                            parent: elm.id,
+                            index: elm.index + 1,
+                            department: type === 1 ? $("[data-department]").val() : elm.department,
+                            user: $("[data-user]").val(),
+                            position: $("[data-position]").val(),
+                            title: type === 1 ? $("[data-department][selected]").text() : $("[data-user][selected]").text(),
+                            name: type === 1 ? $("[data-user][selected]").text() : $("[data-position]").val(),
+                            sub: type === 1 ? elm.title : $("[data-position]").val()
+                        });
+                    }
+
+                    Docya.OrganizationController.createTree();
+
+                    $('#organizationModal').modal('hide');
+
+                } else {
+                    let errorHtml = "<ul>";
+                    errors.map(x => {
+                        errorHtml += "<li>" + x + "</li>";
+                    });
+                    errorHtml += "</ul>";
+                    showMessageBox("danger", "Uyari", errorHtml);
+                }
+
+
+            });
+        },
+        initOrgName: function () {
+            $("body").on("blur", "#organizationName", function (e) {
+                e.preventDefault();
+                var jqElm = $(this);
+                if (jqElm.val() !== "") {
+                    Docya.OrganizationController.Name = jqElm.val();
+                    $("[data-id='0'] .box-title").text(jqElm.val());
+                    Docya.OrganizationController.Tree[0].title = jqElm.val();
+                } else {
+                    jqElm.val(Docya.OrganizationController.Name);
+                }
             });
         },
         initElements: function () {
@@ -191,6 +231,8 @@
             this.initNodeDelete();
             this.initNodeEdit();
             this.initNodeAdd();
+            this.initSave();
+            this.initOrgName();
         },
         init: function () {
             this.initElements();
