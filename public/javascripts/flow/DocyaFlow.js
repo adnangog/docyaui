@@ -33,26 +33,15 @@
         connections: [],
         positionX:0,
         positionY:0,
-        users: [
-            { Id:1, name: "Adnan GÖG", email: "adnan.gog@gmail.com" },
-            { Id:2, name: "Elçin GÖG", email: "ecin.gog@gmail.com" },
-            { Id:3, name: "Duru GÖG", email: "duru.gog@gmail.com" },
-            { Id:4, name: "Ömer GÖG", email: "omer.gog@gmail.com" }
-        ],
-        groups: [
-            { Id: 1, name:"Sivaslılar"},
-            { Id: 2, name:"Eskişehirliler"},
-            { Id: 3, name:"İstanbullular"},
-            { Id: 4, name:"Dünyalılar"},
-        ],
+        users: [],
+        groups: [],
+        forms: [],
+        organizations: [],
+        departments: [],
+        methods: [],
+        flows: [],
         inputs: ["[input.Email]","[input.Title]","[input.Body]","[input.Person]"],
         outputs: ["[output.Email]","[output.Title]","[output.Body]","[output.Person]"],
-        forms: [
-            { Id: 1, name:"A Formu"},
-            { Id: 2, name:"B Formu"},
-            { Id: 3, name:"C Formu"},
-            { Id: 4, name:"D Formu"},
-        ],
         outputJson: [
             {
                 id: "flowchartStartpoint",
@@ -423,6 +412,16 @@
                         break;
                 }
             });
+
+            if (errors.length > 0) {
+                let errorHtml = "<ul>";
+                errors.map(x => {
+                    errorHtml += "<li>" + x + "</li>";
+                });
+                errorHtml += "</ul>";
+                showMessageBox("danger", "Uyari", errorHtml);
+                return false;
+            } 
         },
         initLibrary: function () {
             jsPlumb.ready(function () {
@@ -823,22 +822,36 @@
                     flowChart.connections = connections;
                     flowChart.numberOfElements = Docya.FlowController.NumberOfShapes;
 
+                    let errors = [];
+
                     nodes.map(function (node) {
                         var targetCount = connections.filter(function (connection) { return connection.pageTargetId === node.blockId }).length;
 
                         $("#" + node.blockId).removeClass("alerted");
                         if (targetCount === 0 && node.blockId !== "flowchartStartpoint") {
                             $("#" + node.blockId).addClass("alerted");
-                            alert(node.title + " için giriş bağlantısı bulunamadı.");
+                            errors.push(node.title + " için giriş bağlantısı bulunamadı.");
                         }
 
                         var sourceCount = connections.filter(function (connection) { return connection.pageSourceId === node.blockId }).length;
 
                         if (sourceCount === 0 && node.blockId !== "flowchartEndpoint") {
                             $("#" + node.blockId).addClass("alerted");
-                            alert(node.title + " için çıkış bağlantısı bulunamadı.");
+                            errors.push(node.title + " için çıkış bağlantısı bulunamadı.");
                         }
                     });
+
+                    if (errors.length > 0) {
+                        let errorHtml = "<ul>";
+                        errors.map(x => {
+                            errorHtml += "<li>" + x + "</li>";
+                        });
+                        errorHtml += "</ul>";
+                        showMessageBox("danger", "Uyari", errorHtml);
+                        return false;
+                    }
+
+                    Docya.FlowController.checkItems();
 
                     var flowChartJson = JSON.stringify(flowChart);
 
@@ -1257,6 +1270,58 @@
                 $('[data-sub-section="' + $(this).attr("data-sub-rel") + '"]').removeClass("d-none");
             });
         },
+        initialDatas: function(){
+
+            let data = {
+                process: "getUsers"
+            };
+
+            let cb = function (data) {
+                Docya.FlowController.users = data.data;
+            };
+
+            Docya.FlowController.initAjax(data, cb);
+
+            data = {
+                process: "getForms"
+            };
+
+            cb = function (data) {
+                Docya.FlowController.forms = data.data;
+            };
+
+            Docya.FlowController.initAjax(data, cb);
+
+            data = {
+                process: "getGroups"
+            };
+
+            cb = function (data) {
+                Docya.FlowController.groups = data.data;
+            };
+
+            Docya.FlowController.initAjax(data, cb);
+
+            data = {
+                process: "getDepartments"
+            };
+
+            cb = function (data) {
+                Docya.FlowController.departments = data.data;
+            };
+
+            Docya.FlowController.initAjax(data, cb);
+
+            data = {
+                process: "getOrganizations"
+            };
+
+            cb = function (data) {
+                Docya.FlowController.organizations = data.data;
+            };
+
+            Docya.FlowController.initAjax(data, cb);
+        },
         initAjax: function (data, cb) {
             $.ajax({
                 dataType: "json",
@@ -1275,6 +1340,7 @@
             this.initSelectBox();
             this.initRadioButton();
             this.initCheckBox();
+            this.initialDatas();
         },
         init: function () {
             this.initElements();

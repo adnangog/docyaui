@@ -2,7 +2,7 @@
     if (w.Docya == undefined) w.Docya = {};
 
     w.Docya.OrganizationController = {
-        Tree: [
+        Tree: $("#tree").val() !== '"[]"' ? JSON.parse($("#tree").val()) : [
             {
                 id: 0,
                 parent: 0,
@@ -62,12 +62,12 @@
                     }
 
                     var delHtml = '<button class="btn btn-danger btn-sm organization-delete" data-delete><i class="fas fa-times"></i></button>';
-                    var bodyHtml = '<div class="person">'+ x.name + '</div><div class="title">'+ x.sub + '</div>';
+                    var bodyHtml = '<div class="person">' + x.name + '</div><div class="title">' + x.sub + '</div>';
                     var btnzHtml = '<div class="buttons"><button class="btn btn-secondary btn-sm" data-edit><i class="fas fa-pencil-alt"></i></button><button class="btn btn-success btn-sm" data-add data-type="1"><i class="fas fa-users"></i></button><button class="btn btn-success btn-sm" data-add data-type="2"><i class="fas fa-user-plus"></i></button></div>';
 
                     if (x.id === 0) {
                         delHtml = "";
-                        bodyHtml="";
+                        bodyHtml = "";
                         btnzHtml = '<div class="buttons"><button class="btn btn-success btn-sm" data-add data-type="1"><i class="fas fa-users"></i></button><button class="btn btn-success btn-sm" data-add data-type="2"><i class="fas fa-user-plus"></i></button></div>';
                     }
 
@@ -93,6 +93,8 @@
                 });
 
             });
+
+            $("[data-json]").val(JSON.stringify(Docya.OrganizationController.Tree));
         },
         initNodeDelete: function () {
             $("body").on("click", "[data-delete]", function (e) {
@@ -119,8 +121,13 @@
                 var id = parseInt($(this).parents(".organizatinBox").attr("data-id"));
                 var elmType = parseInt($(this).parents(".organizatinBox").attr("data-type"));
 
+                var elm = Docya.OrganizationController.Tree.filter(function (a) { return a.id === id })[0];
+
+                $("[data-department]").val(elm.department);
+                $("[data-user]").val(elm.user);
+
                 $("#organizationModalLabel").text("Düzenle");
-                $("[data-save]").attr("data-process", "1").attr("data-target", id).attr("data-type", elmType).removeClass("btn-success").addClass("btn-secondary").text("Güncelle");
+                $("[data-save]").attr("data-process", "1").attr("data-target", id).attr("data-type", elm.type).removeClass("btn-success").addClass("btn-secondary").text("Güncelle");
 
                 $('#organizationModal').modal('show');
             });
@@ -129,10 +136,9 @@
             $("body").on("click", "[data-add]", function (e) {
                 e.preventDefault();
                 var id = parseInt($(this).parents(".organizatinBox").attr("data-id"));
-                var elmType = parseInt($(this).parents(".organizatinBox").attr("data-type"));
                 var type = parseInt($(this).attr("data-type"));
 
-                $("[data-save]").attr("data-process", "2").attr("data-target", id).attr("data-type", elmType).removeClass("btn-secondary").addClass("btn-success").text("Ekle");
+                $("[data-save]").attr("data-process", "2").attr("data-target", id).attr("data-type", type).removeClass("btn-secondary").addClass("btn-success").text("Ekle");
 
                 if (type === 1) {
                     $("#organizationModalLabel").text("Departman Ekle");
@@ -179,23 +185,36 @@
                         elm.department = type === 1 ? $("[data-department]").val() : elm.department;
                         elm.user = $("[data-user]").val();
                         elm.position = $("[data-position]").val();
-                        elm.title = type === 1 ? $("[data-department][selected]").text() : $("[data-user][selected]").text();
-                        elm.name = type === 1 ? $("[data-user][selected]").text() : $("[data-position]").val();
-                        elm.sub = type === 1 ? elm.title : $("[data-position]").val();
+                        elm.title = type === 1 ? $("[data-department] option:selected").text() : $("[data-user] option:selected").text();
+                        elm.name = type === 1 ? $("[data-user] option:selected").text() : $("[data-position]").val();
+                        elm.sub = type === 1 ? $("[data-position]").val() : elm.title;
 
                     } else {
                         Docya.OrganizationController.Tree.push({
                             id: Math.max.apply(Math, Docya.OrganizationController.Tree.map(function (o) { return o.id; })) + 1,
                             parent: elm.id,
                             index: elm.index + 1,
+                            type: type,
                             department: type === 1 ? $("[data-department]").val() : elm.department,
                             user: $("[data-user]").val(),
                             position: $("[data-position]").val(),
-                            title: type === 1 ? $("[data-department][selected]").text() : $("[data-user][selected]").text(),
-                            name: type === 1 ? $("[data-user][selected]").text() : $("[data-position]").val(),
-                            sub: type === 1 ? elm.title : $("[data-position]").val()
+                            title: type === 1 ? $("[data-department] option:selected").text() : $("[data-user] option:selected").text(),
+                            name: type === 1 ? $("[data-user] option:selected").text() : $("[data-position]").val(),
+                            sub: type === 1 ? $("[data-position]").val() : target !== 0 ? elm.title : ''
                         });
                     }
+
+                    $("[data-department]").val("");
+                    $("[data-user]").val("");
+                    $("[data-position]").val("");
+                    $(".fstToggleBtn").text("Lutfen secin");
+
+                    $('[data-department],[data-user]').fastselect({
+                        placeholder: 'Lütfen seçin',
+                        searchPlaceholder: 'Arama kriterinizi girin',
+                        noResultsText: 'Kayıt bulunamadı',
+                        userOptionPrefix: 'Ekle'
+                    });
 
                     Docya.OrganizationController.createTree();
 

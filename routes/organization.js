@@ -42,6 +42,7 @@ router.get("/add", (req, res, next) => {
 
 // Organization Add
 router.post("/", (req, res, next) => {
+  console.log(req.body.tree)
   api.apiCall(
     req.session.token,
     "/organization/add",
@@ -92,42 +93,45 @@ router.get("/", (req, res, next) => {
 
 // Organization GetById
 router.get("/:organizationId", (req, res, next) => {
-  api.apiCall(req.session.token, "/organization", "POST", req.body.pagelimit, data => {
-    api.apiCall(
-      req.session.token,
-      `/organization/${req.params.organizationId}`,
-      "GET",
-      null,
-      organization => {
-
-        let total = data.count;
-
-        helper.paging(req.body.page, req.body.limit, total, "organizations", (paging) => {
-          let breadcrumb = [
-            { route: "/", name: "Anasayfa" },
-            { route: "/organizations", name: "Organizasyon Şemaları" },
-            {
-              route: `/organization/${req.params.groupId}`,
-              name: "Organizasyon Şeması Düzenle"
-            }
-          ];
-          res.render("organizationCreate", {
-            title: "Organizasyon Şemaları",
-            addTitle: "Organizasyon Şeması Ekle",
-            editTitle: "Organizasyon Şeması Düzenle",
-            edit: true,
-            data,
-            organization,
-            breadcrumb,
-            paging,
-            route: "organizations",
-            mainMenu: 1,
-            subMenu: 14
-          });
-        })
-      }
-    );
+  async.parallel([
+    (callback) => {
+      api.apiCall(req.session.token, "/user", "POST", req.body.pagelimit, (result) => {
+        callback(null, result);
+      });
+    },
+    (callback) => {
+      api.apiCall(req.session.token, `/department`, "POST", req.body.pagelimit, (result) => {
+        callback(null, result);
+      });
+    },
+    (callback) => {
+      api.apiCall(req.session.token, `/organization/${req.params.organizationId}`, "GET", null, (result) => {
+        callback(null, result);
+      });
+    }
+  ],
+    (err, results) => {
+      let breadcrumb = [
+        { route: "/", name: "Anasayfa" },
+        { route: "/organizations", name: "Organizasyon Şemaları" },
+        {
+          route: `/organization/${req.params.organizationId}}`,
+          name: "Organizasyon Şeması Duzenle"
+        }
+      ];
+      res.render("organizationCreate", {
+        breadcrumb,
+        route: "organizations/add",
+        tree: results[2],
+        edit: true,
+        organization: true,
+        users: results[0].data,
+        departments: results[1].data,
+        mainMenu: 1,
+        subMenu: 14
+    });
   });
+
 });
 
 // Organization Update

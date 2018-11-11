@@ -13,6 +13,21 @@ router.post("/", (req, res, next) => {
   let cb = function () { };
 
   switch (req.body.process) {
+    case "getUsers":
+      route = `/user`;
+      break;
+    case "getForms":
+      route = `/form`;
+      break;
+    case "getGroups":
+      route = `/group`;
+      break;
+    case "getDepartments":
+      route = `/department`;
+      break;
+    case "getOrganizations":
+      route = `/organization`;
+      break;
     case "getCards":
       route = `/card/d`;
       params.userId = req.session.userId;
