@@ -29,7 +29,7 @@ router.get("/add", (req, res, next) => {
       res.render("organizationCreate", {
         breadcrumb,
         route: "organizations/add",
-        tree: "[]",
+        tree: {tree:[]},
         organization: true,
         users: results[0].data,
         departments: results[1].data,

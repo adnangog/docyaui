@@ -2,7 +2,7 @@
     if (w.Docya == undefined) w.Docya = {};
 
     w.Docya.OrganizationController = {
-        Tree: $("#tree").val() !== '"[]"' ? JSON.parse($("#tree").val()) : [
+        Tree: $("#tree").val() !== '[]' ? JSON.parse($("#tree").val()) : [
             {
                 id: 0,
                 parent: 0,

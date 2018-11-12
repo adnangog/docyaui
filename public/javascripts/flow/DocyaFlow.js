@@ -854,8 +854,6 @@
                     Docya.FlowController.checkItems();
 
                     var flowChartJson = JSON.stringify(flowChart);
-
-                    $('#jsonOutput').val(flowChartJson);
                 };
 
                 var repositionElement = function repositionElement(id, posX, posY) {
@@ -1258,6 +1256,35 @@
 
             });
         },
+        initTrigger: function () {
+            $("body").on("change", "[data-trigger]", function (e) {
+                var jqElm = $(this);
+                var jqParent = jqElm.parents("[data-properties]");
+                var target = jqElm.attr("data-trigger");
+                var method = jqElm.attr("data-trigger-method");
+
+
+                if(target.split(",").length === method.split(",").length){
+                    target.split(",").map(function(item,i){
+                        $("[data-target='"+item+"']", jqParent).html("");
+                        eval("Docya.FlowController."+method.split(",")[i]+"(jqElm.val())").map(function(a){$("<option value='"+a[0]+"'>"+a[1]+"</option>").appendTo($("[data-target='"+item+"']", jqParent))});
+                    });
+
+                }else{
+                    showMessageBox("danger",);
+                }
+                
+
+
+                
+            });
+        },
+        getFormVer: function(a){
+            return [["","Lütfen Seçin"],["0","V0.1"],["1","V0.2"],["2","V0.3"],["3","V0.4"]];
+        },
+        getFormFields: function(a){
+            return [["","Lütfen Seçin"],["0","Adı Soyadı"],["1","Adresi"],["2","TCKN"],["3","Tarih"]];
+        },
         initRel: function () {
             $("body").on("click", "[data-rel]", function (e) {
                 $('[data-section]').addClass("d-none");
@@ -1278,6 +1305,7 @@
 
             let cb = function (data) {
                 Docya.FlowController.users = data.data;
+                Docya.FlowController.users.map(function(a){$("<option value='"+a[0]+"'>"+a[1]+"</option>").appendTo($("[data-target='user']"))});
             };
 
             Docya.FlowController.initAjax(data, cb);
@@ -1288,6 +1316,7 @@
 
             cb = function (data) {
                 Docya.FlowController.forms = data.data;
+                Docya.FlowController.forms.map(function(a){$("<option value='"+a[0]+"'>"+a[1]+"</option>").appendTo($("[data-target='form']"))});
             };
 
             Docya.FlowController.initAjax(data, cb);
@@ -1298,6 +1327,7 @@
 
             cb = function (data) {
                 Docya.FlowController.groups = data.data;
+                Docya.FlowController.groups.map(function(a){$("<option value='"+a[0]+"'>"+a[1]+"</option>").appendTo($("[data-target='group']"))});
             };
 
             Docya.FlowController.initAjax(data, cb);
@@ -1308,6 +1338,7 @@
 
             cb = function (data) {
                 Docya.FlowController.departments = data.data;
+                Docya.FlowController.departments.map(function(a){$("<option value='"+a[0]+"'>"+a[1]+"</option>").appendTo($("[data-target='department']"))});
             };
 
             Docya.FlowController.initAjax(data, cb);
@@ -1318,6 +1349,7 @@
 
             cb = function (data) {
                 Docya.FlowController.organizations = data.data;
+                Docya.FlowController.organizations.map(function(a){$("<option value='"+a[0]+"'>"+a[1]+"</option>").appendTo($("[data-target='schema']"))});
             };
 
             Docya.FlowController.initAjax(data, cb);
@@ -1334,6 +1366,7 @@
         initElements: function () {
             this.initLibrary();
             this.initClose();
+            this.initTrigger();
             this.initRel();
             this.initSubRel();
             this.initTextBox();
