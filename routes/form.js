@@ -14,11 +14,11 @@ router.get("/add", (req, res, next) => {
       name: "Form Oluştur"
     }
   ];
-  res.render("create", {
+  res.render("formCreate", {
     breadcrumb,
     route: "forms/create",
     fields:"[]",
-    create:true,
+    formCreate:true,
     mainMenu:1,
     subMenu:8
   });
@@ -85,12 +85,12 @@ router.get("/:formId", (req, res, next) => {
           name: "Form Düzenle"
         }
       ];
-      res.render("create", {
+      res.render("formCreate", {
         edit: true,
         form,
         fields: JSON.stringify(form.fields),
         breadcrumb,
-        create:true,
+        formCreate:true,
         mainMenu:1,
         subMenu:8
       });

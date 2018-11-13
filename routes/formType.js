@@ -14,11 +14,11 @@ router.get("/add", (req, res, next) => {
       name: "Form Tipi Oluştur"
     }
   ];
-  res.render("create", {
+  res.render("formTypeCreate", {
     breadcrumb,
-    route: "formTypes/create",
+    route: "formTypes/add",
     fields:"[]",
-    create:true,
+    typeCreate:true,
     mainMenu:1,
     subMenu:15
   });
@@ -85,12 +85,12 @@ router.get("/:formTypeId", (req, res, next) => {
           name: "Form Tipi Düzenle"
         }
       ];
-      res.render("create", {
+      res.render("formTypeCreate", {
         edit: true,
         formType,
         fields: JSON.stringify(formType.fields),
         breadcrumb,
-        create:true,
+        typeCreate:true,
         mainMenu:1,
         subMenu:15
       });

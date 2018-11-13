@@ -748,6 +748,16 @@ span.tooltip:after {
   display: none;
 }
 
+/* types */
+.type-item {
+  padding:.35rem .7rem;
+  background-color: #f8f9fa;
+}
+.type-item:hover {
+  background-color: #f2f2f2;
+}
+/* types end */
+
 .tabulator .tabulator-tableHolder {
   min-height: 55px;
 }

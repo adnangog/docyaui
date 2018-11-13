@@ -1,0 +1,192 @@
+<style>
+    .droppable-active {
+        background-color: #ffe !important;
+    }
+
+    .tools a {
+        cursor: pointer;
+        font-size: 80%;
+    }
+
+    .form-body .col-md-6,
+    .form-body .droppable {
+        min-height: 400px;
+    }
+
+    .draggable {
+        cursor: move;
+    }
+
+    .tools {
+        float: right;
+    }
+</style>
+
+    <div style="padding:0 15px;">
+        <div class="row">
+            <div class="col-md-3" style="padding: 20px; background-color: #fff;">
+                <h3>Tipler</h3>
+                <div id="HedefForm"></div>
+            </div>
+            
+            <div class="col-md-9" style="background-color: #fff; padding: 20px; border-left:10px solid #f2f2f2;">
+                <form method="POST" id="createForm" action="{{#if edit}}/formTypes/{{ form._id }}{{else}}/formTypes/add{{/if}}">
+                <div class="form-group row bg-light" style="padding:10px 0; margin:0; margin-bottom:15px;">
+                    <label for="formName" class="col-sm-2 col-form-label">Tip Adı : </label>
+                    <div class="col-sm-10">
+                    <input type="text" class="form-control" id="formName" name="formName" placeholder="Tip Adı" value="{{form.name}}">
+                    <input type="hidden" id="fields" name="fields" value="{{fields}}">
+                    </div>
+                </div>
+                    <div class="text-muted empty-form text-center">Form Tipinizi oluşturmak için sol tarafta görmüş olduğunuz tiplerden kullanmak istediklerinizi aşağıya sürükleyip bırakın. <br>Daha sonra düzenle butonu yardımıyla eklemiş olduğunuz tipleri özelleştirebilirsiniz.</div>
+                    <div class="row form-body">
+                        <div class="col-md-12 droppable sortable" id="HedefDiv">
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-right">
+                        <button type="submit" id="btnSaveForm" class="btn btn-success">Form Tipini Kaydet</button>
+                    </div>
+                    </form>
+            </div>
+            
+        </div>
+    </div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Duzenle</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="modelContent">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Ayarlar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Seçenekler</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="messages-tab" data-toggle="tab" href="#messages" role="tab" aria-controls="messages" aria-selected="false">Varsayılan Değer</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">Kurallar</a>
+                        </li>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <div class="form-group">
+                                <div>
+                                    İsim :</div>
+                                <input type="text" id="labelControl" class="form-control" value="" />
+
+                            </div>
+                            <div class="form-group">
+                                <div>
+                                    Fligran :</div>
+                                <input type="text" id="placeholderControl" class="form-control" value="" />
+
+                            </div>
+                            <div class="form-group">
+                                <div>
+                                    Yardım :</div>
+                                <input type="text" id="helpControl" class="form-control" value="" />
+
+                            </div>
+                            <div class="form-group">
+
+                                <div>Dinamik mi? :</div>
+                                <label>
+                                    <input type="checkbox" id="isDynamicControl" class="checkbox-inline" /> Evet</label>
+
+                            </div>
+                            <div class="form-group d-none">
+                                <div>
+                                    Dinamik içerik URL'si :</div>
+                                <input type="text" id="urlControl" class="form-control" value="" />
+
+                            </div>
+                            <div class="form-group">
+                                <div>
+                                    Filtreleme var mı? :</div>
+                                <label>
+                                    <input type="checkbox" id="isFilteringControl" /> Evet</label>
+
+                            </div>
+                            <div class="form-group d-none">
+                                <div>
+                                    Filtre tipi :</div>
+                                <select id="filterTypeControl" class="form-control">
+                                    <option value="start">İle başlayan</option>
+                                    <option value="any">İçeren</option>
+                                    <option value="end">İle biten</option>
+                                </select>
+
+                            </div>
+                            <div class="form-group d-none">
+                                <div>
+                                    Filtre keyword minimum uzunluk :</div>
+                                <input type="number" id="filterMinLengthControl" class="form-control" min="3" value="" />
+
+                            </div>
+                            <div class="form-group">
+                                <div>
+                                    Zorunlu mu? :</div>
+                                <label>
+                                    <input type="checkbox" id="isRequiredControl" class="checkbox-inline" /> Evet</label>
+
+                            </div>
+                        </div>
+                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                            <div class="form-group d-none" id="optionDiv">
+                                <div>
+                                    Seçenekler :</div>
+                                <div id="optionsControl">
+
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="addOptionControlVal">Adı</label>
+                                    <input type="text" id="addOptionControl" class="form-control" value="" placeholder="Seçenek adı" />
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label for="addOptionControlVal">Değer</label>
+                                    <input type="text" id="addOptionControlVal" class="form-control" value="" placeholder="Seçenek değeri" />
+                                    </div>
+                                </div>
+
+                                
+                                <button class="btn btn-success" id="addOptionBtnControl"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+                            <div class="tab-pane fade" id="messages" role="tabpanel" aria-labelledby="messages-tab">
+                            <div class="form-group">
+                                <div>
+                                    Varsayılan değer :</div>
+                                <div id="defOptionsControl" class="d-none">
+
+                                </div>
+                                <input type="text" id="defaultValueControl" class="form-control d-none" value="" placeholder="default değer girin" />
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">...</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Tamam</button>
+                </div>
+            </div>
+        </div>
+    </div>
