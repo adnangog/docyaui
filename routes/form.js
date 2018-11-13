@@ -6,22 +6,34 @@ const async = require("async");
 
 // Form GetById
 router.get("/add", (req, res, next) => {
-  let breadcrumb = [
-    { route: "/", name: "Anasayfa" },
-    { route: "/forms", name: "Formlar" },
-    {
-      route: `/forms/add}`,
-      name: "Form Oluştur"
+  async.parallel([
+    (callback) => {
+      api.apiCall(req.session.token, "/formType", "POST", req.body.pagelimit, (result) => {
+        console.log(result)
+        callback(null, result);
+      });
     }
-  ];
-  res.render("formCreate", {
-    breadcrumb,
-    route: "forms/create",
-    fields:"[]",
-    formCreate:true,
-    mainMenu:1,
-    subMenu:8
-  });
+  ],
+    (err, results) => {
+      let breadcrumb = [
+        { route: "/", name: "Anasayfa" },
+        { route: "/forms", name: "Formlar" },
+        {
+          route: `/forms/add}`,
+          name: "Form Oluştur"
+        }
+      ];
+      res.render("formCreate", {
+        breadcrumb,
+        route: "forms/create",
+        fields:"[]",
+        formTypes: results[0].data,
+        formCreate:true,
+        mainMenu:1,
+        subMenu:8
+      });
+    });
+  
 });
 
 // Form Add
@@ -74,9 +86,20 @@ router.get("/", (req, res, next) => {
 
 // Form GetById
 router.get("/:formId", (req, res, next) => {
-  api.apiCall(req.session.token, `/form/${req.params.formId}`, "GET", null, (
-    form
-  ) => {
+  async.parallel([
+    (callback) => {
+      api.apiCall(req.session.token, "/formType", "POST", req.body.pagelimit, (result) => {
+        callback(null, result);
+      });
+    },
+    (callback) => {
+      api.apiCall(req.session.token, `/form/${req.params.formId}`, "GET", null, (result) => {
+        callback(null, result);
+      });
+    }
+  ],
+    (err, results) => {
+
       let breadcrumb = [
         { route: "/", name: "Anasayfa" },
         { route: "/forms", name: "Formlar" },
@@ -87,15 +110,15 @@ router.get("/:formId", (req, res, next) => {
       ];
       res.render("formCreate", {
         edit: true,
-        form,
-        fields: JSON.stringify(form.fields),
+        formTypes: results[0].data,
+        form:results[1],
+        fields: JSON.stringify(results[1].fields),
         breadcrumb,
         formCreate:true,
         mainMenu:1,
         subMenu:8
       });
-
-  });
+    });
 });
 
 // Form Update

@@ -30,11 +30,11 @@
             </div>
             
             <div class="col-md-9" style="background-color: #fff; padding: 20px; border-left:10px solid #f2f2f2;">
-                <form method="POST" id="createForm" action="{{#if edit}}/formTypes/{{ form._id }}{{else}}/formTypes/add{{/if}}">
+                <form method="POST" id="createForm" action="{{#if edit}}/formTypes/{{ formType._id }}{{else}}/formTypes/add{{/if}}">
                 <div class="form-group row bg-light" style="padding:10px 0; margin:0; margin-bottom:15px;">
                     <label for="formName" class="col-sm-2 col-form-label">Tip Adı : </label>
                     <div class="col-sm-10">
-                    <input type="text" class="form-control" id="formTypeName" name="formTypeName" placeholder="Tip Adı" value="{{form.name}}">
+                    <input type="text" class="form-control" id="formTypeName" name="formTypeName" placeholder="Tip Adı" value="{{formType.name}}">
                     <input type="hidden" id="fields" name="fields" value="{{fields}}">
                     </div>
                 </div>

@@ -88,7 +88,7 @@ router.get("/:formTypeId", (req, res, next) => {
       res.render("formTypeCreate", {
         edit: true,
         formType,
-        fields: JSON.stringify(formType.fields),
+        fields: JSON.stringify(formType.items),
         breadcrumb,
         typeCreate:true,
         mainMenu:1,
