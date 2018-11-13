@@ -32,7 +32,7 @@ router.post("/add", (req, res, next) => {
     "POST",
     {
       name: req.body.formTypeName,
-      fields : JSON.parse(req.body.fields),
+      items : JSON.parse(req.body.fields),
       user: req.session.userId,
       rDate: Date.now()
     },
