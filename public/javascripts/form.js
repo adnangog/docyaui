@@ -4,82 +4,14 @@
 
     w.Docya.FormCreator = {
         OutputJSON: JSON.parse($("#fields").val()),
-        InputJSON: [
-            {
-                "control": "textbox",
-                "type": "text",
-                "label": "Textbox",
-                "placeholder": "Açıklama.",
-                "help": "",
-                "isRequired": false,
-                "isDynamic": false,
-                "url": "",
-                "isFiltering": false,
-                "filterType": "start",
-                "filterMinLength": 3,
-                "defaultValue": "",
-                "validationType": 0
-            },
-            {
-                "control": "textbox",
-                "type": "datetime",
-                "label": "Datetime",
-                "placeholder": "Açıklama.",
-                "help": "",
-                "isRequired": false,
-                "isDynamic": false,
-                "url": "",
-                "isFiltering": false,
-                "filterType": "start",
-                "filterMinLength": 3,
-                "defaultValue": "",
-                "validationType": 0
-            },
-            {
-                "control": "textbox",
-                "type": "number",
-                "label": "Number",
-                "placeholder": "Açıklama.",
-                "help": "",
-                "isRequired": false,
-                "isDynamic": false,
-                "url": "",
-                "isFiltering": false,
-                "filterType": "start",
-                "filterMinLength": 3,
-                "defaultValue": "",
-                "validationType": 0
-            },
-            {
-                "control": "dropdown",
-                "label": "Selectbox",
-                "placeholder": "Lütfen seçiniz.",
-                "help": "",
-                "isDynamic": true,
-                "url": "http://www.google.com",
-                "isFiltering": true,
-                "filterType": "start",
-                "filterMinLength": 3,
-                "isRequired": true,
-                "options": [
-                    {
-                        "option": "Seçenek 1",
-                        "val": "1"
-                    },
-                    {
-                        "option": "Seçenek 2",
-                        "val": "2"
-                    }
-                ],
-                "defaultValue": ""
-            }
-        ],
+        InputJSON: [],
         SelectedIndex: null,
         StartIndex: null,
         FinalIndex: null,
         initFormElements: function () {
             var itemBlockHtml = null;
             var elmHtml = null;
+            $("#HedefForm").html("");
 
             this.InputJSON.map(function (elm, i) {
                 var label = elm.control;
@@ -94,37 +26,14 @@
                     placeholder = elm.placeholder
                 }
 
-                itemBlockHtml = $('<div class="form-group draggable" data-index=' + i + '><label for="' + (elm.type + i) + '">' + label + '</label></div>');
-
-
-                switch (elm.control) {
-
-                    case "textbox":
-
-                        elmHtml = $('<input type="' + elm.type + '" class="form-control form-item" placeholder="' + placeholder + '" value="' + label + '" />');
-
-                        itemBlockHtml.append(elmHtml);
-
-                        break;
-                    case "dropdown":
-
-                        elmHtml = $('<select class="form-control form-item" value={this.props.data.defaultValue} ></select>');
-                        elmHtml.append("<option>" + placeholder + "</option>");
-
-                        for (var i = 0; i < elm.options.length; i++) {
-                            elmHtml.append("<option value='" + elm.options[i].val + "'>" + elm.options[i].option + "</option>");
-                        }
-
-                        itemBlockHtml.append(elmHtml);
-
-                        break;
-                    default:
-                        break;
-                }
+                itemBlockHtml = $('<div class="form-group draggable type-item" data-index=' + i + '>' + label + ' <span class="badge badge-light">'+elm.type+'</span></div>');
+                itemBlockHtml.append(elmHtml);
 
                 if (itemBlockHtml != null) {
                     itemBlockHtml.appendTo($("#HedefForm"));
                 }
+
+                Docya.FormCreator.initDraggable();
             });
         },
         initCreateForm: function () {
@@ -532,6 +441,28 @@
 
             });
         },
+        initTypeChange: function () {
+            $("body").on("change", "#formType", function (e) {
+                e.preventDefault();
+
+                var data = {
+                    process: "getFormTypeById",
+                    formTypeId: $(this).val()
+                };
+
+                var cb = function (data) {
+                    Docya.FormCreator.InputJSON= data.items;
+                    Docya.FormCreator.initFormElements();
+                };
+
+                console.log($(this).val());
+
+                if($(this).val()!=="" && $(this).val()!==null){
+                    Docya.FormCreator.initAjax(data, cb);
+                }
+
+            });
+        },
         initBtnSave: function () {
             $("body").on("click", "#btnSaveForm", function (e) {
                 e.preventDefault();
@@ -553,6 +484,15 @@
 
             });
         },
+        initAjax: function (data, cb) {
+            $.ajax({
+                dataType: "json",
+                url: '/ajax',
+                type: 'post',
+                data: data,
+                success: cb
+            });
+        },
         initElements: function () {
             this.initFormElements();
             this.initDraggable();
@@ -568,6 +508,7 @@
             this.initOptionDelete();
             this.initOptionSelect();
             this.initOptionAdd();
+            this.initTypeChange();
             this.initBtnSave();
         },
         init: function () {

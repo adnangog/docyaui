@@ -22,35 +22,49 @@
     }
 </style>
 
-    <div style="padding:0 15px;">
-        <div class="row">
-            <div class="col-md-3" style="padding: 20px; background-color: #fff;">
-                <h3>Form Elemanları</h3>
-                <div id="HedefForm"></div>
+<div style="padding:0 15px;">
+    <div class="row">
+        <div class="col-md-3" style="padding: 20px; background-color: #fff;">
+            <div class="bg-light" style="padding:15px; padding-bottom:5px">
+            <h3>Tipler</h3>
+            <div class="form-group">
+                <select class="form-control" id="formType" name="formType">
+                    <option>Lütfen Form Tipi  seçin.</option>
+                    {{# each formTypes }} 
+                    <option value="{{ this.[0] }}">{{ this.[1] }}</option>
+                    {{/ each}}
+                </select>
             </div>
-            
-            <div class="col-md-9" style="background-color: #fff; padding: 20px; border-left:10px solid #f2f2f2;">
-                <form method="POST" id="createForm" action="{{#if edit}}/forms/{{ form._id }}{{else}}/forms/add{{/if}}">
+            </div>
+            <hr/>
+            <div id="HedefForm"></div>
+        </div>
+
+        <div class="col-md-9" style="background-color: #fff; padding: 20px; border-left:10px solid #f2f2f2;">
+            <form method="POST" id="createForm" action="{{#if edit}}/forms/{{ form._id }}{{else}}/forms/add{{/if}}">
                 <div class="form-group row bg-light" style="padding:10px 0; margin:0; margin-bottom:15px;">
                     <label for="formName" class="col-sm-2 col-form-label">Form Adı : </label>
                     <div class="col-sm-10">
-                    <input type="text" class="form-control" id="formName" name="formName" placeholder="Form Adı" value="{{form.name}}">
-                    <input type="hidden" id="fields" name="fields" value="{{fields}}">
+                        <input type="text" class="form-control" id="formName" name="formName" placeholder="Form Adı"
+                            value="{{form.name}}">
+                        <input type="hidden" id="fields" name="fields" value="{{fields}}">
                     </div>
                 </div>
-                    <div class="text-muted empty-form text-center">Formunuzu oluşturmak için sol tarafta görmüş olduğunuz form elemanlarından kullanmak istediklerinizi aşağıya sürükleyip bırakın. <br>Daha sonra düzenle butonu yardımıyla eklemiş olduğunuz form elemanlarını istediğiniz gibi özelleştirebilirsiniz.</div>
-                    <div class="row form-body">
-                        <div class="col-md-12 droppable sortable" id="HedefDiv">
-                        </div>
+                <div class="text-muted empty-form text-center">Formunuzu oluşturmak için sol tarafta görmüş olduğunuz
+                    form elemanlarından kullanmak istediklerinizi aşağıya sürükleyip bırakın. <br>Daha sonra düzenle
+                    butonu yardımıyla eklemiş olduğunuz form elemanlarını istediğiniz gibi özelleştirebilirsiniz.</div>
+                <div class="row form-body">
+                    <div class="col-md-12 droppable sortable" id="HedefDiv">
                     </div>
-                    <div class="col-md-12 text-right">
-                        <button type="submit" id="btnSaveForm" class="btn btn-success">Formu Kaydet</button>
-                    </div>
-                    </form>
-            </div>
-            
+                </div>
+                <div class="col-md-12 text-right">
+                    <button type="submit" id="btnSaveForm" class="btn btn-success">Formu Kaydet</button>
+                </div>
+            </form>
         </div>
+
     </div>
+</div>
 
 
 
@@ -69,22 +83,26 @@
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Ayarlar</a>
+                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
+                                aria-controls="home" aria-selected="true">Ayarlar</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Seçenekler</a>
+                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                                aria-controls="profile" aria-selected="false">Seçenekler</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="messages-tab" data-toggle="tab" href="#messages" role="tab" aria-controls="messages" aria-selected="false">Varsayılan Değer</a>
+                            <a class="nav-link" id="messages-tab" data-toggle="tab" href="#messages" role="tab"
+                                aria-controls="messages" aria-selected="false">Varsayılan Değer</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">Kurallar</a>
+                            <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab"
+                                aria-controls="settings" aria-selected="false">Kurallar</a>
                         </li>
                     </ul>
 
                     <!-- Tab panes -->
                     <div class="tab-content">
-                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                             <div class="form-group">
                                 <div>
                                     Etiket :</div>
@@ -147,7 +165,7 @@
 
                             </div>
                         </div>
-                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                             <div class="form-group d-none" id="optionDiv">
                                 <div>
                                     Seçenekler :</div>
@@ -158,27 +176,30 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="addOptionControlVal">Adı</label>
-                                    <input type="text" id="addOptionControl" class="form-control" value="" placeholder="Seçenek adı" />
+                                        <input type="text" id="addOptionControl" class="form-control" value=""
+                                            placeholder="Seçenek adı" />
                                     </div>
 
                                     <div class="form-group col-md-6">
                                         <label for="addOptionControlVal">Değer</label>
-                                    <input type="text" id="addOptionControlVal" class="form-control" value="" placeholder="Seçenek değeri" />
+                                        <input type="text" id="addOptionControlVal" class="form-control" value=""
+                                            placeholder="Seçenek değeri" />
                                     </div>
                                 </div>
 
-                                
+
                                 <button class="btn btn-success" id="addOptionBtnControl"><i class="fas fa-plus"></i></button>
                             </div>
                         </div>
-                            <div class="tab-pane fade" id="messages" role="tabpanel" aria-labelledby="messages-tab">
+                        <div class="tab-pane fade" id="messages" role="tabpanel" aria-labelledby="messages-tab">
                             <div class="form-group">
                                 <div>
                                     Varsayılan değer :</div>
                                 <div id="defOptionsControl" class="d-none">
 
                                 </div>
-                                <input type="text" id="defaultValueControl" class="form-control d-none" value="" placeholder="default değer girin" />
+                                <input type="text" id="defaultValueControl" class="form-control d-none" value=""
+                                    placeholder="default değer girin" />
                             </div>
                         </div>
                         <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">...</div>
