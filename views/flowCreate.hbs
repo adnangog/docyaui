@@ -1,14 +1,14 @@
 <div class="flow-header-form">
 <div class="form-row form-group">
           <div class="form-row col-md-4">
-            <label for="title" class="col-md-2 col-form-label">Adı</label>
+            <label for="title" class="col-md-2 col-form-label col-form-label-sm">Adı</label>
             <div class="col-md-10">
-                <input type="text" class="form-control" id="name" name="name" data-flowName value="{{ flowtemplate.name }}" placeholder="Taslak Adı">
+                <input type="text" class="form-control form-control-sm" id="name" name="name" data-flowName value="{{ flowtemplate.name }}" placeholder="Taslak Adı">
             </div>
           </div>
 
           <div class="form-row col-md-4">
-            <label for="title" class="col-md-2 col-form-label">Yetki Seti</label>
+            <label for="title" class="col-md-2 col-form-label col-form-label-sm">Yetki Seti</label>
             <div class="col-md-10">
                 <select class="form-control" id="authSet" name="authSet" data-flowAuthSet>
                     {{# each authSets }} {{#if_equal ../flowtemplate.authSet this.[0] }}
@@ -21,9 +21,9 @@
           </div>
 
           <div class="form-row col-md-4">
-            <label for="title" class="col-md-2 col-form-label">Şema</label>
+            <label for="title" class="col-md-2 col-form-label col-form-label-sm">Şema</label>
             <div class="col-md-10">
-                <select class="form-control" id="organization" name="organization" data-flowOrganization>
+                <select class="form-control" id="organization" name="organization" data-flowOrganization data-target='schema'>
                     {{# each organizations }} {{#if_equal ../flowtemplate.organization this.[0] }}
                     <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
                     {{else}}
@@ -36,7 +36,7 @@
           </div>
           <div class="form-row form-group">
           <div class="form-row col-md-4">
-            <label for="title" class="col-md-2 col-form-label">Tip</label>
+            <label for="title" class="col-md-2 col-form-label col-form-label-sm">Tip</label>
             <div class="col-md-10">
                 <select class="form-control" id="formType" name="formType" data-flowFormType>
                     {{# each formTypes }} {{#if_equal ../flowtemplate.formType this.[0] }}
@@ -49,7 +49,7 @@
           </div>
 
           <div class="form-row col-md-4">
-            <label for="title" class="col-md-2 col-form-label">Form</label>
+            <label for="title" class="col-md-2 col-form-label col-form-label-sm">Form</label>
             <div class="col-md-10">
                 <select class="form-control" id="form" name="form" data-flowForm>
                     {{# each forms }} {{#if_equal ../flowtemplate.form this.[0] }}
@@ -62,7 +62,7 @@
           </div>
 
           <div class="form-row col-md-4">
-            <label for="title" class="col-md-2 col-form-label">F.Ver.</label>
+            <label for="title" class="col-md-2 col-form-label col-form-label-sm">F.Ver.</label>
             <div class="col-md-10">
                 <select class="form-control" id="formVer" name="formVer" data-flowFormVer>
                     {{# each formVers }} {{#if_equal ../flowtemplate.formVer this.[0] }}

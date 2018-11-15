@@ -7,10 +7,10 @@
   }
   
   .flow-header-form {
-	  margin-left: 135px;
 	  background-color: #f8f8f8;
 	  padding: 15px;
 	  padding-bottom: 3px;
+	  margin-left: -15px;
   }
 #FlowScene {
 	position: relative;

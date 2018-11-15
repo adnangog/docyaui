@@ -19,6 +19,9 @@ router.post("/", (req, res, next) => {
         route = `/formType/${req.body.formTypeId}`;
         type = "GET";
         break;
+      case "getFormTypes":
+        route = `/formType`;
+        break;
       case "getUsers":
         route = `/user`;
         break;
@@ -194,7 +197,7 @@ router.post("/", (req, res, next) => {
       messageType: -1,
       message: "Bir hata oluştu.",
       error: err
-  });
+    });
   }
 });
 

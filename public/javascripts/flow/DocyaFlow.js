@@ -1379,6 +1379,26 @@
             };
 
             Docya.FlowController.initAjax(data, cb);
+
+            data = {
+                process: "getAuthSets"
+            };
+
+            cb = function (data) {
+                data.data.map(function(a){$("<option value='"+a[0]+"'>"+a[1]+"</option>").appendTo($("[data-flowAuthSet]"))});
+            };
+
+            Docya.FlowController.initAjax(data, cb);
+
+            data = {
+                process: "getFormTypes"
+            };
+
+            cb = function (data) {
+                data.data.map(function(a){$("<option value='"+a[0]+"'>"+a[1]+"</option>").appendTo($("[data-flowFormType]"))});
+            };
+
+            Docya.FlowController.initAjax(data, cb);
         },
         initAjax: function (data, cb) {
             $.ajax({
