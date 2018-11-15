@@ -455,11 +455,12 @@
                     Docya.FormCreator.initFormElements();
                 };
 
-                console.log($(this).val());
-
                 if($(this).val()!=="" && $(this).val()!==null){
                     Docya.FormCreator.initAjax(data, cb);
                 }
+
+                Docya.FormCreator.OutputJSON=[];
+                Docya.FormCreator.initCreateForm();
 
             });
         },
@@ -469,6 +470,11 @@
 
                 if($("#formName").val()==""){
                     alert("Lütfen form adı girin.");
+                    return false;
+                }
+
+                if($("#formType").val() === "" || $("#formType").val() === null){
+                    alert("Lütfen tip seçin.");
                     return false;
                 }
 

@@ -6,6 +6,12 @@
 	max-height: 1000px;
   }
   
+  .flow-header-form {
+	  margin-left: 135px;
+	  background-color: #f8f8f8;
+	  padding: 15px;
+	  padding-bottom: 3px;
+  }
 #FlowScene {
 	position: relative;
 	width:100%;
@@ -198,7 +204,7 @@ div.filigran {
 
 .taskbuttons { 
 	position: absolute;
-	top:-15px;
+	top:0;
 	left:-15px;
 	bottom: 0;
 	overflow-y: auto;
@@ -594,7 +600,7 @@ div.filigran {
 }
 .actionbuttons {
 	position: absolute;
-	top:0;
+	bottom:-50px;
 	right: 0;
 }
 

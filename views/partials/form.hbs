@@ -24,7 +24,7 @@
 
     <div class="form-group">
       <label for="{{ this.field }}">{{ this.label }}</label>
-      {{#if_equal this.control "textbox"}} {{#if_equal this.type "text"}}
+      {{#if_equal this.control "textbox"}} {{#if_equal this.type "string"}}
       <input type="text" {{#unless ../isWrite}}readonly{{/unless}} value="{{getObjectVal ../card.fields.[0] this.label ../formType}}"
         class="{{#unless ../isWrite}}form-control-plaintext{{else}}form-control{{/unless}} form-control-sm " id="{{cFormName this.label ../formType}}"
         name="{{cFormName this.label ../formType}}" placeholder="{{ this.placeholder }}"> {{/if_equal}}

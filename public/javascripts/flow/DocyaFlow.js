@@ -824,6 +824,30 @@
 
                     let errors = [];
 
+                    if($("[data-flowName]").val() === "" || $("[data-flowName]").val() === null){
+                        errors.push("Taslak Adı giriniz.");
+                    }
+
+                    if($("[data-flowAuthSet]").val() === "" || $("[data-flowAuthSet]").val() === null){
+                        errors.push("Yetki Seti seçiniz.");
+                    }
+
+                    if($("[data-flowOrganization]").val() === "" || $("[data-flowOrganization]").val() === null){
+                        errors.push("Şema seçiniz.");
+                    }
+
+                    if($("[data-flowFormType]").val() === "" || $("[data-flowFormType]").val() === null){
+                        errors.push("Tip seçiniz.");
+                    }
+
+                    if($("[data-flowForm]").val() === "" || $("[data-flowForm]").val() === null){
+                        errors.push("Form seçiniz.");
+                    }
+
+                    if($("[data-flowFormVer]").val() === "" || $("[data-flowFormVer]").val() === null){
+                        errors.push("Form Versiyonu seçiniz.");
+                    }
+
                     nodes.map(function (node) {
                         var targetCount = connections.filter(function (connection) { return connection.pageTargetId === node.blockId }).length;
 
@@ -840,6 +864,8 @@
                             errors.push(node.title + " için çıkış bağlantısı bulunamadı.");
                         }
                     });
+
+
 
                     if (errors.length > 0) {
                         let errorHtml = "<ul>";

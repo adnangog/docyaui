@@ -44,6 +44,7 @@ router.post("/add", (req, res, next) => {
     "POST",
     {
       name: req.body.formName,
+      formType: req.body.formType,
       fields : JSON.parse(req.body.fields),
       user: req.session.userId,
       rDate: Date.now()
@@ -129,6 +130,7 @@ router.post("/:formId", (req, res, next) => {
     "PATCH",
     {
       name: req.body.formName,
+      formType: req.body.formType,
       fields : JSON.parse(req.body.fields)
     },
     (result) => {
