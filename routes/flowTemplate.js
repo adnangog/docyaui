@@ -8,18 +8,6 @@ const async = require("async");
 router.get("/add", (req, res, next) => {
   async.parallel([
     (callback) => {
-      api.apiCall(req.session.token, "/folder", "POST", req.body.pagelimit, (result) => {
-        callback(null, result);
-      }
-      );
-    },
-    (callback) => {
-      api.apiCall(req.session.token, `/folder/${req.params.folderId}`, "GET", null, result => {
-        callback(null, result);
-      }
-      );
-    },
-    (callback) => {
       api.apiCall(req.session.token, `/card`, "POST", req.body.pagelimit, (result) => {
         callback(null, result);
       });
@@ -44,9 +32,7 @@ router.get("/add", (req, res, next) => {
           addTitle: "Iş Akışı Taslağı Ekle",
           editTitle: "Iş Akışı Taslağı Düzenle",
           edit: true,
-          data: results[0],
-          cards: results[2].data,
-          folder: results[1],
+          cards: results[0].data,
           flow:true,
           breadcrumb,
           paging,
@@ -121,7 +107,7 @@ router.get("/", (req, res, next) => {
         res.render("flowTemplates", {
           title: "Iş Akışı Taslakları",
           addTitle: "Iş Akışı Taslağı Ekle",
-          route: "flowsTemplates",
+          route: "flowTemplates",
           data: total === undefined ? false : results[0],
           flow:true,
           breadcrumb,
@@ -134,24 +120,13 @@ router.get("/", (req, res, next) => {
 });
 
 // Folder GetById
-router.get("/:folderId", (req, res, next) => {
+router.get("/:flowTemplateId", (req, res, next) => {
   async.parallel([
     (callback) => {
-      api.apiCall(req.session.token, "/folder", "POST", req.body.pagelimit, (result) => {
+      api.apiCall(req.session.token, `/flowtemplate/${req.params.flowTemplateId}`, "GET", null, result => {
         callback(null, result);
       }
       );
-    },
-    (callback) => {
-      api.apiCall(req.session.token, `/folder/${req.params.folderId}`, "GET", null, result => {
-        callback(null, result);
-      }
-      );
-    },
-    (callback) => {
-      api.apiCall(req.session.token, `/card`, "POST", req.body.pagelimit, (result) => {
-        callback(null, result);
-      });
     }
   ],
     (err, results) => {
@@ -160,27 +135,26 @@ router.get("/:folderId", (req, res, next) => {
 
       let breadcrumb = [
         { route: "/", name: "Anasayfa" },
-        { route: "/folders", name: "Klasörler" },
+        { route: "/flowtemplates", name: "Iş Akışı Taslakları" },
         {
           route: `/folders/${req.params.folderId}`,
-          name: "Klasör Düzenle"
+          name: "Iş Akışı Taslağı Düzenle"
         }
       ];
 
-      helper.paging(req.body.page, req.body.limit, total, "folders", paging => {
-        res.render("folders", {
-          title: "Klasörler",
-          addTitle: "Klasör Ekle",
-          editTitle: "Klasör Düzenle",
+      helper.paging(req.body.page, req.body.limit, total, "flowtemplates", paging => {
+        res.render("flowCreate", {
+          title: "Iş Akışı Taslakları",
+          addTitle: "Iş Akışı Taslağı Ekle",
+          editTitle: "Iş Akışı Taslağı Düzenle",
           edit: true,
-          data: results[0],
-          cards: results[2].data,
-          folder: results[1],
+          flowtemplate: results[0],
+          flow:true,
           breadcrumb,
           paging,
-          route: "folders",
+          route: "flowTemplates",
           mainMenu:1,
-          subMenu:4
+          subMenu:13
         });
       });
     });
@@ -220,17 +194,15 @@ router.post("/:folderId", (req, res, next) => {
 });
 
 // Folder Delete
-router.get("/delete/:folderId", (req, res, next) => {
-
-  // dokuman ya da klasor varsa buna ait silinemez.
+router.get("/delete/:flowTemplateId", (req, res, next) => {
 
   api.apiCall(
     req.session.token,
-    `/folder/delete/${req.params.folderId}`,
+    `/flowtemplate/delete/${req.params.flowTemplateId}`,
     "GET",
     null,
     result => {
-      res.redirect("/folders");
+      res.redirect("/flowTemplates");
     }
   );
 });

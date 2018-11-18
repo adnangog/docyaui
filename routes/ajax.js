@@ -15,6 +15,18 @@ router.post("/", (req, res, next) => {
     let cb = function () { };
 
     switch (req.body.process) {
+      case "addFlowTemplate":
+        route = "/flowtemplate/add";
+        params.name = req.body.name;
+        params.authSet = req.body.authSet;
+        params.formType = req.body.formType;
+        params.formVer = req.body.formVer;
+        params.form = req.body.form;
+        params.organization = req.body.organization;
+        params.user = req.session.userId;
+        params.steps = JSON.parse(req.body.steps);
+        params.rDate = Date.now();
+        break;
       case "getFormTypeById":
         route = `/formType/${req.body.formTypeId}`;
         type = "GET";
@@ -27,6 +39,15 @@ router.post("/", (req, res, next) => {
         break;
       case "getForms":
         route = `/form`;
+        params.formType = req.body.formType;
+        break;
+      case "getFormById":
+        route = `/form/${req.body.form}`;
+        type = "GET";
+        break;
+      case "getFormVersions":
+        route = `/form/version`;
+        params.form = req.body.form;
         break;
       case "getGroups":
         route = `/group`;
@@ -36,6 +57,10 @@ router.post("/", (req, res, next) => {
         break;
       case "getOrganizations":
         route = `/organization`;
+        break;
+      case "getOrganizationById":
+        route = `/organization/${req.body.organization}`;
+        type = "GET";
         break;
       case "getCards":
         route = `/card/d`;

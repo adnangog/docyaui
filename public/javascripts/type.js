@@ -8,6 +8,7 @@
             {
                 "control": "textbox",
                 "type": "string",
+                "fieldName":null,
                 "label": null,
                 "tempLabel": "Metin",
                 "placeholder": null,
@@ -24,6 +25,7 @@
             {
                 "control": "textbox",
                 "type": "datetime",
+                "fieldName":null,
                 "label": null,
                 "tempLabel": "Tarih",
                 "placeholder": null,
@@ -40,6 +42,7 @@
             {
                 "control": "textbox",
                 "type": "number",
+                "fieldName":null,
                 "label": null,
                 "tempLabel": "Sayı",
                 "placeholder": null,
@@ -56,6 +59,7 @@
             {
                 "control": "dropdown",
                 "type":"select",
+                "fieldName":null,
                 "label": null,
                 "tempLabel": "Liste",
                 "placeholder": null,
@@ -368,6 +372,7 @@
 
                 if (elm.val().length > 0) {
                     obj.label = elm.val();
+                    obj.fieldName = slugify(obj.label);
                     if(obj.placeholder === null){
                         obj.placeholder = obj.label ;
                         $("#placeholderControl").val(obj.label);
@@ -586,3 +591,22 @@
     });
 
 })(jQuery, window, document);
+
+function slugify(text) {
+    var trMap = {
+        'çÇ': 'c',
+        'ğĞ': 'g',
+        'şŞ': 's',
+        'üÜ': 'u',
+        'ıİ': 'i',
+        'öÖ': 'o'
+    };
+    for (var key in trMap) {
+        text = text.replace(new RegExp('[' + key + ']', 'g'), trMap[key]);
+    }
+    return text.replace(/[^-a-zA-Z0-9\s]+/ig, '')
+        .replace(/\s/gi, "_")
+        .replace(/[_]+/gi, "_")
+        .toLowerCase();
+
+}

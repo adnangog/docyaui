@@ -72,6 +72,11 @@ router.post("/", (req, res, next) => {
         api.apiCall(req.session.token, `/group`, "POST", req.body.pagelimit, (result) => {
           callback(null, result);
         });
+      },
+      (callback) => {
+        api.apiCall(req.session.token, `/department`, "POST", req.body.pagelimit, (result) => {
+          callback(null, result);
+        });
       }
     ],
       (err, results) => {
@@ -90,6 +95,7 @@ router.post("/", (req, res, next) => {
           route:"users",
           data: results[0],
           groups: results[1].data,
+          departments: results[2].data,
           breadcrumb,
           paging,
           mainMenu:1,

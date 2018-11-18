@@ -1,26 +1,26 @@
 (function ($, w, document, undefined) {
 
     if (typeof Object.assign != 'function') {
-        Object.assign = function(target) {
-          'use strict';
-          if (target == null) {
-            throw new TypeError('Cannot convert undefined or null to object');
-          }
-      
-          target = Object(target);
-          for (var index = 1; index < arguments.length; index++) {
-            var source = arguments[index];
-            if (source != null) {
-              for (var key in source) {
-                if (Object.prototype.hasOwnProperty.call(source, key)) {
-                  target[key] = source[key];
-                }
-              }
+        Object.assign = function (target) {
+            'use strict';
+            if (target == null) {
+                throw new TypeError('Cannot convert undefined or null to object');
             }
-          }
-          return target;
+
+            target = Object(target);
+            for (var index = 1; index < arguments.length; index++) {
+                var source = arguments[index];
+                if (source != null) {
+                    for (var key in source) {
+                        if (Object.prototype.hasOwnProperty.call(source, key)) {
+                            target[key] = source[key];
+                        }
+                    }
+                }
+            }
+            return target;
         };
-      }
+    }
 
     if (w.Docya == undefined)
         w.Docya = {};
@@ -31,8 +31,8 @@
         selectedTask: null,
         nodes: [],
         connections: [],
-        positionX:0,
-        positionY:0,
+        positionX: 0,
+        positionY: 0,
         users: [],
         groups: [],
         forms: [],
@@ -40,8 +40,8 @@
         departments: [],
         methods: [],
         flows: [],
-        inputs: ["[input.Email]","[input.Title]","[input.Body]","[input.Person]"],
-        outputs: ["[output.Email]","[output.Title]","[output.Body]","[output.Person]"],
+        inputs: ["[input.Email]", "[input.Title]", "[input.Body]", "[input.Person]"],
+        outputs: ["[output.Email]", "[output.Title]", "[output.Body]", "[output.Person]"],
         outputJson: [
             {
                 id: "flowchartStartpoint",
@@ -421,7 +421,7 @@
                 errorHtml += "</ul>";
                 showMessageBox("danger", "Uyari", errorHtml);
                 return false;
-            } 
+            }
         },
         initLibrary: function () {
             jsPlumb.ready(function () {
@@ -591,31 +591,31 @@
                         updateDocya();
                     });
                 });
-                
+
 
                 $("#FlowScene").droppable({
                     drop: function (event, ui) {
-        
+
                         var jqElem = ui.helper.clone();
-                        
+
                         var fType = jqElem.attr("data-flowtype");
                         var oType = jqElem.attr("data-optiontype");
                         var title = jqElem.attr("title");
 
-                        createTaskItem(fType, oType, title, (ui.position.left-120), ui.position.top);
+                        createTaskItem(fType, oType, title, (ui.position.left - 120), ui.position.top);
 
                     },
                     accept: function (jqElem) {
-        
+
                         var bool = (jqElem.is("[data-flowtype]"));
                         // if (!bool)
                         //   alert("hi");
-        
+
                         return bool;
                     },
                     tolerance: "touch"
                 });
-                
+
 
                 $("[data-flowbtn]").draggable({
                     cursor: "pointer",
@@ -626,14 +626,14 @@
                             "position": "fixed",
                             "z-index": "100"
                         });
-        
+
                         return helper;
                     }
-        
+
                 });
 
                 var createTaskItem = function (fType, oType, title, x, y) {
-                    
+
                     Docya.FlowController.NumberOfShapes++;
 
                     var divHtml = "";
@@ -679,7 +679,7 @@
                             break;
                     }
 
-                    $('<div style="top:'+y+'px; left:'+x+'px;" class="' + oType + ' ' + fType + ' node" data-nodetype="' + fType + '" data-title="' + title + Docya.FlowController.NumberOfShapes + '" id="flowchartWindow' + Docya.FlowController.NumberOfShapes + '"><div class="node-delete"><i class="fas fa-times"></i></div>' + divHtml + '</div>').appendTo('#' + Docya.FlowController.SceneId);
+                    $('<div style="top:' + y + 'px; left:' + x + 'px;" class="' + oType + ' ' + fType + ' node" data-nodetype="' + fType + '" data-title="' + title + Docya.FlowController.NumberOfShapes + '" id="flowchartWindow' + Docya.FlowController.NumberOfShapes + '"><div class="node-delete"><i class="fas fa-times"></i></div>' + divHtml + '</div>').appendTo('#' + Docya.FlowController.SceneId);
 
                     _addEndpoints("Window" + Docya.FlowController.NumberOfShapes, sourceAnchors, targetAnchors);
 
@@ -706,7 +706,7 @@
 
                         instance.detachAllConnections(jqElm.attr("id"));
                         instance.removeAllEndpoints(jqElm.attr("id"));
-                        Docya.FlowController.outputJson = Docya.FlowController.outputJson.filter(function(a){return a.id !== jqElm.attr("id")});
+                        Docya.FlowController.outputJson = Docya.FlowController.outputJson.filter(function (a) { return a.id !== jqElm.attr("id") });
                         $(jqElm).remove();
 
                         updateDocya();
@@ -824,31 +824,32 @@
 
                     let errors = [];
 
-                    if($("[data-flowName]").val() === "" || $("[data-flowName]").val() === null){
+                    if ($("[data-flowName]").val() === "" || $("[data-flowName]").val() === null) {
                         errors.push("Taslak Adı giriniz.");
                     }
 
-                    if($("[data-flowAuthSet]").val() === "" || $("[data-flowAuthSet]").val() === null){
+                    if ($("[data-flowAuthSet]").val() === "" || $("[data-flowAuthSet]").val() === null) {
                         errors.push("Yetki Seti seçiniz.");
                     }
 
-                    if($("[data-flowOrganization]").val() === "" || $("[data-flowOrganization]").val() === null){
+                    if ($("[data-flowOrganization]").val() === "" || $("[data-flowOrganization]").val() === null) {
                         errors.push("Şema seçiniz.");
                     }
 
-                    if($("[data-flowFormType]").val() === "" || $("[data-flowFormType]").val() === null){
+                    if ($("[data-flowFormType]").val() === "" || $("[data-flowFormType]").val() === null) {
                         errors.push("Tip seçiniz.");
                     }
 
-                    if($("[data-flowForm]").val() === "" || $("[data-flowForm]").val() === null){
+                    if ($("[data-flowForm]").val() === "" || $("[data-flowForm]").val() === null) {
                         errors.push("Form seçiniz.");
                     }
 
-                    if($("[data-flowFormVer]").val() === "" || $("[data-flowFormVer]").val() === null){
+                    if ($("[data-flowFormVer]").val() === "" || $("[data-flowFormVer]").val() === null) {
                         errors.push("Form Versiyonu seçiniz.");
                     }
 
                     nodes.map(function (node) {
+
                         var targetCount = connections.filter(function (connection) { return connection.pageTargetId === node.blockId }).length;
 
                         $("#" + node.blockId).removeClass("alerted");
@@ -879,7 +880,26 @@
 
                     Docya.FlowController.checkItems();
 
-                    var flowChartJson = JSON.stringify(flowChart);
+                    let data = {
+                        process: "addFlowTemplate",
+                        name: $("[data-flowName]").val(),
+                        authSet: $("[data-flowAuthSet]").val(),
+                        formType: $("[data-flowFormType]").val(),
+                        form: $("[data-flowForm]").val(),
+                        formVer: $("[data-flowFormVer]").val(),
+                        organization: $("[data-flowOrganization]").val(),
+                        steps: JSON.stringify(Docya.FlowController.outputJson)
+                    };
+
+                    let cb = function (data) {
+                        if (data.messageType === 1) {    
+                            showMessageBox("success", "BİLGİ", data.message);
+                        } else {
+                            showMessageBox("danger", "UYARI", data.message);
+                        }
+                    };
+
+                    Docya.FlowController.initAjax(data, cb);
                 };
 
                 var repositionElement = function repositionElement(id, posX, posY) {
@@ -1190,12 +1210,12 @@
                 var jqElm = $(this);
                 var val = jqElm.data("field");
 
-                var htmlElm = $("#"+Docya.FlowController.selectedTask);
+                var htmlElm = $("#" + Docya.FlowController.selectedTask);
 
-                if(val==="name"){
-                    if(jqElm.val()!==""){
+                if (val === "name") {
+                    if (jqElm.val() !== "") {
                         htmlElm.find("[data-label]").text(jqElm.val());
-                    }else{
+                    } else {
                         htmlElm.find("[data-label]").text(htmlElm.attr("data-title"));
                     }
                 }
@@ -1290,26 +1310,86 @@
                 var method = jqElm.attr("data-trigger-method");
 
 
-                if(target.split(",").length === method.split(",").length){
-                    target.split(",").map(function(item,i){
-                        $("[data-target='"+item+"']", jqParent).html("");
-                        eval("Docya.FlowController."+method.split(",")[i]+"(jqElm.val())").map(function(a){$("<option value='"+a[0]+"'>"+a[1]+"</option>").appendTo($("[data-target='"+item+"']", jqParent))});
+                if (target.split(",").length === method.split(",").length) {
+                    target.split(",").map(function (item, i) {
+                        $("[data-target='" + item + "']", jqParent).html("<option value=''>Lütfen seçin.</option>");
+                        eval("Docya.FlowController." + method.split(",")[i])(jqElm.val(), item, jqParent);
                     });
 
-                }else{
-                    showMessageBox("danger",);
+                } else {
+                    showMessageBox("danger", "hata olustu");
                 }
-                
 
 
-                
+
+
             });
         },
-        getFormVer: function(a){
-            return [["","Lütfen Seçin"],["0","V0.1"],["1","V0.2"],["2","V0.3"],["3","V0.4"]];
+        getFormVer: function (form, item, parent) {
+
+            let data = {
+                process: "getFormVersions",
+                form: form
+            };
+
+            let cb = function (data) {
+                data.data.map(function (a) { $("<option value='" + a[0] + "'>" + a[1] + "</option>").appendTo($("[data-target='" + item + "']", parent)) });
+            };
+
+            Docya.FlowController.initAjax(data, cb);
         },
-        getFormFields: function(a){
-            return [["","Lütfen Seçin"],["0","Adı Soyadı"],["1","Adresi"],["2","TCKN"],["3","Tarih"]];
+        getOrganizationUsers: function (id, item, parent) {
+            let data = {
+                process: "getOrganizationById",
+                organization: id
+            };
+
+            let cb = function (data) {
+                data.tree.map(function (a) {
+                    if (a.type === 0) {
+                        return false;
+                    }
+                    if (a.type === 2) {
+                        return $("<option value='" + a.user + "'>" + a.title + "</option>").appendTo($("[data-target='" + item + "']", parent))
+                    } else {
+                        return $("<option value='" + a.user + "'>" + a.name + "</option>").appendTo($("[data-target='" + item + "']", parent))
+                    }
+
+                });
+            };
+
+            Docya.FlowController.initAjax(data, cb);
+        },
+        getOrganizationDepartments: function (id, item, parent) {
+            let data = {
+                process: "getOrganizationById",
+                organization: id
+            };
+
+            let cb = function (data) {
+                data.tree.map(function (a) {
+                    if (a.type === 1) {
+                        return $("<option value='" + a.user + "'>" + a.title + "</option>").appendTo($("[data-target='" + item + "']", parent))
+                    } else {
+                        return false;
+                    }
+
+                });
+            };
+
+            Docya.FlowController.initAjax(data, cb);
+        },
+        getFormFields: function (form, item, parent) {
+            let data = {
+                process: "getFormById",
+                form: form
+            };
+
+            let cb = function (data) {
+                data.formVersion.fields.map(function (a) { $("<option value='" + a.label + "'>" + a.label + "</option>").appendTo($("[data-target='" + item + "']", parent)) });
+            };
+
+            Docya.FlowController.initAjax(data, cb);
         },
         initRel: function () {
             $("body").on("click", "[data-rel]", function (e) {
@@ -1323,29 +1403,39 @@
                 $('[data-sub-section="' + $(this).attr("data-sub-rel") + '"]').removeClass("d-none");
             });
         },
-        initialDatas: function(){
+        initFormType: function () {
+            $("body").on("change", "[data-flowFormType]", function (e) {
+                let data = {
+                    process: "getForms",
+                    formType: $(this).val()
+                };
 
-            let data = {
-                process: "getUsers"
-            };
+                let cb = function (data) {
+                    Docya.FlowController.forms = data.data;
+                    $("[data-target='form']").html("<option value=''>Lütfen seçin.</option>");
+                    Docya.FlowController.forms.map(function (a) { $("<option value='" + a[0] + "'>" + a[1] + "</option>").appendTo($("[data-target='form']")) });
 
-            let cb = function (data) {
-                Docya.FlowController.users = data.data;
-                Docya.FlowController.users.map(function(a){$("<option value='"+a[0]+"'>"+a[1]+"</option>").appendTo($("[data-target='user']"))});
-            };
+                };
 
-            Docya.FlowController.initAjax(data, cb);
+                Docya.FlowController.initAjax(data, cb);
+            });
+        },
+        initForm: function () {
+            $("body").on("change", "[data-flowForm]", function (e) {
+                let data = {
+                    process: "getFormVersions",
+                    form: $(this).val()
+                };
 
-            data = {
-                process: "getForms"
-            };
+                let cb = function (data) {
+                    $("[data-flowFormVer]").html("<option value=''>Lütfen seçin.</option>");
+                    data.data.map(function (a) { $("<option value='" + a[0] + "'>" + a[1] + "</option>").appendTo($("[data-flowFormVer]")) });
+                };
 
-            cb = function (data) {
-                Docya.FlowController.forms = data.data;
-                Docya.FlowController.forms.map(function(a){$("<option value='"+a[0]+"'>"+a[1]+"</option>").appendTo($("[data-target='form']"))});
-            };
-
-            Docya.FlowController.initAjax(data, cb);
+                Docya.FlowController.initAjax(data, cb);
+            });
+        },
+        initialDatas: function () {
 
             data = {
                 process: "getGroups"
@@ -1353,18 +1443,7 @@
 
             cb = function (data) {
                 Docya.FlowController.groups = data.data;
-                Docya.FlowController.groups.map(function(a){$("<option value='"+a[0]+"'>"+a[1]+"</option>").appendTo($("[data-target='group']"))});
-            };
-
-            Docya.FlowController.initAjax(data, cb);
-
-            data = {
-                process: "getDepartments"
-            };
-
-            cb = function (data) {
-                Docya.FlowController.departments = data.data;
-                Docya.FlowController.departments.map(function(a){$("<option value='"+a[0]+"'>"+a[1]+"</option>").appendTo($("[data-target='department']"))});
+                Docya.FlowController.groups.map(function (a) { $("<option value='" + a[0] + "'>" + a[1] + "</option>").appendTo($("[data-target='group']")) });
             };
 
             Docya.FlowController.initAjax(data, cb);
@@ -1375,7 +1454,7 @@
 
             cb = function (data) {
                 Docya.FlowController.organizations = data.data;
-                Docya.FlowController.organizations.map(function(a){$("<option value='"+a[0]+"'>"+a[1]+"</option>").appendTo($("[data-target='schema']"))});
+                Docya.FlowController.organizations.map(function (a) { $("<option value='" + a[0] + "'>" + a[1] + "</option>").appendTo($("[data-target='schema']")) });
             };
 
             Docya.FlowController.initAjax(data, cb);
@@ -1385,7 +1464,7 @@
             };
 
             cb = function (data) {
-                data.data.map(function(a){$("<option value='"+a[0]+"'>"+a[1]+"</option>").appendTo($("[data-flowAuthSet]"))});
+                data.data.map(function (a) { $("<option value='" + a[0] + "'>" + a[1] + "</option>").appendTo($("[data-flowAuthSet]")) });
             };
 
             Docya.FlowController.initAjax(data, cb);
@@ -1395,7 +1474,7 @@
             };
 
             cb = function (data) {
-                data.data.map(function(a){$("<option value='"+a[0]+"'>"+a[1]+"</option>").appendTo($("[data-flowFormType]"))});
+                data.data.map(function (a) { $("<option value='" + a[0] + "'>" + a[1] + "</option>").appendTo($("[data-flowFormType]")) });
             };
 
             Docya.FlowController.initAjax(data, cb);
@@ -1419,6 +1498,8 @@
             this.initSelectBox();
             this.initRadioButton();
             this.initCheckBox();
+            this.initFormType();
+            this.initForm();
             this.initialDatas();
         },
         init: function () {
@@ -1430,7 +1511,7 @@
     $(document).ready(function () {
         w.Docya.FlowController.init();
 
-        Docya.FlowController.forms.map(function(a){$("<option value='test'>test</option>").appendTo($("[data-target='formFields']"))});
+        Docya.FlowController.forms.map(function (a) { $("<option value='test'>test</option>").appendTo($("[data-target='formFields']")) });
 
     });
 

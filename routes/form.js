@@ -9,7 +9,6 @@ router.get("/add", (req, res, next) => {
   async.parallel([
     (callback) => {
       api.apiCall(req.session.token, "/formType", "POST", req.body.pagelimit, (result) => {
-        console.log(result)
         callback(null, result);
       });
     }
@@ -113,7 +112,7 @@ router.get("/:formId", (req, res, next) => {
         edit: true,
         formTypes: results[0].data,
         form:results[1],
-        fields: JSON.stringify(results[1].fields),
+        fields: results[1].formVersion && JSON.stringify(results[1].formVersion.fields),
         breadcrumb,
         formCreate:true,
         mainMenu:1,
@@ -144,7 +143,15 @@ router.post("/:formId", (req, res, next) => {
 
 // Form Delete
 router.get("/delete/:formId", (req, res, next) => {
-  res.redirect("/forms");
+  api.apiCall(
+    req.session.token,
+    `/form/delete/${req.params.formId}`,
+    "GET",
+    null,
+    result => {
+      res.redirect("/forms");
+    }
+  );
 
 });
 
