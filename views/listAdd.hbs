@@ -1,0 +1,48 @@
+<div class="light-theme">
+  <h1>{{title}}</h1>
+  {{> alert}}
+  <form method="POST" action="{{#if edit}}/lists/{{ list._id }}{{else}}/lists/add{{/if}}">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="name">Adı</label>
+          <input type="text" class="form-control" id="name" name="name" value="{{ list.name }}" placeholder="Liste adı giriniz.">
+        </div>
+
+        <div class="form-group">
+          <label for="description">Açıklama</label>
+          <textarea class="form-control form-control-sm" id="description" name="description" placeholder="Açıklama giriniz." rows="3">{{list.description}}</textarea>
+        </div>
+
+        <input type="hidden" name="items" id="items" value="{{ jsonStringify items }}" />
+
+        <button type="type" data-submit class="btn btn-primary">{{#if edit}}Güncelle{{ authority._id }}{{else}}Kaydet{{/if}}</button>
+      </div>
+      <div class="col-md-8">
+        <label>Liste Elemanları</label>
+        <table class="table table-sm">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Adı</th>
+      <th scope="col">Değer</th>
+      <th scope="col">Ekstra</th>
+      <th scope="col" style="width:30px;"></th>
+    </tr>
+  </thead>
+  <tbody data-table>
+    
+  </tbody>
+</table>
+<div class="row" style="background-color: #f9f9f9; padding: 10px 0;">
+  <div class="col-md-4"><input type="text" class="form-control form-control-sm" data-label placeholder="Adı *"></div>
+  <div class="col-md-4"><input type="text" class="form-control form-control-sm" data-value placeholder="Değer *"></div>
+  <div class="col-md-3"><input type="text" class="form-control form-control-sm" data-ekstra placeholder="Ekstra"></div>
+  <div class="col-md-1 text-right" style="padding-right:20px"><button type="type" data-addItem class="btn btn-success btn-sm"><i class="fas fa-plus"></i></button></div>
+    
+  </div>
+      </div>
+
+    </div>
+  </form>
+</div>

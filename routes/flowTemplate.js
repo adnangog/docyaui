@@ -19,18 +19,18 @@ router.get("/add", (req, res, next) => {
 
       let breadcrumb = [
         { route: "/", name: "Anasayfa" },
-        { route: "/flowTemplates", name: "Iş Akışı Taslakları" },
+        { route: "/flowTemplates", name: "İş Akışı Taslakları" },
         {
           route: `/flowTemplates/add`,
-          name: "Iş Akışı Taslağı Ekle"
+          name: "İş Akışı Taslağı Ekle"
         }
       ];
 
       helper.paging(req.body.page, req.body.limit, total, "flowTemplates", paging => {
         res.render("flowCreate", {
-          title: "Iş Akışı Taslakları",
-          addTitle: "Iş Akışı Taslağı Ekle",
-          editTitle: "Iş Akışı Taslağı Düzenle",
+          title: "İş Akışı Taslakları",
+          addTitle: "İş Akışı Taslağı Ekle",
+          editTitle: "İş Akışı Taslağı Düzenle",
           edit: true,
           cards: results[0].data,
           flow:true,
@@ -98,15 +98,15 @@ router.get("/", (req, res, next) => {
     (err, results) => {
       let breadcrumb = [
         { route: "/", name: "Anasayfa" },
-        { route: "/flowTemplates", name: "Iş Akışı Taslakları" }
+        { route: "/flowTemplates", name: "İş Akışı Taslakları" }
       ];
 
       let total = results[0].count;
 
       helper.paging(req.body.page, req.body.limit, total, "flowTemplates", (paging) => {
         res.render("flowTemplates", {
-          title: "Iş Akışı Taslakları",
-          addTitle: "Iş Akışı Taslağı Ekle",
+          title: "İş Akışı Taslakları",
+          addTitle: "İş Akışı Taslağı Ekle",
           route: "flowTemplates",
           data: total === undefined ? false : results[0],
           flow:true,
@@ -135,18 +135,18 @@ router.get("/:flowTemplateId", (req, res, next) => {
 
       let breadcrumb = [
         { route: "/", name: "Anasayfa" },
-        { route: "/flowtemplates", name: "Iş Akışı Taslakları" },
+        { route: "/flowtemplates", name: "İş Akışı Taslakları" },
         {
           route: `/folders/${req.params.folderId}`,
-          name: "Iş Akışı Taslağı Düzenle"
+          name: "İş Akışı Taslağı Düzenle"
         }
       ];
 
       helper.paging(req.body.page, req.body.limit, total, "flowtemplates", paging => {
         res.render("flowCreate", {
-          title: "Iş Akışı Taslakları",
-          addTitle: "Iş Akışı Taslağı Ekle",
-          editTitle: "Iş Akışı Taslağı Düzenle",
+          title: "İş Akışı Taslakları",
+          addTitle: "İş Akışı Taslağı Ekle",
+          editTitle: "İş Akışı Taslağı Düzenle",
           edit: true,
           flowtemplate: results[0],
           flow:true,

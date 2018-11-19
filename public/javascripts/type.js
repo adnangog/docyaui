@@ -2,7 +2,7 @@
     if (w.Docya == undefined)
         w.Docya = {};
 
-    w.Docya.FormCreator = {
+    w.Docya.FormTypeCreator = {
         OutputJSON: JSON.parse($("#fields").val()),
         InputJSON: [
             {
@@ -217,21 +217,21 @@
                         var $el = $orig;
 
                         var index = $el.attr("data-index");
-                        var obj = Object.assign({}, Docya.FormCreator.InputJSON[index]);
+                        var obj = Object.assign({}, Docya.FormTypeCreator.InputJSON[index]);
 
-                        var isExist = Docya.FormCreator.OutputJSON.filter(item => item.control === obj.control && item.type === obj.type);
+                        var isExist = Docya.FormTypeCreator.OutputJSON.filter(item => item.control === obj.control && item.type === obj.type);
 
                         if(isExist.length>0){
                             obj.tempLabel = obj.tempLabel + (isExist.length+1);
                         }
 
-                        Docya.FormCreator.OutputJSON.push(obj);
+                        Docya.FormTypeCreator.OutputJSON.push(obj);
 
-                        Docya.FormCreator.OutputJSON.map((x, l) => {
-                            Docya.FormCreator.OutputJSON[l]["index"] = l;
+                        Docya.FormTypeCreator.OutputJSON.map((x, l) => {
+                            Docya.FormTypeCreator.OutputJSON[l]["index"] = l;
                         });
 
-                        Docya.FormCreator.initCreateForm();
+                        Docya.FormTypeCreator.initCreateForm();
 
                     }
 
@@ -239,28 +239,28 @@
                 }
             }).sortable({
                 update: function (event, ui) {
-                    Docya.FormCreator.FinalIndex = ui.item.index();
-                    Docya.FormCreator.reSortItems();
+                    Docya.FormTypeCreator.FinalIndex = ui.item.index();
+                    Docya.FormTypeCreator.reSortItems();
                 },
                 start: function (event, ui) {
-                    Docya.FormCreator.StartIndex = ui.item.index();
+                    Docya.FormTypeCreator.StartIndex = ui.item.index();
                 }
             });
 
         },
         reSortItems: function () {
-            Docya.FormCreator.OutputJSON.filter(item => item.index >= Docya.FormCreator.FinalIndex && item.index < Docya.FormCreator.StartIndex)
+            Docya.FormTypeCreator.OutputJSON.filter(item => item.index >= Docya.FormTypeCreator.FinalIndex && item.index < Docya.FormTypeCreator.StartIndex)
                 .map(x => x.index = x.index + 1);
 
-            Docya.FormCreator.OutputJSON.filter(item => item.index <= Docya.FormCreator.FinalIndex && item.index > Docya.FormCreator.StartIndex)
+            Docya.FormTypeCreator.OutputJSON.filter(item => item.index <= Docya.FormTypeCreator.FinalIndex && item.index > Docya.FormTypeCreator.StartIndex)
                 .map(x => x.index = x.index - 1);
 
-            Docya.FormCreator.OutputJSON[Docya.FormCreator.StartIndex].index = Docya.FormCreator.FinalIndex;
-            Docya.FormCreator.initCreateForm();
+            Docya.FormTypeCreator.OutputJSON[Docya.FormTypeCreator.StartIndex].index = Docya.FormTypeCreator.FinalIndex;
+            Docya.FormTypeCreator.initCreateForm();
         },
         setModal: function () {
-            var obj = Docya.FormCreator.OutputJSON[Docya.FormCreator.SelectedIndex];
-            Docya.FormCreator.clearModal();
+            var obj = Docya.FormTypeCreator.OutputJSON[Docya.FormTypeCreator.SelectedIndex];
+            Docya.FormTypeCreator.clearModal();
 
             if (obj.control == "textbox") {
                 $("#defaultValueControl").removeClass("d-none");
@@ -343,10 +343,10 @@
                 e.preventDefault();
                 var btn = $(this);
                 var selectElm = btn.parents(".dropped");
-                Docya.FormCreator.SelectedIndex = selectElm.attr("data-index");
+                Docya.FormTypeCreator.SelectedIndex = selectElm.attr("data-index");
 
-                // $("#modelContent").html(JSON.stringify(Docya.FormCreator.SelectedObj));
-                Docya.FormCreator.setModal();
+                // $("#modelContent").html(JSON.stringify(Docya.FormTypeCreator.SelectedObj));
+                Docya.FormTypeCreator.setModal();
                 $('#myModal').modal('show');
 
             });
@@ -356,19 +356,19 @@
                 e.preventDefault();
                 var btn = $(this);
                 var selectElm = btn.parents(".dropped");
-                Docya.FormCreator.OutputJSON.splice(selectElm.attr("data-index"), 1);
+                Docya.FormTypeCreator.OutputJSON.splice(selectElm.attr("data-index"), 1);
 
-                Docya.FormCreator.OutputJSON.filter(item => item.index > selectElm.attr("data-index"))
+                Docya.FormTypeCreator.OutputJSON.filter(item => item.index > selectElm.attr("data-index"))
                     .map(x => x.index = x.index - 1);
 
-                Docya.FormCreator.initCreateForm();
+                Docya.FormTypeCreator.initCreateForm();
 
             });
         },
         initLabelControl: function () {
             $("body").on("blur", "#labelControl", function (e) {
                 var elm = $(this);
-                var obj = Docya.FormCreator.OutputJSON[Docya.FormCreator.SelectedIndex];
+                var obj = Docya.FormTypeCreator.OutputJSON[Docya.FormTypeCreator.SelectedIndex];
 
                 if (elm.val().length > 0) {
                     obj.label = elm.val();
@@ -377,7 +377,7 @@
                         obj.placeholder = obj.label ;
                         $("#placeholderControl").val(obj.label);
                     }
-                    Docya.FormCreator.initCreateForm();
+                    Docya.FormTypeCreator.initCreateForm();
                 }
 
             });
@@ -385,60 +385,60 @@
         initPlaceholderControl: function () {
             $("body").on("blur", "#placeholderControl", function (e) {
                 var elm = $(this);
-                var obj = Docya.FormCreator.OutputJSON[Docya.FormCreator.SelectedIndex];
+                var obj = Docya.FormTypeCreator.OutputJSON[Docya.FormTypeCreator.SelectedIndex];
 
                 obj.placeholder = elm.val();
-                Docya.FormCreator.initCreateForm();
+                Docya.FormTypeCreator.initCreateForm();
 
             });
         },
         initUrlControl: function () {
             $("body").on("blur", "#urlControl", function (e) {
                 var elm = $(this);
-                var obj = Docya.FormCreator.OutputJSON[Docya.FormCreator.SelectedIndex];
+                var obj = Docya.FormTypeCreator.OutputJSON[Docya.FormTypeCreator.SelectedIndex];
 
                 obj.url = elm.val();
-                Docya.FormCreator.initCreateForm();
+                Docya.FormTypeCreator.initCreateForm();
 
             });
         },
         initUrlControl: function () {
             $("body").on("blur", "#urlControl", function (e) {
                 var elm = $(this);
-                var obj = Docya.FormCreator.OutputJSON[Docya.FormCreator.SelectedIndex];
+                var obj = Docya.FormTypeCreator.OutputJSON[Docya.FormTypeCreator.SelectedIndex];
 
                 obj.url = elm.val();
-                Docya.FormCreator.initCreateForm();
+                Docya.FormTypeCreator.initCreateForm();
 
             });
         },
         initFilterMinLengthControl: function () {
             $("body").on("blur", "#filterMinLengthControl", function (e) {
                 var elm = $(this);
-                var obj = Docya.FormCreator.OutputJSON[Docya.FormCreator.SelectedIndex];
+                var obj = Docya.FormTypeCreator.OutputJSON[Docya.FormTypeCreator.SelectedIndex];
 
                 obj.filterMinLength = elm.val();
-                Docya.FormCreator.initCreateForm();
+                Docya.FormTypeCreator.initCreateForm();
 
             });
         },
         initDefaultValueControl: function () {
             $("body").on("blur", "#defaultValueControl", function (e) {
                 var elm = $(this);
-                var obj = Docya.FormCreator.OutputJSON[Docya.FormCreator.SelectedIndex];
+                var obj = Docya.FormTypeCreator.OutputJSON[Docya.FormTypeCreator.SelectedIndex];
 
                 obj.defaultValue = elm.val();
-                Docya.FormCreator.initCreateForm();
+                Docya.FormTypeCreator.initCreateForm();
 
             });
         },
         initHelpControl: function () {
             $("body").on("blur", "#helpControl", function (e) {
                 var elm = $(this);
-                var obj = Docya.FormCreator.OutputJSON[Docya.FormCreator.SelectedIndex];
+                var obj = Docya.FormTypeCreator.OutputJSON[Docya.FormTypeCreator.SelectedIndex];
 
                 obj.help = elm.val();
-                Docya.FormCreator.initCreateForm();
+                Docya.FormTypeCreator.initCreateForm();
 
             });
         },
@@ -446,10 +446,10 @@
             $("body").on("change", "input:checkbox", function (e) {
                 var elm = $(this);
                 var id = $(this).attr("id").replace("Control", "");
-                var obj = Docya.FormCreator.OutputJSON[Docya.FormCreator.SelectedIndex];
+                var obj = Docya.FormTypeCreator.OutputJSON[Docya.FormTypeCreator.SelectedIndex];
 
                 obj[id] = elm.is(':checked');
-                Docya.FormCreator.initCreateForm();
+                Docya.FormTypeCreator.initCreateForm();
 
                 if (id === "isDynamic") {
                     if (elm.is(':checked'))
@@ -475,7 +475,7 @@
             $("body").on("click", "[data-option-delete]", function () {
                 var elm = $(this);
                 var parent = elm.parent();
-                var obj = Docya.FormCreator.OutputJSON[Docya.FormCreator.SelectedIndex];
+                var obj = Docya.FormTypeCreator.OutputJSON[Docya.FormTypeCreator.SelectedIndex];
 
                 obj.options.splice(parent.attr("data-index"), 1);
 
@@ -488,7 +488,7 @@
                     $("#defOptionsControl").append("<div class='option-edit' data-value='" + o.val + "'>" + o.option + ek + "<div class='option-edit-btn-delete' data-option-select><i class='fas fa-check'></i> Seç</div> </div>");
                 });
 
-                Docya.FormCreator.initCreateForm();
+                Docya.FormTypeCreator.initCreateForm();
 
             });
         },
@@ -496,7 +496,7 @@
             $("body").on("click", "[data-option-select]", function () {
                 var elm = $(this);
                 var parent = elm.parent();
-                var obj = Docya.FormCreator.OutputJSON[Docya.FormCreator.SelectedIndex];
+                var obj = Docya.FormTypeCreator.OutputJSON[Docya.FormTypeCreator.SelectedIndex];
 
                 obj.defaultValue = parent.attr("data-value");
 
@@ -507,7 +507,7 @@
                     $("#defOptionsControl").append("<div class='option-edit' data-value='" + o.val + "'>" + o.option + ek + "<div class='option-edit-btn-delete' data-option-select><i class='fas fa-check'></i> Seç</div> </div>");
                 });
 
-                Docya.FormCreator.initCreateForm();
+                Docya.FormTypeCreator.initCreateForm();
 
             });
         },
@@ -516,7 +516,7 @@
                 var elm = $(this);
                 var label = $("#addOptionControl").val();
                 var val = $("#addOptionControlVal").val();
-                var obj = Docya.FormCreator.OutputJSON[Docya.FormCreator.SelectedIndex];
+                var obj = Docya.FormTypeCreator.OutputJSON[Docya.FormTypeCreator.SelectedIndex];
 
                 if (label.length > 0) {
                     var isExist = obj.options.filter(option => option.option === label || option.val === val);
@@ -534,7 +534,7 @@
                             $("#defOptionsControl").append("<div class='option-edit' data-value='" + o.val + "'>" + o.option + ek + "<div class='option-edit-btn-delete' data-option-select><i class='fas fa-check'></i> Seç</div> </div>");
                         });
 
-                        Docya.FormCreator.initCreateForm();
+                        Docya.FormTypeCreator.initCreateForm();
                     }
                 }
 
@@ -549,12 +549,12 @@
                     return false;
                 }
 
-                if(Docya.FormCreator.OutputJSON.length===0){
+                if(Docya.FormTypeCreator.OutputJSON.length===0){
                     alert("Lütfen en az bir tane form elemanı oluşturun.");
                     return false;
                 }
 
-                $("#fields").val(JSON.stringify(Docya.FormCreator.OutputJSON));
+                $("#fields").val(JSON.stringify(Docya.FormTypeCreator.OutputJSON));
 
                 $("#createForm").submit();
                 return true;
@@ -585,8 +585,8 @@
     }
 
     $(document).ready(function () {
-        w.Docya.FormCreator.init();
-        w.Docya.FormCreator.initCreateForm();
+        w.Docya.FormTypeCreator.init();
+        w.Docya.FormTypeCreator.initCreateForm();
 
     });
 

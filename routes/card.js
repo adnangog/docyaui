@@ -84,6 +84,7 @@ router.get("/:cardTemplateId/:cardId", (req, res, next) => {
       helper.paging(req.body.page, req.body.limit, total, "cards", (paging) => {
         res.render("cards", {
           addTitle:"Yeni Kayıt",
+          isCard: true,
           route: "cards",
           data: total === undefined ? false : results[0],
           cardTemplate: results[1],
@@ -156,6 +157,7 @@ router.get("/", (req, res, next) => {
 
   res.render("cards", {
     title: "Kart",
+    isCard: true,
     addTitle: "Kart Ekle",
     breadcrumb,
     isForm: true
@@ -206,6 +208,7 @@ router.get("/:cardTemplateId", (req, res, next) => {
         res.render("cards", {
           addTitle:"Yeni Kayıt",
           route: "cards",
+          isCard: true,
           isWrite: isWrite, //gecici
           data: total === undefined ? false : results[0],
           cardTemplate: results[1],

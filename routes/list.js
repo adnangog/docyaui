@@ -4,15 +4,39 @@ const api = require("../api");
 const helper = require("../helpers/index");
 const async = require("async");
 
+// List add form sayfası
+router.get("/add", (req, res, next) => {
+  let breadcrumb = [
+    { route: "/", name: "Anasayfa" },
+    { route: "/lists", name: "Listeler" },
+    {
+      route: `/lists/add`,
+      name: "Liste Ekle"
+    }
+  ];
+
+  res.render("listAdd", {
+    title: "Liste Ekle",
+    route: "lists",
+    isList:true,
+    items: [],
+    breadcrumb,
+    mainMenu: 1,
+    subMenu: 16
+  });
+
+});
+
 // List Add
-router.post("/", (req, res, next) => {
+router.post("/add", (req, res, next) => {
   api.apiCall(
     req.session.token,
     "/list/add",
     "POST",
     {
-      name: req.body.listName,
-      items: req.body.items,
+      name: req.body.name,
+      description: req.body.description,
+      items: JSON.parse(req.body.items),
       rDate: Date.now()
     },
     (result) => {
@@ -56,7 +80,6 @@ router.get("/", (req, res, next) => {
 
 // List GetById
 router.get("/:listId", (req, res, next) => {
-  api.apiCall(req.session.token, "/list", "POST", req.body.pagelimit, data => {
     api.apiCall(
       req.session.token,
       `/list/${req.params.listId}`,
@@ -64,34 +87,28 @@ router.get("/:listId", (req, res, next) => {
       null,
       list => {
 
-        let total = data.count;
-
-        helper.paging(req.body.page, req.body.limit, total, "lists", (paging) => {
-          let breadcrumb = [
-            { route: "/", name: "Anasayfa" },
-            { route: "/lists", name: "Listeler" },
-            {
-              route: `/list/${req.params.groupId}`,
-              name: "Liste Düzenle"
-            }
-          ];
-          res.render("lists", {
-            title: "Listeler",
-            addTitle: "Liste Ekle",
-            editTitle: "Liste Düzenle",
-            edit: true,
-            data,
-            list,
-            breadcrumb,
-            paging,
-            route: "lists",
-            mainMenu:1,
-            subMenu:16
-          });
-        })
+        let breadcrumb = [
+          { route: "/", name: "Anasayfa" },
+          { route: "/lists", name: "Listeler" },
+          {
+            route: `/list/${req.params.listId}`,
+            name: "Liste Düzenle"
+          }
+        ];
+      
+        res.render("listAdd", {
+          title: "Liste Düzenle",
+          route: "lists",
+          edit: true,
+          list,
+          isList:true,
+          items: list.items,
+          breadcrumb,
+          mainMenu: 1,
+          subMenu: 16
+        });
       }
     );
-  });
 });
 
 // List Update

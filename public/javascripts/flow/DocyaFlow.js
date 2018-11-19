@@ -694,7 +694,7 @@
 
                     slctd_.id = id;
 
-                    Docya.FlowController.outputJson.push(slctd_);
+                    Docya.FlowController.outputJson.splice((Docya.FlowController.outputJson.length-1),0, slctd_);
 
                     updateDocya();
 
@@ -784,6 +784,8 @@
                             })
                         });
                     });
+
+                    Docya.FlowController.sortingItems("flowchartStartpoint",0);
                 };
 
                 var saveFlowchart = function () {
@@ -1487,6 +1489,34 @@
                 data: data,
                 success: cb
             });
+        },
+        sortingItems:function(elm,sort){
+
+                var conn = Docya.FlowController.connections.filter(function(a){
+                    return a.pageSourceId === elm
+                })
+
+                var objj = Docya.FlowController.outputJson.filter(function(b){
+                    return b.id === elm
+                })
+
+                if(conn.length>0){
+                    var next = Docya.FlowController.outputJson.filter(function(c){
+                        return c.id === conn[0].pageTargetId
+                    })
+                    
+                    if(next.length>0){
+
+                        Docya.FlowController.outputJson.map(function(d){
+                            if(d.id===elm){
+                                d.next = next[0].id;
+                                d.sortIndex = sort;
+                            }
+                        })
+
+                        Docya.FlowController.sortingItems(next[0].id,sort+1);
+                    }
+                }
         },
         initElements: function () {
             this.initLibrary();
