@@ -540,6 +540,38 @@
 
             });
         },
+        initSelectOption: function () {
+            $("body").on("change", "input[type='radio'][name='selectOption']", function (e) {
+
+                var jqElm = $(this);
+
+                var val = jqElm.val();
+
+                if(val==='1'){
+                    $("[data-staticoption]").removeClass("d-none");
+                    $("[data-dynamicoption]").addClass("d-none");
+                }else{
+                    $("[data-staticoption]").addClass("d-none");
+                    $("[data-dynamicoption]").removeClass("d-none");
+                }
+
+                
+
+                // var task = Docya.FlowController.outputJson.filter(function (a) {
+                //     return a.id === Docya.FlowController.selectedTask;
+                // })[0];
+
+                // if (val.indexOf(".") < 0) {
+                //     task[val] = jqElm.val();
+                // } else {
+                //     var vals = val.split(".");
+                //     var newProp = Object.assign({}, task[vals[0]]);
+                //     newProp[vals[1]] = jqElm.val();
+                //     task[vals[0]] = newProp;
+                // }
+
+            });
+        },
         initBtnSave: function () {
             $("body").on("click", "#btnSaveForm", function (e) {
                 e.preventDefault();
@@ -576,6 +608,7 @@
             this.initOptionDelete();
             this.initOptionSelect();
             this.initOptionAdd();
+            this.initSelectOption();
             this.initBtnSave();
         },
         init: function () {

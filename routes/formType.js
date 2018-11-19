@@ -6,6 +6,7 @@ const async = require("async");
 
 // Form GetById
 router.get("/add", (req, res, next) => {
+  api.apiCall(req.session.token, "/list", "POST", req.body.pagelimit, (data) => {
   let breadcrumb = [
     { route: "/", name: "Anasayfa" },
     { route: "/formTypes", name: "Form Tipleri" },
@@ -17,11 +18,13 @@ router.get("/add", (req, res, next) => {
   res.render("formTypeCreate", {
     breadcrumb,
     route: "formTypes/add",
+    lists:data.data,
     fields:"[]",
     typeCreate:true,
     mainMenu:1,
     subMenu:15
   });
+});
 });
 
 // Form Add
@@ -74,6 +77,7 @@ router.get("/", (req, res, next) => {
 
 // Form GetById
 router.get("/:formTypeId", (req, res, next) => {
+  api.apiCall(req.session.token, "/list", "POST", req.body.pagelimit, (data) => {
   api.apiCall(req.session.token, `/formType/${req.params.formTypeId}`, "GET", null, (
     formType
   ) => {
@@ -88,6 +92,7 @@ router.get("/:formTypeId", (req, res, next) => {
       res.render("formTypeCreate", {
         edit: true,
         formType,
+        lists:data.data,
         fields: JSON.stringify(formType.items),
         breadcrumb,
         typeCreate:true,
@@ -96,6 +101,7 @@ router.get("/:formTypeId", (req, res, next) => {
       });
 
   });
+});
 });
 
 // Form Update

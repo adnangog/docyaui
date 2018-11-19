@@ -22,35 +22,37 @@
     }
 </style>
 
-    <div style="padding:0 15px;">
-        <div class="row">
-            <div class="col-md-3" style="padding: 20px; background-color: #fff;">
-                <h3>Tipler</h3>
-                <div id="HedefForm"></div>
-            </div>
-            
-            <div class="col-md-9" style="background-color: #fff; padding: 20px; border-left:10px solid #f2f2f2;">
-                <form method="POST" id="createForm" action="{{#if edit}}/formTypes/{{ formType._id }}{{else}}/formTypes/add{{/if}}">
+<div style="padding:0 15px;">
+    <div class="row">
+        <div class="col-md-3" style="padding: 20px; background-color: #fff;">
+            <h3>Tipler</h3>
+            <div id="HedefForm"></div>
+        </div>
+
+        <div class="col-md-9" style="background-color: #fff; padding: 20px; border-left:10px solid #f2f2f2;">
+            <form method="POST" id="createForm" action="{{#if edit}}/formTypes/{{ formType._id }}{{else}}/formTypes/add{{/if}}">
                 <div class="form-group row bg-light" style="padding:10px 0; margin:0; margin-bottom:15px;">
                     <label for="formName" class="col-sm-2 col-form-label">Tip Adı : </label>
                     <div class="col-sm-10">
-                    <input type="text" class="form-control" id="formTypeName" name="formTypeName" placeholder="Tip Adı" value="{{formType.name}}">
-                    <input type="hidden" id="fields" name="fields" value="{{fields}}">
+                        <input type="text" class="form-control" id="formTypeName" name="formTypeName" placeholder="Tip Adı" value="{{formType.name}}">
+                        <input type="hidden" id="fields" name="fields" value="{{fields}}">
                     </div>
                 </div>
-                    <div class="text-muted empty-form text-center">Form Tipinizi oluşturmak için sol tarafta görmüş olduğunuz tiplerden kullanmak istediklerinizi aşağıya sürükleyip bırakın. <br>Daha sonra düzenle butonu yardımıyla eklemiş olduğunuz tipleri özelleştirebilirsiniz.</div>
-                    <div class="row form-body">
-                        <div class="col-md-12 droppable sortable" id="HedefDiv">
-                        </div>
+                <div class="text-muted empty-form text-center">Form Tipinizi oluşturmak için sol tarafta görmüş olduğunuz tiplerden kullanmak istediklerinizi aşağıya sürükleyip
+                    bırakın.
+                    <br>Daha sonra düzenle butonu yardımıyla eklemiş olduğunuz tipleri özelleştirebilirsiniz.</div>
+                <div class="row form-body">
+                    <div class="col-md-12 droppable sortable" id="HedefDiv">
                     </div>
-                    <div class="col-md-12 text-right">
-                        <button type="submit" id="btnSaveForm" class="btn btn-success">Form Tipini Kaydet</button>
-                    </div>
-                    </form>
-            </div>
-            
+                </div>
+                <div class="col-md-12 text-right">
+                    <button type="submit" id="btnSaveForm" class="btn btn-success">Form Tipini Kaydet</button>
+                </div>
+            </form>
         </div>
+
     </div>
+</div>
 
 
 
@@ -84,7 +86,7 @@
 
                     <!-- Tab panes -->
                     <div class="tab-content">
-                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                             <div class="form-group">
                                 <div>
                                     İsim :</div>
@@ -147,31 +149,56 @@
 
                             </div>
                         </div>
-                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                             <div class="form-group d-none" id="optionDiv">
                                 <div>
                                     Seçenekler :</div>
-                                <div id="optionsControl">
-
-                                </div>
-
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <label for="addOptionControlVal">Adı</label>
-                                    <input type="text" id="addOptionControl" class="form-control" value="" placeholder="Seçenek adı" />
+                                <div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" checked="checked" name="selectOption" id="selectOption1" value="1">
+                                        <label class="form-check-label" for="selectOption1">Statik</label>
                                     </div>
-
-                                    <div class="form-group col-md-6">
-                                        <label for="addOptionControlVal">Değer</label>
-                                    <input type="text" id="addOptionControlVal" class="form-control" value="" placeholder="Seçenek değeri" />
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="selectOption" id="selectOption2" value="2">
+                                        <label class="form-check-label" for="selectOption2">Dinamik</label>
                                     </div>
                                 </div>
+                                <div data-staticoption>
+                                    <div id="optionsControl">
 
-                                
-                                <button class="btn btn-success" id="addOptionBtnControl"><i class="fas fa-plus"></i></button>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="addOptionControlVal">Adı</label>
+                                            <input type="text" id="addOptionControl" class="form-control" value="" placeholder="Seçenek adı" />
+                                        </div>
+
+                                        <div class="form-group col-md-6">
+                                            <label for="addOptionControlVal">Değer</label>
+                                            <input type="text" id="addOptionControlVal" class="form-control" value="" placeholder="Seçenek değeri" />
+                                        </div>
+                                    </div>
+
+                                    <button class="btn btn-success" id="addOptionBtnControl">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+
+                                </div>
+                                <div class="d-none" data-dynamicoption>
+                                    <select id="filterTypeControl" class="form-control">
+                                        <option value="">Lütfen Seçiniz</option>
+                                        {{# each lists }}
+                                        <option value="{{ this.[0] }}">{{ this.[1] }}</option>
+                                        {{/ each}}
+                                    </select>
+                                </div>
+
+
+
                             </div>
                         </div>
-                            <div class="tab-pane fade" id="messages" role="tabpanel" aria-labelledby="messages-tab">
+                        <div class="tab-pane fade" id="messages" role="tabpanel" aria-labelledby="messages-tab">
                             <div class="form-group">
                                 <div>
                                     Varsayılan değer :</div>
