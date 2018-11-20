@@ -1,0 +1,34 @@
+{{#if_equal formType "edit"}}
+<form method="POST" action="/cards/{{cardTemplate._id}}/{{card._id}}">
+  {{else}}
+  <form method="POST" action="/cards">
+    {{/if_equal}} {{#if_equal formType "add"}}
+    <div class="form-group">
+      <label for="name">Dosya Kart Adı</label>
+      <input type="text" class="form-control form-control-sm" id="name" name="name" value="{{ cardTemplate.name }}" placeholder="Dosya kart adı giriniz.">
+    </div>
+
+    <div class="form-group">
+      <label for="authSet">Yetki Seti</label>
+      <select class="form-control" id="authSet" name="authSet">
+        <option>Lütfen Seçin</option>
+        {{# each authSets }} {{#if_equal ../cardtemplate.authSet this.[0] }}
+        <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
+        {{else}}
+        <option value="{{ this.[0] }}">{{ this.[1] }}</option>
+        {{/if_equal}} {{/ each}}
+      </select>
+    </div>
+    {{/if_equal}} 
+    
+    {{>form fields=cardTemplate.form.fields formType=formType dataFields=card.fields}}
+
+    <input type="hidden" name="cardId" id="cardId" value="{{cardTemplate._id}}">
+    <input type="hidden" name="type" id="type" value="{{cardTemplate.type}}">
+    <input type="hidden" name="form" id="form" value="{{cardTemplate.form._id}}"> {{#if isWrite}}
+    <div class="form-group">
+      <button type="submit" class="btn btn-outline-success btn-sm">
+        <i class="fas fa-save"></i> Kaydet</button>
+    </div>
+    {{/if}}
+  </form>
