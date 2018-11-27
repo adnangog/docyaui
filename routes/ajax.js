@@ -45,6 +45,10 @@ router.post("/", (req, res, next) => {
         route = `/form/${req.body.form}`;
         type = "GET";
         break;
+        case "getFormVersionById":
+        route = `/form/version/${req.body.formVersion}`;
+        type = "GET";
+        break;
       case "getFormVersions":
         route = `/form/version`;
         params.form = req.body.form;

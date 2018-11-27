@@ -72,6 +72,8 @@
                 schema: null,
                 form: null,
                 formVer: null,
+                fields:[],
+                formFields:[],
                 showDiagram: false,
                 showNote: false,
                 showDirection: false,
@@ -1393,6 +1395,37 @@
 
             Docya.FlowController.initAjax(data, cb);
         },
+        initGet: function(){
+            $("body").on("change", "[data-get]", function (e) {
+                var jqElm = $(this);
+                var method = jqElm.attr("data-get");
+
+                    method.split(",").map(function (item, i) {
+                        eval("Docya.FlowController." + method.split(",")[i])(jqElm.val());
+                    });
+
+
+
+
+            });
+        },
+        getFormVersionFields: function(formVersion){
+
+            var task = Docya.FlowController.outputJson.filter(function (a) {
+                return a.id === Docya.FlowController.selectedTask;
+            })[0];
+
+            let data = {
+                process: "getFormVersionById",
+                formVersion: formVersion
+            };
+
+            let cb = function (data) {
+                task.fields = data.fields;
+            };
+
+            Docya.FlowController.initAjax(data, cb);
+        },
         initRel: function () {
             $("body").on("click", "[data-rel]", function (e) {
                 $('[data-section]').addClass("d-none");
@@ -1512,6 +1545,10 @@
                                 d.next = next[0].id;
                                 d.sortIndex = sort;
                             }
+
+                            if(d.id===next[0].id && d.type === "end"){
+                                d.sortIndex = sort+1;
+                            }
                         })
 
                         Docya.FlowController.sortingItems(next[0].id,sort+1);
@@ -1530,6 +1567,7 @@
             this.initCheckBox();
             this.initFormType();
             this.initForm();
+            this.initGet();
             this.initialDatas();
         },
         init: function () {

@@ -1,0 +1,11 @@
+<form method="POST" action="/flows/{{flow.flowTemplate}}/{{flow._id}}">
+    
+    {{>form fields=flow.currentStep.fields formType=formType dataFields=card.fields}}
+
+    {{#if isWrite}}
+    <div class="form-group">
+      <button type="submit" class="btn btn-outline-success btn-sm">
+        <i class="fas fa-save"></i> Kaydet</button>
+    </div>
+    {{/if}}
+  </form>

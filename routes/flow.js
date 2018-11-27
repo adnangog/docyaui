@@ -9,7 +9,7 @@ router.post("/", (req, res, next) => {
   let objCopy = Object.assign({}, req.body);
 
   for (var key in objCopy) {
-    if (key.indexOf("dForm_") < 0 && key.indexOf("duForm_") < 0 ) {
+    if (key.indexOf("dForm_") < 0 && key.indexOf("duForm_") < 0) {
       delete objCopy[key];
     } else {
       Object.defineProperty(objCopy, key.replace("dForm_", "").replace("duForm_", ""), Object.getOwnPropertyDescriptor(objCopy, key));
@@ -18,15 +18,8 @@ router.post("/", (req, res, next) => {
   }
 
   for (let key in objCopy) {
-    objCopy[key]=helper.stringToType(objCopy[key]);
+    objCopy[key] = helper.stringToType(objCopy[key]);
   }
-
-  console.log({
-    name: req.body.name,
-    user: req.session.userId,
-    flowTemplate: req.body.flowTemplate,
-    fields: [objCopy]
-  })
 
   api.apiCall(req.session.token, "/flow/add", "POST",
     {
@@ -75,11 +68,11 @@ router.get("/", (req, res, next) => {
           data: total === undefined ? false : results[0],
           cards: results[1].data,
           // authSets: results[2].data,
-          flow:true,
+          flow: true,
           breadcrumb,
           paging,
-          mainMenu:1,
-          subMenu:13
+          mainMenu: 1,
+          subMenu: 13
         });
       })
     });
@@ -92,8 +85,9 @@ router.get("/:flowTemplateId", (req, res, next) => {
       api.apiCall(req.session.token, "/flow", "POST", {
         page: parseInt(req.query.page) || 0,
         limit: parseInt(req.query.limit) || 25,
-        cardTemplateId: req.params.flowTemplateId,
-        userId: req.session.userId
+        flowTemplateId: req.params.flowTemplateId,
+        userId: req.session.userId,
+        groupId: req.session.groups
       }, (result) => {
         callback(null, result);
       }
@@ -106,8 +100,6 @@ router.get("/:flowTemplateId", (req, res, next) => {
     },
   ],
     (err, results) => {
-
-      console.log(results[1])
 
       let total = results[0].info && results[0].info[0].count;
 
@@ -125,16 +117,64 @@ router.get("/:flowTemplateId", (req, res, next) => {
           title: "İş Akışları",
           addTitle: "İş Akışı Ekle",
           editTitle: "İş Akışı Düzenle",
-          isWrite:true,
-          flowTemplate:results[1],
+          isWrite: true,
+          flowTemplate: results[1],
           data: results[0],
           breadcrumb,
           paging,
-          route: "flows",
-          mainMenu:4,
-          subMenu:req.params.flowTemplateId
+          route: `flows/${req.params.flowTemplateId}`,
+          mainMenu: 4,
+          subMenu: req.params.flowTemplateId
         });
       });
+    });
+});
+
+// Flow GetById
+router.get("/:flowTemplateId/:flowId", (req, res, next) => {
+  async.parallel([
+    (callback) => {
+      api.apiCall(req.session.token, "/flow", "POST", {
+        page: parseInt(req.query.page) || 0,
+        limit: parseInt(req.query.limit) || 25,
+        flowTemplateId: req.params.flowTemplateId,
+        userId: req.session.userId,
+        groupId: req.session.groups
+      }, (result) => {
+        callback(null, result);
+      }
+      );
+    },
+    (callback) => {
+      api.apiCall(req.session.token, `/flow/${req.params.flowId}`, "GET", null, (result) => {
+        callback(null, result);
+      });
+    },
+  ],
+    (err, results) => {
+
+      let total = results[0].info && results[0].info[0].count;
+
+      let breadcrumb = [
+        { route: "/", name: "Anasayfa" },
+        { route: `/flows/${req.params.flowTemplateId}`, name: "İş Akışları" },
+        {
+          route: `/flows/${req.params.flowTemplateId}`,
+          name: results[1].name
+        }
+      ];
+
+      res.render("flowDetail", {
+        title: "İş Akışları",
+        isWrite: true,
+        flow: results[1],
+        data: results[0],
+        breadcrumb,
+        route: "flows/detail",
+        mainMenu: 4,
+        subMenu: req.params.flowTemplateId
+      });
+
     });
 });
 
@@ -142,12 +182,12 @@ router.get("/:flowTemplateId", (req, res, next) => {
 router.post("/:flowId", (req, res, next) => {
   let items = {};
   let url = "";
-  if(req.body.isCard){ // dosya karti v.s sayfalardan geliyorsa
+  if (req.body.isCard) { // dosya karti v.s sayfalardan geliyorsa
     items = {
       name: req.body.flowname,
     };
-    url= `/cards/${req.body.cardtemplate}/${req.body.card}`;
-  }else{ // edit formundan geliyorsa
+    url = `/cards/${req.body.cardtemplate}/${req.body.card}`;
+  } else { // edit formundan geliyorsa
     items = {
       name: req.body.name,
       description: req.body.description,
@@ -156,7 +196,7 @@ router.post("/:flowId", (req, res, next) => {
       user: req.session.userId,
       authSet: null,
     };
-    url= "/flows";
+    url = "/flows";
   }
   api.apiCall(
     req.session.token,
@@ -167,6 +207,40 @@ router.post("/:flowId", (req, res, next) => {
       let opt = "";
       if (result.nModified > 0) opt = "?messageType=1&message=İşlem Başarılı";
       res.redirect(`${url}${opt}`);
+    }
+  );
+});
+
+// Flow statu Update
+router.post("/:flowTemplateId/:flowId", (req, res, next) => {
+
+  let objCopy = Object.assign({}, req.body);
+
+  for (var key in objCopy) {
+    if (key.indexOf("dForm_") < 0 && key.indexOf("duForm_") < 0) {
+      delete objCopy[key];
+    } else {
+      Object.defineProperty(objCopy, key.replace("dForm_", "").replace("duForm_", ""), Object.getOwnPropertyDescriptor(objCopy, key));
+      delete objCopy[key];
+    }
+  }
+
+  for (let key in objCopy) {
+    objCopy[key] = helper.stringToType(objCopy[key]);
+  }
+
+  api.apiCall(
+    req.session.token,
+    `/flow/${req.params.flowId}`,
+    "PATCH",
+    {
+      fields: [objCopy]
+    },
+    (result) => {
+      let opt = "";
+      if (result.nModified > 0)
+        opt = "?messageType=1&message=İşlem Başarılı";
+      res.redirect(`/flows/${req.params.flowTemplateId}/${req.params.flowId}${opt}`);
     }
   );
 });

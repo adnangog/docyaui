@@ -42,6 +42,7 @@ router.post("/", (req, res, next) => {
       } else {
         req.session.token = result.token;
         req.session.userId = result.userId;
+        req.session.groups = result.groups;
         req.session.userName = result.userName;
         if (req.body.url)
           res.redirect(req.body.url);

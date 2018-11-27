@@ -1,0 +1,37 @@
+<div class="light-theme">
+  <h1>{{flowTemplate.name}}</h1>
+  {{> alert}}
+    <div class="row">
+      <div class="col-md-4">
+
+        {{>flowform formType="edit"}}
+      </div>
+      <div class="col-md-8" style="border-left:1px solid #f2f2f2;">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="flowForm-tab" data-toggle="tab" href="#flowForm" role="tab" aria-controls="flowForm" aria-selected="true">Form</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="flowNotes-tab" data-toggle="tab" href="#flowNotes" role="tab" aria-controls="flowNotes" aria-selected="false">Notlar</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="flowDiagram-tab" data-toggle="tab" href="#flowDiagram" role="tab" aria-controls="flowDiagram" aria-selected="false">Diagram</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="flowAttachments-tab" data-toggle="tab" href="#flowAttachments" role="tab" aria-controls="flowAttachments" aria-selected="false">Ekler</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="flowDescription-tab" data-toggle="tab" href="#flowDescription" role="tab" aria-controls="flowDescription" aria-selected="false">Açıklama</a>
+  </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="flowForm" role="tabpanel" aria-labelledby="flowForm-tab">...</div>
+  <div class="tab-pane fade" id="flowNotes" role="tabpanel" aria-labelledby="flowNotes-tab">...</div>
+  <div class="tab-pane fade" id="flowDiagram" role="tabpanel" aria-labelledby="flowDiagram-tab">...</div>
+  <div class="tab-pane fade" id="flowAttachments" role="tabpanel" aria-labelledby="flowAttachments-tab">...</div>
+  <div class="tab-pane fade" id="flowDescription" role="tabpanel" aria-labelledby="flowDescription-tab">...</div>
+</div>
+      </div>
+
+    </div>
+</div>
