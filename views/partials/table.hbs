@@ -42,16 +42,16 @@
 </div>
 {{ else }}
 <div class="table-responsive">
-  <div class="bg-secondary text-light table-infos">
+  <div class="table-infos">
     Toplam
     <strong>{{paging.total}}</strong> kayıt var. Şu an
     <strong>{{paging.first}}-{{paging.last}}</strong> arasındaki kayıtlar listeleniyor.
     <div class="table-export">
       <div class="btn-group" role="group" aria-label="Dışa aktar">
         <div class="btn-group" role="group">
-          <button id="btnGroupDrop1" type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+          <button id="btnGroupDrop1" type="button" class="btn btn-light btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
             aria-expanded="false">
-            Dışa Aktar
+            <i class="fas fa-file-export"></i> Dışa Aktar
           </button>
           <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
             <a class="dropdown-item" href="#">

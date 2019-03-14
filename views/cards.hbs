@@ -3,32 +3,32 @@
     <div class="row">
       <div class="table-top row">
         <div class="col-lg-5">
-        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#cardModal">
-          <i class="fas fa-file"></i> Yeni Dosya Kartı Oluştur
-        </button> 
-        <button class="btn btn-danger btn-sm" data-search-all><i class="fas fa-sync-alt"></i> Tüm Kayıtlar</button>
+          <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#cardModal">
+            <i class="fas fa-file"></i> Yeni Dosya Kartı Oluştur
+          </button>
+          <button class="btn btn-danger btn-sm" data-search-all><i class="fas fa-sync-alt"></i> Tüm Kayıtlar</button>
         </div>
         <div class="col-lg-7 text-right">
-        <div style="display: inline-block; width:350px;">
-          <div class="input-group">
-            <input type="text" class="form-control form-control-sm" data-search-text placeholder="aranacak kelime...">
-            <div class="input-group-append">
-              <button type="button" class="btn btn-outline-secondary btn-sm" data-search-basic><i class="fas fa-search"></i></button>
-              <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split  btn-sm dropleft"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Gelişmiş
-                <span class="sr-only">Gelismis Arama</span>
-              </button>
-              <div class="dropdown-menu dropdown-menu-rleft">
-                <h6 class="dropdown-header text-danger">Kayıtlı Aramalar</h6>
-                <div id="dvSearches">
+          <div style="display: inline-block; width:350px;">
+            <div class="input-group">
+              <input type="text" class="form-control form-control-sm" data-search-text placeholder="aranacak kelime...">
+              <div class="input-group-append">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-search-basic><i class="fas fa-search"></i></button>
+                <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split  btn-sm dropleft"
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Gelişmiş
+                  <span class="sr-only">Gelismis Arama</span>
+                </button>
+                <div class="dropdown-menu dropdown-menu-rleft">
+                  <h6 class="dropdown-header text-danger">Kayıtlı Aramalar</h6>
+                  <div id="dvSearches">
+                  </div>
+                  <div role="separator" class="dropdown-divider"></div>
+                  <a class="dropdown-item text-success" href="#" data-search-new>Yeni Oluştur</a>
                 </div>
-                <div role="separator" class="dropdown-divider"></div>
-                <a class="dropdown-item text-success" href="#" data-search-new>Yeni Oluştur</a>
               </div>
             </div>
           </div>
-        </div>
         </div>
 
       </div>
@@ -61,19 +61,61 @@
 
 {{#if edit}}
 <div class="row" style="margin:0;">
-  <div class="col-md-4 light-theme ">
+  <div class="col-md-2 light-theme ">
     <div style="display:block; height: 35px; background-color: #f1f1f1; margin: -15px -15px 15px -15px;"></div>
-    <div class="doc-title">Form </div>
+    Form
+    <hr />
     {{>cardform formType="edit"}}
   </div>
-  <div class="col-md-3 light-theme">
+  <div class="col-md-2 light-theme">
     <div style="display:block; height: 35px; background-color: #f1f1f1; margin: -15px -15px 15px -15px;"></div>
-    <div class="doc-title">Belgeler</div>
+    Klasörler
+    <hr />
     <ul id="tree2" class="treeCont">
       {{>tree item=folders.folders.[0]}}
     </ul>
   </div>
-  <div class="col-md-5 light-theme2">
+  <div class="col-md-4 light-theme">
+    <div style="display:block; height: 35px; background-color: #f1f1f1; margin: -15px -15px 15px -15px;"></div>
+    Belgeler
+    <hr />
+    <div class="row">
+      <div class="col-md-6">
+        <div class="docbox">
+        <div class="docbox-image">
+          <img src="/images/pdf.png" />
+        </div>
+        <div class="docbox-content">
+          <span class="docbox-name">Doc Name</span>
+          <span class="docbox-date">01-01-2019</span>
+        </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="docbox">
+        <div class="docbox-image">
+          <img src="/images/pdf.png" />
+        </div>
+        <div class="docbox-content">
+          <span class="docbox-name">Doc Name</span>
+          <span class="docbox-date">01-01-2019</span>
+        </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="docbox">
+        <div class="docbox-image">
+          <img src="/images/pdf.png" />
+        </div>
+        <div class="docbox-content">
+          <span class="docbox-name">Doc Name</span>
+          <span class="docbox-date">01-01-2019</span>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 light-theme2">
     <div style="display:block; padding:2px; margin:0;">
       <button type="button" class="btn btn-warning btn-sm" data-ca="6" data-toggle="modal" data-target="#docModal">
         <i class="fas fa-share-square"></i>

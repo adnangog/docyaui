@@ -22,6 +22,11 @@ module.exports = (req, res, next) => {
                 if (typeof options == 'object') {
                     options.menucards = results[0];
                     options.menuflowtemplates = results[1];
+                    if(req.session.userName){
+                        options.isLogged = true;
+                        options.userName = req.session.userName;
+                        options.avatar = process.env.CDN + req.session.avatar;
+                    }
                 }
                 _render.call(this, view, options, fn);
             }

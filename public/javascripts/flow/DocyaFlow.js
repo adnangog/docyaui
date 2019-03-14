@@ -24,13 +24,13 @@
 
     if (w.Docya == undefined)
         w.Docya = {};
-
     w.Docya.FlowController = {
         SceneId: "FlowScene",
         NumberOfShapes: 0,
         selectedTask: null,
-        nodes: [],
-        connections: [],
+        isEdit: $("#flowtemplate").val().length > 0,
+        nodes: $("#flowtemplate").val().length > 0 ? JSON.parse($("#flowtemplate").val()).nodes : [],
+        connections: $("#flowtemplate").val().length > 0 ? JSON.parse($("#flowtemplate").val()).connections : [],
         positionX: 0,
         positionY: 0,
         users: [],
@@ -42,7 +42,7 @@
         flows: [],
         inputs: ["[input.Email]", "[input.Title]", "[input.Body]", "[input.Person]"],
         outputs: ["[output.Email]", "[output.Title]", "[output.Body]", "[output.Person]"],
-        outputJson: [
+        outputJson: $("#flowtemplate").val().length > 0 ? JSON.parse($("#flowtemplate").val()).steps : [
             {
                 id: "flowchartStartpoint",
                 name: "Başlangıç",
@@ -72,8 +72,8 @@
                 schema: null,
                 form: null,
                 formVer: null,
-                fields:[],
-                formFields:[],
+                fields: [],
+                formFields: [],
                 showDiagram: false,
                 showNote: false,
                 showDirection: false,
@@ -533,8 +533,42 @@
                 _addEndpoints("Startpoint", ["BottomCenter"], []);
                 _addEndpoints("Endpoint", [], ["TopCenter"]);
 
-                instance.draggable($("#flowchartStartpoint"));
-                instance.draggable($("#flowchartEndpoint"));
+                var positionSetter = {
+                    stop: function (event, ui) {
+                        var parentLeft = $("#FlowScene").position().left;
+                        var parentTop = $("#FlowScene").position().top;
+                        var Stoppos = $(this).position();
+                        var left = (Stoppos.left - parentLeft);
+                        var top = (Stoppos.top - parentTop);
+                        var node = Docya.FlowController.nodes.filter(function (a) { return a.blockId === ui.helper.context.id })[0];
+                        node.positionX = left;
+                        node.positionY = top;
+                    }
+                };
+
+                instance.draggable($("#flowchartStartpoint"), positionSetter);
+                instance.draggable($("#flowchartEndpoint"), positionSetter);
+
+                if (Docya.FlowController.isEdit) {
+                    Docya.FlowController.nodes.filter(function (a) { return a.nodetype !== 'startpoint' && a.nodetype !== 'endpoint' }).map(function (item) {
+
+                        var jsonElm = Docya.FlowController.outputJson.filter(function(a){ return a.id===item.blockId})[0];
+
+                        var element = Docya.FlowController.createHTMLElement(item.nodetype, "t-oval", jsonElm.name, item.positionX, item.positionY, _addEndpoints, instance, true);
+                    });
+
+                    Docya.FlowController.connections.map(function (conn) {
+
+                        var connection1 = instance.connect({
+                            source: conn.pageSourceId,
+                            target: conn.pageTargetId,
+                            anchors: conn.anchors,
+                            endpointStyle: [sourceEndpoint],
+                            type: "connectorType"
+                        });
+
+                    });
+                }
 
                 instance.bind("contextmenu", function (component, originalEvent) {
                     alert("context menu on component " + component.id);
@@ -570,7 +604,7 @@
                         if (confirm("Delete connection from " + conn.sourceId + " to " + conn.targetId + "?"))
                             jsPlumb.detach(conn);
 
-                        updateDocya();
+                        Docya.FlowController.UpdateDatas(instance, false);
                     });
 
                     instance.bind("connectionDrag", function (connection) {
@@ -580,17 +614,16 @@
                     instance.bind("connectionDragStop", function (connection) {
                         console.log("connection " + connection.id + " was dragged");
 
-
                         if (Docya.FlowController.connections.filter(function (a) { return connection.targetId === a.pageTargetId && connection.id !== a.connectionId }).length > 0) {
                             jsPlumb.detach(connection);
                         }
 
-                        updateDocya();
+                        Docya.FlowController.UpdateDatas(instance, false);
                     });
 
                     instance.bind("connectionMoved", function (params) {
                         console.log("connection " + params.connection.id + " was moved");
-                        updateDocya();
+                        Docya.FlowController.UpdateDatas(instance, false);
                     });
                 });
 
@@ -604,7 +637,7 @@
                         var oType = jqElem.attr("data-optiontype");
                         var title = jqElem.attr("title");
 
-                        createTaskItem(fType, oType, title, (ui.position.left - 120), ui.position.top);
+                        Docya.FlowController.createHTMLElement(fType, oType, title, (ui.position.left - 120), ui.position.top, _addEndpoints, instance)
 
                     },
                     accept: function (jqElem) {
@@ -634,102 +667,6 @@
 
                 });
 
-                var createTaskItem = function (fType, oType, title, x, y) {
-
-                    Docya.FlowController.NumberOfShapes++;
-
-                    var divHtml = "";
-                    var sourceAnchors = ["BottomCenter"];
-                    var targetAnchors = ["TopCenter"];
-
-                    switch (fType) {
-                        case "manual":
-                            divHtml = '<div class="boxText" data-label>' + title + '</div><div class="rb"><i class="fas fa-user"></i></div>';
-                            break;
-                        case "auto":
-                            divHtml = '<div class="boxText" data-label>' + title + '</div><div class="rb"><i class="fas fa-robot"></i></div>';
-                            break;
-                        case "subflow":
-                            divHtml = '<div class="boxText" data-label>' + title + '</div><div class="rb"><i class="fas fa-sitemap"></i></div>';
-                            break;
-                        case "webservice":
-                            divHtml = '<div class="boxText">' + title + '</div><div class="rb"><i class="fas fa-cogs"></i></div>';
-                            break;
-                        case "decision":
-                            divHtml = '<div class="graph"></div><div class="filigran" data-label>' + title + '</div>';
-                            sourceAnchors = ["Left", "Right"];
-                            break;
-                        case "waiting":
-                            divHtml = '<i class="far fa-clock"></i><div class="filigran" data-label>' + title + '</div>';
-                            break;
-                        case "email":
-                            divHtml = '<i class="far fa-envelope"></i><div class="filigran" data-label>' + title + '</div>';
-                            break;
-                        case "message":
-                            divHtml = '<i class="far fa-envelope"></i><div class="filigran" data-label>' + title + '</div>';
-                            break;
-                        case "combination":
-                            divHtml = '<div class="graph"></div><div class="normalize"><i class="fas fa-compress"></i></div><div class="filigran" data-label>' + title + '</div>';
-                            targetAnchors = ["Left", "Right", "TopCenter"];
-                            break;
-                        case "distribution":
-                            divHtml = '<div class="graph"></div><div class="normalize"><i class="fas fa-expand"></i></div><div class="filigran" data-label>' + title + '</div>';
-                            sourceAnchors = ["Left", "Right", "BottomCenter"];
-                            break;
-
-                        default:
-                            break;
-                    }
-
-                    $('<div style="top:' + y + 'px; left:' + x + 'px;" class="' + oType + ' ' + fType + ' node" data-nodetype="' + fType + '" data-title="' + title + Docya.FlowController.NumberOfShapes + '" id="flowchartWindow' + Docya.FlowController.NumberOfShapes + '"><div class="node-delete"><i class="fas fa-times"></i></div>' + divHtml + '</div>').appendTo('#' + Docya.FlowController.SceneId);
-
-                    _addEndpoints("Window" + Docya.FlowController.NumberOfShapes, sourceAnchors, targetAnchors);
-
-                    instance.draggable($('#flowchartWindow' + Docya.FlowController.NumberOfShapes));
-                    id = 'flowchartWindow' + Docya.FlowController.NumberOfShapes;
-
-                    var slctd = Docya.FlowController.taskTypes.filter(function (e) {
-                        return e.type === fType;
-                    })[0];
-
-                    var slctd_ = Object.assign({}, slctd);
-
-                    slctd_.id = id;
-
-                    Docya.FlowController.outputJson.splice((Docya.FlowController.outputJson.length-1),0, slctd_);
-
-                    updateDocya();
-
-                    $(".node-delete").unbind("click");
-
-                    $(".node-delete").bind("click", function (event) {
-                        event.stopPropagation();
-                        var jqElm = $(this).parent();
-
-                        instance.detachAllConnections(jqElm.attr("id"));
-                        instance.removeAllEndpoints(jqElm.attr("id"));
-                        Docya.FlowController.outputJson = Docya.FlowController.outputJson.filter(function (a) { return a.id !== jqElm.attr("id") });
-                        $(jqElm).remove();
-
-                        updateDocya();
-
-                    });
-
-                    $("#" + id).bind("click", function (conn, originalEvent) {
-                        $('.node').removeClass('show');
-                        $('.properties').addClass('show');
-                        $('[data-taskbuttons]').addClass('resize');
-                        $(this).addClass('show');
-
-                        Docya.FlowController.selectedTask = $(this).attr("id");
-
-                        Docya.FlowController.createForm();
-
-                    });
-
-                    return id
-                }
-
                 $("[data-flowbtn]").click(function (e) {
                     e.stopPropagation();
                     var jqElm = $(this);
@@ -737,7 +674,7 @@
                     var oType = jqElm.attr("data-optiontype");
                     var title = jqElm.attr("title");
 
-                    return createTaskItem(fType, oType, title, 50, 250);
+                    return Docya.FlowController.createHTMLElement(fType, oType, title, 50, 250, _addEndpoints, instance)
 
                 });
 
@@ -745,50 +682,7 @@
                     saveFlowchart();
                 });
 
-                $("#loadButton").click(function () {
-                    loadFlowchart();
-                });
-
                 jsPlumb.fire("DocyaFlowController", instance);
-
-                var updateDocya = function () {
-
-                    Docya.FlowController.nodes = [];
-                    Docya.FlowController.connections = [];
-
-                    $(".node").each(function (idx, elem) {
-                        var $elem = $(elem);
-                        if (Docya.FlowController.nodes.filter(function (a) { return a.blockId === $elem.attr('id') }).length === 0) {
-                            Docya.FlowController.nodes.push({
-                                blockId: $elem.attr('id'),
-                                nodetype: $elem.attr('data-nodetype'),
-                                positionX: parseInt($elem.css("left"), 10),
-                                positionY: parseInt($elem.css("top"), 10),
-                                title: $elem.attr('data-title')
-                            });
-                        }
-                    });
-
-                    $.each(instance.getConnections(), function (idx, connection) {
-                        Docya.FlowController.connections.push({
-                            connectionId: connection.id,
-                            pageSourceId: connection.sourceId,
-                            pageTargetId: connection.targetId,
-                            anchors: $.map(connection.endpoints, function (endpoint) {
-
-                                return [[endpoint.anchor.x,
-                                endpoint.anchor.y,
-                                endpoint.anchor.orientation[0],
-                                endpoint.anchor.orientation[1],
-                                endpoint.anchor.offsets[0],
-                                endpoint.anchor.offsets[1]]];
-
-                            })
-                        });
-                    });
-
-                    Docya.FlowController.sortingItems("flowchartStartpoint",0);
-                };
 
                 var saveFlowchart = function () {
                     var nodes = []
@@ -885,87 +779,181 @@
                     Docya.FlowController.checkItems();
 
                     let data = {
-                        process: "addFlowTemplate",
+                        process: $("[data-edit]").attr("data-edit") === "false" ? "addFlowTemplate" : "updateFlowTemplate",
                         name: $("[data-flowName]").val(),
                         authSet: $("[data-flowAuthSet]").val(),
                         formType: $("[data-flowFormType]").val(),
                         form: $("[data-flowForm]").val(),
                         formVer: $("[data-flowFormVer]").val(),
                         organization: $("[data-flowOrganization]").val(),
-                        steps: JSON.stringify(Docya.FlowController.outputJson)
+                        description: $("[data-flowDescription]").val(),
+                        steps: JSON.stringify(Docya.FlowController.outputJson),
+                        connections: JSON.stringify(Docya.FlowController.connections),
+                        nodes: JSON.stringify(Docya.FlowController.nodes),
+                        flowTemplateId: $("#flowTemplateId").val()
                     };
 
                     let cb = function (data) {
-                        if (data.messageType === 1) {    
+                        if (data.messageType === 1) {
                             showMessageBox("success", "BİLGİ", data.message);
                         } else {
-                            showMessageBox("danger", "UYARI", data.message);
+                            showMessageBox("danger", "UYARIM", data.message);
                         }
                     };
 
                     Docya.FlowController.initAjax(data, cb);
                 };
 
-                var repositionElement = function repositionElement(id, posX, posY) {
-                    $('#' + id).css('left', posX);
-                    $('#' + id).css('top', posY);
-                    instance.repaint(id);
-                }
+            });
 
-                var loadFlowchart = function () {
-                    var flowChartJson = $('#jsonOutput').val();
-                    var flowChart = JSON.parse(flowChartJson);
-                    var nodes = flowChart.nodes;
-                    $.each(nodes, function (index, elem) {
-                        if (elem.nodetype === 'startpoint') {
-                            repositionElement('startpoint', elem.positionX, elem.positionY);
-                        } else if (elem.nodetype === 'endpoint') {
-                            repositionElement('endpoint', elem.positionX, elem.positionY);
-                        } else if (elem.nodetype === 'task') {
-                            var id = _addTask(elem.blockId);
-                            repositionElement(id, elem.positionX, elem.positionY);
-                        } else if (elem.nodetype === 'decision') {
-                            var id = _addDecision(elem.blockId);
-                            repositionElement(id, elem.positionX, elem.positionY);
-                        } else if (elem.nodetype === 'switch') {
-                            var id = _switchTask(elem.blockId);
-                            repositionElement(id, elem.positionX, elem.positionY);
-                        } else if (elem.nodetype === 'merge') {
-                            var id = _mergeTask(elem.blockId);
-                            repositionElement(id, elem.positionX, elem.positionY);
-                        } else if (elem.nodetype === 'finish') {
-                            var id = _finishTask(elem.blockId);
-                            repositionElement(id, elem.positionX, elem.positionY);
-                        } else if (elem.nodetype === 'assembly') {
-                            var id = _assemblyTask(elem.blockId);
-                            repositionElement(id, elem.positionX, elem.positionY);
-                        } else if (elem.nodetype === 'condition') {
-                            var id = _conditionTask(elem.blockId);
-                            repositionElement(id, elem.positionX, elem.positionY);
-                        } else if (elem.nodetype === 'process') {
-                            var id = _processTask(elem.blockId);
-                            repositionElement(id, elem.positionX, elem.positionY);
-                        } else {
+        },
+        UpdateDatas: function (instance, first) {
+            if (!first) {
+                Docya.FlowController.nodes = [];
+                Docya.FlowController.connections = [];
+            }
 
-                        }
-                    });
-
-                    var connections = flowChart.connections;
-                    $.each(connections, function (index, elem) {
-                        var connection1 = instance.connect({
-                            source: elem.pageSourceId,
-                            target: elem.pageTargetId,
-                            anchors: elem.anchors,
-                            endpointStyle: [sourceEndpoint],
-                            type: "connectorType"
-                        });
-
-                        Docya.FlowController.NumberOfShapes = flowChart.numberOfElements;
+            $(".node").each(function (idx, elem) {
+                var $elem = $(elem);
+                if (Docya.FlowController.nodes.filter(function (a) { return a.blockId === $elem.attr('id') }).length === 0) {
+                    Docya.FlowController.nodes.push({
+                        blockId: $elem.attr('id'),
+                        nodetype: $elem.attr('data-nodetype'),
+                        positionX: parseInt($elem.css("left"), 10),
+                        positionY: parseInt($elem.css("top"), 10),
+                        title: $elem.attr('data-title')
                     });
                 }
+            });
+
+            $.each(instance.getConnections(), function (idx, connection) {
+                Docya.FlowController.connections.push({
+                    connectionId: connection.id,
+                    pageSourceId: connection.sourceId,
+                    pageTargetId: connection.targetId,
+                    anchors: $.map(connection.endpoints, function (endpoint) {
+
+                        return [[endpoint.anchor.x,
+                        endpoint.anchor.y,
+                        endpoint.anchor.orientation[0],
+                        endpoint.anchor.orientation[1],
+                        endpoint.anchor.offsets[0],
+                        endpoint.anchor.offsets[1]]];
+
+                    })
+                });
+            });
+
+            Docya.FlowController.sortingItems("flowchartStartpoint", 0);
+
+        },
+        createHTMLElement: function (fType, oType, title, x, y, _addEndpoints, instance, first) {
+            Docya.FlowController.NumberOfShapes++;
+
+            var divHtml = "";
+            var sourceAnchors = ["BottomCenter"];
+            var targetAnchors = ["TopCenter"];
+
+            switch (fType) {
+                case "manual":
+                    divHtml = '<div class="boxText" data-label>' + title + '</div><div class="rb"><i class="fas fa-user"></i></div>';
+                    break;
+                case "auto":
+                    divHtml = '<div class="boxText" data-label>' + title + '</div><div class="rb"><i class="fas fa-robot"></i></div>';
+                    break;
+                case "subflow":
+                    divHtml = '<div class="boxText" data-label>' + title + '</div><div class="rb"><i class="fas fa-sitemap"></i></div>';
+                    break;
+                case "webservice":
+                    divHtml = '<div class="boxText">' + title + '</div><div class="rb"><i class="fas fa-cogs"></i></div>';
+                    break;
+                case "decision":
+                    divHtml = '<div class="graph"></div><div class="filigran" data-label>' + title + '</div>';
+                    sourceAnchors = ["Left", "Right"];
+                    break;
+                case "waiting":
+                    divHtml = '<i class="far fa-clock"></i><div class="filigran" data-label>' + title + '</div>';
+                    break;
+                case "email":
+                    divHtml = '<i class="far fa-envelope"></i><div class="filigran" data-label>' + title + '</div>';
+                    break;
+                case "message":
+                    divHtml = '<i class="far fa-envelope"></i><div class="filigran" data-label>' + title + '</div>';
+                    break;
+                case "combination":
+                    divHtml = '<div class="graph"></div><div class="normalize"><i class="fas fa-compress"></i></div><div class="filigran" data-label>' + title + '</div>';
+                    targetAnchors = ["Left", "Right", "TopCenter"];
+                    break;
+                case "distribution":
+                    divHtml = '<div class="graph"></div><div class="normalize"><i class="fas fa-expand"></i></div><div class="filigran" data-label>' + title + '</div>';
+                    sourceAnchors = ["Left", "Right", "BottomCenter"];
+                    break;
+
+                default:
+                    break;
+            }
+
+            $('<div style="top:' + y + 'px; left:' + x + 'px;" class="' + oType + ' ' + fType + ' node" data-nodetype="' + fType + '" data-title="' + title + Docya.FlowController.NumberOfShapes + '" id="flowchartWindow' + Docya.FlowController.NumberOfShapes + '"><div class="node-delete"><i class="fas fa-times"></i></div>' + divHtml + '</div>').appendTo('#' + Docya.FlowController.SceneId);
+
+            _addEndpoints("Window" + Docya.FlowController.NumberOfShapes, sourceAnchors, targetAnchors);
+
+            var positionSetter = {
+                stop: function (event, ui) {
+                    var parentLeft = $("#FlowScene").position().left;
+                    var parentTop = $("#FlowScene").position().top;
+                    var Stoppos = $(this).position();
+                    var left = (Stoppos.left - parentLeft);
+                    var top = (Stoppos.top - parentTop);
+                    var node = Docya.FlowController.nodes.filter(function (a) { return a.blockId === ui.helper.context.id })[0];
+                    node.positionX = left;
+                    node.positionY = top;
+                }
+            };
+
+            instance.draggable($('#flowchartWindow' + Docya.FlowController.NumberOfShapes), positionSetter);
+            id = 'flowchartWindow' + Docya.FlowController.NumberOfShapes;
+
+            var slctd = Docya.FlowController.taskTypes.filter(function (e) {
+                return e.type === fType;
+            })[0];
+
+            var slctd_ = Object.assign({}, slctd);
+
+            slctd_.id = id;
+
+
+            !first && Docya.FlowController.outputJson.splice((Docya.FlowController.outputJson.length - 1), 0, slctd_);
+
+            Docya.FlowController.UpdateDatas(instance, first);
+
+            $(".node-delete").unbind("click");
+
+            $(".node-delete").bind("click", function (event) {
+                event.stopPropagation();
+                var jqElm = $(this).parent();
+
+                instance.detachAllConnections(jqElm.attr("id"));
+                instance.removeAllEndpoints(jqElm.attr("id"));
+                Docya.FlowController.outputJson = Docya.FlowController.outputJson.filter(function (a) { return a.id !== jqElm.attr("id") });
+                $(jqElm).remove();
+
+                Docya.FlowController.UpdateDatas(instance, false);
 
             });
 
+            $("#" + id).bind("click", function (conn, originalEvent) {
+                $('.node').removeClass('show');
+                $('.properties').addClass('show');
+                $('[data-taskbuttons]').addClass('resize');
+                $(this).addClass('show');
+
+                Docya.FlowController.selectedTask = $(this).attr("id");
+
+                Docya.FlowController.createForm();
+
+            });
+
+            return id
         },
         createForm: function () {
 
@@ -1390,26 +1378,26 @@
             };
 
             let cb = function (data) {
-                data.formVersion.fields.map(function (a) { $("<option value='" + a.label + "'>" + a.label + "</option>").appendTo($("[data-target='" + item + "']", parent)) });
+                data.formVersion && data.formVersion.fields.map(function (a) { $("<option value='" + a.label + "'>" + a.label + "</option>").appendTo($("[data-target='" + item + "']", parent)) });
             };
 
             Docya.FlowController.initAjax(data, cb);
         },
-        initGet: function(){
+        initGet: function () {
             $("body").on("change", "[data-get]", function (e) {
                 var jqElm = $(this);
                 var method = jqElm.attr("data-get");
 
-                    method.split(",").map(function (item, i) {
-                        eval("Docya.FlowController." + method.split(",")[i])(jqElm.val());
-                    });
+                method.split(",").map(function (item, i) {
+                    eval("Docya.FlowController." + method.split(",")[i])(jqElm.val());
+                });
 
 
 
 
             });
         },
-        getFormVersionFields: function(formVersion){
+        getFormVersionFields: function (formVersion) {
 
             var task = Docya.FlowController.outputJson.filter(function (a) {
                 return a.id === Docya.FlowController.selectedTask;
@@ -1440,6 +1428,7 @@
         },
         initFormType: function () {
             $("body").on("change", "[data-flowFormType]", function (e) {
+
                 let data = {
                     process: "getForms",
                     formType: $(this).val()
@@ -1452,7 +1441,7 @@
 
                 };
 
-                Docya.FlowController.initAjax(data, cb);
+                $(this).val() !== null && Docya.FlowController.initAjax(data, cb);
             });
         },
         initForm: function () {
@@ -1523,37 +1512,37 @@
                 success: cb
             });
         },
-        sortingItems:function(elm,sort){
+        sortingItems: function (elm, sort) {
 
-                var conn = Docya.FlowController.connections.filter(function(a){
-                    return a.pageSourceId === elm
+            var conn = Docya.FlowController.connections.filter(function (a) {
+                return a.pageSourceId === elm
+            })
+
+            var objj = Docya.FlowController.outputJson.filter(function (b) {
+                return b.id === elm
+            })
+
+            if (conn.length > 0) {
+                var next = Docya.FlowController.outputJson.filter(function (c) {
+                    return c.id === conn[0].pageTargetId
                 })
 
-                var objj = Docya.FlowController.outputJson.filter(function(b){
-                    return b.id === elm
-                })
+                if (next.length > 0) {
 
-                if(conn.length>0){
-                    var next = Docya.FlowController.outputJson.filter(function(c){
-                        return c.id === conn[0].pageTargetId
+                    Docya.FlowController.outputJson.map(function (d) {
+                        if (d.id === elm) {
+                            d.next = next[0].id;
+                            d.sortIndex = sort;
+                        }
+
+                        if (d.id === next[0].id && d.type === "end") {
+                            d.sortIndex = sort + 1;
+                        }
                     })
-                    
-                    if(next.length>0){
 
-                        Docya.FlowController.outputJson.map(function(d){
-                            if(d.id===elm){
-                                d.next = next[0].id;
-                                d.sortIndex = sort;
-                            }
-
-                            if(d.id===next[0].id && d.type === "end"){
-                                d.sortIndex = sort+1;
-                            }
-                        })
-
-                        Docya.FlowController.sortingItems(next[0].id,sort+1);
-                    }
+                    Docya.FlowController.sortingItems(next[0].id, sort + 1);
                 }
+            }
         },
         initElements: function () {
             this.initLibrary();
@@ -1576,11 +1565,34 @@
 
     }
 
+
+
     $(document).ready(function () {
         w.Docya.FlowController.init();
 
-        Docya.FlowController.forms.map(function (a) { $("<option value='test'>test</option>").appendTo($("[data-target='formFields']")) });
+    });
 
+    $(window).on('load', function () {
+        if (Docya.FlowController.isEdit) {
+
+            setTimeout(function () {
+                $("[data-flowFormType]").change();
+            }, 100);
+
+            setTimeout(function () {
+                $("[data-flowForm]").val(JSON.parse($("#flowtemplate").val()).form);
+            }, 200);
+
+            setTimeout(function () {
+                $("[data-flowForm]").change();
+            }, 300);
+
+            setTimeout(function () {
+                $("[data-flowFormVer]").val(JSON.parse($("#flowtemplate").val()).formVersion._id);
+            }, 400);
+
+            Docya.FlowController.isEdit = false;
+        }
     });
 
 })(jQuery, window, document);

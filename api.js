@@ -2,6 +2,8 @@ const http = require('http');
 
 module.exports.apiCall = (token, path, method, params, cb) => {
 
+
+
     const apiUrl = 'localhost';
     const data = JSON.stringify(params);
 
@@ -25,15 +27,26 @@ module.exports.apiCall = (token, path, method, params, cb) => {
         });
 
         res.on('end', () => {
-            let result = JSON.parse(body);
-            cb(result);
+            try {
+                let result = JSON.parse(body);
+                cb(result);
+            }
+            catch (error) {
+                cb({
+                    messageType: 0,
+                    message: "API ile bağlantı sağlanamadı.",
+                    error: error
+                });
+            }
         });
+
     });
 
-    if(method!='GET')
+    if (method != 'GET')
         post_req.write(data);
 
     post_req.end();
+
 };
 
 module.exports.apiCall2 = (token, path, method, params, cb) => {
@@ -62,12 +75,21 @@ module.exports.apiCall2 = (token, path, method, params, cb) => {
         });
 
         res.on('end', () => {
-            let result = JSON.parse(body);
-            cb(result);
+            try {
+                let result = JSON.parse(body);
+                cb(result);
+            }
+            catch (error) {
+                cb({
+                    messageType: 0,
+                    message: "API ile bağlantı sağlanamadı.",
+                    error: error
+                });
+            }
         });
     });
 
-    if(method!='GET')
+    if (method != 'GET')
         post_req.write(data);
 
     post_req.end();

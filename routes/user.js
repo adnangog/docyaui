@@ -8,7 +8,7 @@ const async = require("async");
   router.get("/settings", (req, res, next) => {
     async.parallel([
       (callback) => {
-        api.apiCall(req.session.token, `/user/${req.params.userId}`, "GET", null, (result) => {
+        api.apiCall(req.session.token, `/user/${req.session.userId}`, "GET", null, (result) => {
           callback(null, result);
         });
       }
@@ -23,7 +23,12 @@ const async = require("async");
 
         res.render("settings", {
           title: "Kullanıcı Ayarları",
-          user: results[0],
+          userCreate:true,
+          user: {
+            name: results[0].name,
+            proxy: results[0].proxy,
+            avatar: results[0].avatar,
+          },
           breadcrumb,
           mainMenu:5,
           subMenu:11
@@ -33,13 +38,13 @@ const async = require("async");
 
 // User Add
 router.post("/", (req, res, next) => {
+  console.log("geldi");
     api.apiCall(
       req.session.token,
       "/user/add",
       "POST",
       {
-        fName: req.body.fName,
-        lName: req.body.lName,
+        name: req.body.name,
         email: req.body.email,
         username: req.body.email,
         password: req.body.password,
@@ -52,6 +57,7 @@ router.post("/", (req, res, next) => {
         rDate: Date.now()
       },
       (result) => {
+        console.log(result);
         let opt = "";
         if (result.messageType == 1)
           opt = "?messageType=1&message=Kayıt Eklendi";
@@ -166,8 +172,7 @@ router.post("/", (req, res, next) => {
       `/user/${req.params.userId}`,
       "PATCH",
       {
-        fName: req.body.fName,
-        lName: req.body.lName,
+        name: req.body.name,
         email: req.body.email,
         username: req.body.email,
         groups: req.body.groups

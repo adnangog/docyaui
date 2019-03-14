@@ -15,6 +15,21 @@ router.post("/", (req, res, next) => {
     let cb = function () { };
 
     switch (req.body.process) {
+      case "updateUser":
+        route = `/user/update/${req.session.userId}`;
+        var user = JSON.parse(req.body.user);
+        params.name = user.name;
+        params.avatar = user.avatar;
+        params.proxy = user.proxy;
+        cb = function (d) {
+          if (d.messageType === 1) {
+            req.session.userName = d.userName;
+            if (d.avatar) {
+              req.session.avatar = d.avatar;
+            }
+          }
+        };
+        break;
       case "addFlowTemplate":
         route = "/flowtemplate/add";
         params.name = req.body.name;
@@ -23,9 +38,28 @@ router.post("/", (req, res, next) => {
         params.formVersion = req.body.formVer;
         params.form = req.body.form;
         params.organization = req.body.organization;
+        params.description = req.body.description;
         params.user = req.session.userId;
         params.steps = JSON.parse(req.body.steps);
+        params.connections = JSON.parse(req.body.connections);
+        params.nodes = JSON.parse(req.body.nodes);
         params.rDate = Date.now();
+        break;
+      case "updateFlowTemplate":
+        route = `/flowtemplate/${req.body.flowTemplateId}`;
+        params.name = req.body.name;
+        params.authSet = req.body.authSet;
+        params.formType = req.body.formType;
+        params.formVersion = req.body.formVer;
+        params.form = req.body.form;
+        params.organization = req.body.organization;
+        params.description = req.body.description;
+        params.user = req.session.userId;
+        params.steps = JSON.parse(req.body.steps);
+        params.connections = JSON.parse(req.body.connections);
+        params.nodes = JSON.parse(req.body.nodes);
+        params.rDate = Date.now();
+        type = "PATCH";
         break;
       case "getFormTypeById":
         route = `/formType/${req.body.formTypeId}`;
@@ -45,7 +79,7 @@ router.post("/", (req, res, next) => {
         route = `/form/${req.body.form}`;
         type = "GET";
         break;
-        case "getFormVersionById":
+      case "getFormVersionById":
         route = `/form/version/${req.body.formVersion}`;
         type = "GET";
         break;
@@ -213,7 +247,7 @@ router.post("/", (req, res, next) => {
     }
 
     api.apiCall(req.session.token, route, type, params, data => {
-      cb();
+      cb(data);
       // bu kisim apiden gelen message type gore cevap verir hale getirelecek.
       // bunun icin api her response'a bir message ve messageType parametresi donmeli.
 

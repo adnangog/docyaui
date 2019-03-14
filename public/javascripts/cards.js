@@ -729,7 +729,7 @@
             let cb = function (data) {
                 $("#dvTransactions").html("");
                 if (data.length > 0) {
-                    var template = '<table class="table table-sm"><thead><tr><th scope="col">Detay</th><th scope="col">Kullanıcı</th><th scope="col">Tarih</th></tr></thead><tbody>{{# each this}}<tr><td scope="row">{{this.detail}}</td><td>{{this.user.fName}} {{this.user.lName}}</td><td>{{this.rDate}}</td></tr>{{/each}}</tbody></table>';
+                    var template = '<table class="table table-sm"><thead><tr><th scope="col">Detay</th><th scope="col">Kullanıcı</th><th scope="col">Tarih</th></tr></thead><tbody>{{# each this}}<tr><td scope="row">{{this.detail}}</td><td>{{this.user.name}}</td><td>{{this.rDate}}</td></tr>{{/each}}</tbody></table>';
                     var renderedHtml = Handlebars.compile(template)(data);
                     $("#dvTransactions").append(renderedHtml);
                 }

@@ -1,28 +1,88 @@
-
-<h1 class="page-title">{{title}}</h1>
 <div class="row">
   <div class="col-4">
     <div class="list-group" id="list-tab" role="tablist">
-      <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Home
-          <span class="badge badge-primary badge-pill">5</span>
+      <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center active" id="list-home-list"
+        data-toggle="list" href="#list-home" role="tab" aria-controls="home">Home
+        <span class="badge badge-primary badge-pill">5</span>
       </a>
-      <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Profile
-          <span class="badge badge-primary badge-pill">4</span>
+      <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" id="list-profile-list"
+        data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Profile
+        <span class="badge badge-primary badge-pill">4</span>
       </a>
-      <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">Messages
-          <span class="badge badge-primary badge-pill">14</span>
+      <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" id="list-messages-list"
+        data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">Messages
+        <span class="badge badge-primary badge-pill">14</span>
       </a>
-      <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">Settings
-          <span class="badge badge-primary badge-pill">2</span>
+      <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" id="list-settings-list"
+        data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">Settings
+        <span class="badge badge-primary badge-pill">2</span>
       </a>
     </div>
   </div>
   <div class="col-8">
     <div class="tab-content" id="nav-tabContent">
-      <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">...</div>
+      <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+          <div class="avatar-container">
+            <div class="avatar dz-clickable fileinput-button">
+              <img src="{{ avatar }}" data-avatar/>
+            </div>
+            <div class="avatar-button"><span class="part-1 dz-clickable fileinput-button">Değiştir</span><span class="part-2 d-none" data-removeavatar>İptal</span></div>
+          </div>
+
+
+          <!-- HTML heavily inspired by https://blueimp.github.io/jQuery-File-Upload/ -->
+          <div class="table table-striped files" style="display:none;" id="previews">
+
+            <div id="template" class="file-row">
+              <!-- This is used as the file preview template -->
+              <div>
+                <span class="preview"><img data-dz-thumbnail /></span>
+              </div>
+              <div>
+                <strong class="error text-danger" data-dz-errormessage></strong>
+              </div>
+              <div>
+                <button data-dz-remove class="btn btn-danger delete">
+                  <i class="glyphicon glyphicon-trash"></i>
+                  <span>Delete</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+<div class="row">
+  <div class="col-md-3"></div>
+  <div class="col-md-6">
+    <div class="form-group">
+            <label for="name">Ad Soyad</label>
+            <input type="text" class="form-control" id="name" name="name" data-target="name" value="" placeholder="Ad Soyadgiriniz.">
+          </div>
+
+          <div class="form-group">
+            <label for="authorityName">Vekil Kullanıcı</label>
+             <select class="form-control" id="proxy" name="proxy" data-target="proxy">
+                <option>Lütfen seçin.</option>
+              {{# each departments }} {{#if_equal ../user.department this.[0] }}
+              <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
+              {{else}}
+              <option value="{{ this.[0] }}">{{ this.[1] }}</option>
+              {{/if_equal}} {{/ each}}
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary" data-save>Kaydet</button>
+          </div>
+  </div>
+  <div class="col-md-3"></div>
+</div>
+
+      </div>
       <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">...</div>
       <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">...</div>
       <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">...</div>
     </div>
   </div>
 </div>
+<input type="hidden" data-u value="{{ jsonStringify user}}">

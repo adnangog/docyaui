@@ -1,12 +1,64 @@
 body {
-    background-color: #f1f1f1;
+    background-color: #2e2e2e;
+    font-family: 'Roboto', sans-serif;
+    
+}
+.container-fluid.content {
+  padding-bottom: 80px !important;
 }
 .headerz {
   position: fixed;
   top:0;
   left:0;
   right: 0;
-  z-index: 9;
+  z-index: 30;
+  font-weight: 700;
+  background-color: #212121 !important;
+}
+.headerz a {
+  color: #fff;
+  fill: #fff;
+}
+.headerz .nav-item {
+  padding-right: 3px;
+}
+.headerz a.nav-link {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: .2rem;
+  padding-right: 15px !important;
+  padding-left: 15px !important;
+}
+.headerz a.nav-link:hover, .headerz a.nav-link:focus {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+.headerz .dropdown-menu {
+  background-color: #212121;
+}
+.headerz .dropdown-item:focus, .headerz .dropdown-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color:#fff;
+}
+.headerz .dropdown-item i {
+  color:#999;
+  display: inline-block;
+  width:25px;
+}
+.header-container {
+  position:relative;;
+}
+.header-avatar {
+  display: block;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top:0;
+  left: -50px;
+  border-radius: 40px;
+  overflow: hidden;
+}
+.header-avatar img {
+  width: 100%;
+  height: auto;
 }
 .container-fluid {
     padding: 15px !important;
@@ -22,9 +74,10 @@ body {
   margin-bottom: 0;
 }
 .breadcrumb {
+  padding-left: 50px;
     margin: 0;
     margin-top: 56px;
-    background-color: #555;
+    background-color: #e2e2e2;
     border-radius: 0;
     -webkit-transition: padding 0.2s; /* Safari */
     transition: padding 0.2s;
@@ -39,10 +92,11 @@ body {
     transition-timing-function: ease;
 }
 .breadcrumb a {
-    color:#fff;
+    color:#212121;
 }
 .breadcrumb-item.active {
-    color: #ddd;
+    color: #111;
+    font-weight: 700;
 }
 .process-boxes {
   position: relative;
@@ -94,6 +148,13 @@ body {
   padding: 0 0 .3rem;
   margin: 0 0 .8rem;
 }
+.dark-theme {
+  background-color: #555;
+  color: #fff;
+}
+.dark-theme hr {
+  border-top:1px solid #fff;
+}
 .dropzone {
   border:2px dashed #4aa0f1;
   border-radius: 10px;
@@ -144,9 +205,12 @@ table.table tbody tr td, table.table thead tr th {
   padding: 0;
 }
 .table-infos {
-  padding: .3rem;
+  padding: .4rem;
   font-size: .8rem;
   position: relative;
+  background-color: #e2e2e2;
+  font-weight: 700;
+  color:#999;
 }
 .table-export {
   position: absolute;
@@ -233,7 +297,7 @@ a.btn-success, a.btn-danger {
     padding:3px 12px;
   }
   .right-side{
-    margin-left:300px;
+    /* margin-left:300px; */
     -webkit-transition: margin 0.2s; /* Safari */
     transition: margin 0.2s;
     -webkit-transition-timing-function: ease;
@@ -248,9 +312,9 @@ a.btn-success, a.btn-danger {
   }
   .toggle-right {
     position:absolute; 
-    left:-50px; 
+    /* left:-50px;  */
     top:0; 
-    background-color: #222; 
+    background-color: #999; 
     color:#fff;
     line-height: 48px;
     display: block;
@@ -774,3 +838,107 @@ span.tooltip:after {
   border-radius: .2rem;
   margin-left: 5px;
 } 
+
+/* user settings */
+.avatar-container {
+  width:200px; 
+  height:200px; 
+  margin:auto;
+  cursor: pointer;
+  position: relative;
+}
+.avatar-container .avatar {
+  border-radius: 100px; 
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  -webkit-border-radius: 99em;
+  -moz-border-radius: 99em;
+  border-radius: 99em;
+  border: 5px solid #2e2e2e;
+  box-shadow: 0 3px 2px rgba(0, 0, 0, 0.3); 
+  overflow: hidden;
+}
+.avatar-container img {
+  width:100%;
+  height: auto;
+}
+.avatar-container .avatar-button {
+  position: absolute;
+  bottom:0;
+  left: 50%;
+  transform:translateX(-50%);
+  border-radius: 20px;
+  background-color: #2e2e2e;
+  color: #fff;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  -webkit-border-radius: 99em;
+  -moz-border-radius: 99em;
+  border-radius: 99em;
+  border: 2px solid #fff;
+  box-shadow: 0 3px 2px rgba(0, 0, 0, 0.3); 
+  overflow: hidden;
+  white-space: nowrap;
+}
+.avatar-container .avatar-button span {
+  display: inline-block;
+  padding: 2px 5px;
+}
+.avatar-container .avatar-button span.part-1 {
+  padding-left: 10px;
+}
+.avatar-container .avatar-button span.part-2 {
+  padding-right: 10px;
+  background-color: #ad2125;
+}
+/* user settings bitti */
+
+/* docbox */
+.docbox {
+  border:2px solid #444;
+  height: 84px;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  font-size: .8rem;
+  background-color: #555;
+  margin-bottom: 15px;
+  cursor: pointer;
+  -webkit-box-shadow: -1px 2px 4px -1px rgba(0,0,0,0.46);
+-moz-box-shadow: -1px 2px 4px -1px rgba(0,0,0,0.46);
+box-shadow: -1px 2px 4px -1px rgba(0,0,0,0.46);
+}
+.docbox:hover {
+  border:2px solid #ff9800;
+}
+.docbox .docbox-image {
+  width: 80px;
+  height: 80px;
+  background-color: #444;
+}
+.docbox .docbox-image img {
+  width: 80%;
+  height: auto;
+  margin: 10%;
+}
+.docbox .docbox-content {
+  flex: 1;
+  height: 80px;
+  position: relative;
+}
+.docbox .docbox-content .docbox-name {
+  position: absolute;
+  left: 10px;
+  top:5px;
+  font-weight: 600;
+  color:#fff;
+}
+.docbox .docbox-content .docbox-date {
+  position: absolute;
+  left: 10px;
+  bottom:5px;
+  color: #7a7a7c;
+}
+/* docbox bitti */

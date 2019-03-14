@@ -148,17 +148,11 @@ router.post("/:cardtemplateId", (req, res, next) => {
   );
 });
 
-// Card Delete
-router.get("/delete/:cardId", (req, res, next) => {
-  api.apiCall(
-    req.session.token,
-    `/cardtemplates/delete/${req.params.cardId}`,
-    "GET",
-    null,
-    (result) => {
+  // Card Delete
+  router.get("/delete/:cardId", (req, res, next) => {
+    api.apiCall(req.session.token, `/cardtemplate/delete/${req.params.cardId}`, "GET", null, (result) => {
       res.redirect("/cardtemplates");
-    }
-  );
-});
+    });
+  });
 
 module.exports = router;

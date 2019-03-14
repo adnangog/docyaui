@@ -33,6 +33,8 @@ const addmenu = require("./middleware/addMenu");
 
 const app = express();
 
+process.env.CDN = 'http://localhost:8000/cdn/';
+
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'));
 app.engine('.hbs', expressHbs({
@@ -96,8 +98,8 @@ app.engine('.hbs', expressHbs({
 app.set('view engine', '.hbs');
 
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(expressValidator());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));

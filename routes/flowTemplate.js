@@ -4,7 +4,7 @@ const api = require("../api");
 const helper = require("../helpers/index");
 const async = require("async");
 
-// Folder GetById
+// Folder Add
 router.get("/add", (req, res, next) => {
   async.parallel([
     (callback) => {
@@ -31,7 +31,7 @@ router.get("/add", (req, res, next) => {
           title: "İş Akışı Taslakları",
           addTitle: "İş Akışı Taslağı Ekle",
           editTitle: "İş Akışı Taslağı Düzenle",
-          edit: true,
+          edit: false,
           cards: results[0].data,
           flow:true,
           breadcrumb,
@@ -109,7 +109,6 @@ router.get("/", (req, res, next) => {
           addTitle: "İş Akışı Taslağı Ekle",
           route: "flowTemplates",
           data: total === undefined ? false : results[0],
-          flow:true,
           breadcrumb,
           paging,
           mainMenu:1,
@@ -148,6 +147,7 @@ router.get("/:flowTemplateId", (req, res, next) => {
           addTitle: "İş Akışı Taslağı Ekle",
           editTitle: "İş Akışı Taslağı Düzenle",
           edit: true,
+          flowTemplateId: req.params.flowTemplateId,
           flowtemplate: results[0],
           flow:true,
           breadcrumb,

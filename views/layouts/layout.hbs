@@ -10,6 +10,7 @@
       crossorigin="anonymous"></script>
   <script src="/javascripts/jquery-ui.min.js"></script>
    <script src="/javascripts/tabulator.js"></script>
+   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700,900&amp;subset=latin-ext" rel="stylesheet">
 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
     crossorigin="anonymous">
@@ -27,10 +28,11 @@
 </head>
 
 <body>
-  {{> header}} {{> sidemenu}}
+  {{> header}} 
+  {{!-- {{> sidemenu}} --}}
   <div class="right-side">
     {{> breadcrumb}}
-    <div class="container-fluid">
+    <div class="container-fluid content">
       {{{body}}}
     </div>
     <!-- small modal -->

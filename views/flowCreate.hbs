@@ -1,83 +1,96 @@
 <div class="flow-header-form">
-<div class="form-row form-group">
-          <div class="form-row col-md-4">
-            <label for="title" class="col-md-2 col-form-label col-form-label-sm">Adı</label>
-            <div class="col-md-10">
-                <input type="text" class="form-control form-control-sm" id="name" name="name" data-flowName value="{{ flowtemplate.name }}" placeholder="Taslak Adı">
-            </div>
-          </div>
+    <div class="row">
+        <div class="col-md-9">
+            <div class="form-row form-group">
+                <div class="form-row col-md-4">
+                    <label for="title" class="col-md-2 col-form-label col-form-label-sm">Adı</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control form-control-sm" id="name" name="name" data-flowName value="{{ flowtemplate.name }}"
+                            placeholder="Taslak Adı">
+                    </div>
+                </div>
 
-          <div class="form-row col-md-4">
-            <label for="title" class="col-md-2 col-form-label col-form-label-sm">Yetki Seti</label>
-            <div class="col-md-10">
-                <select class="form-control" id="authSet" name="authSet" data-flowAuthSet>
-                    {{# each authSets }} {{#if_equal ../flowtemplate.authSet this.[0] }}
-                    <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
-                    {{else}}
-                    <option value="{{ this.[0] }}">{{ this.[1] }}</option>
-                    {{/if_equal}} {{/ each}}
-                  </select>
-            </div>
-          </div>
+                <div class="form-row col-md-4">
+                    <label for="title" class="col-md-2 col-form-label col-form-label-sm">Yetki Seti</label>
+                    <div class="col-md-10">
+                        <select class="form-control notFast" id="authSet" name="authSet" data-flowAuthSet>
+                            {{# each authSets }} {{#if_equal ../flowtemplate.authSet this.[0] }}
+                            <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
+                            {{else}}
+                            <option value="{{ this.[0] }}">{{ this.[1] }}</option>
+                            {{/if_equal}} {{/ each}}
+                        </select>
+                    </div>
+                </div>
 
-          <div class="form-row col-md-4">
-            <label for="title" class="col-md-2 col-form-label col-form-label-sm">Şema</label>
-            <div class="col-md-10">
-                <select class="form-control" id="organization" name="organization" data-flowOrganization data-target='schema'>
-                    {{# each organizations }} {{#if_equal ../flowtemplate.organization this.[0] }}
-                    <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
-                    {{else}}
-                    <option value="{{ this.[0] }}">{{ this.[1] }}</option>
-                    {{/if_equal}} {{/ each}}
-                  </select>
-            </div>
-          </div>
+                <div class="form-row col-md-4">
+                    <label for="title" class="col-md-2 col-form-label col-form-label-sm">Şema</label>
+                    <div class="col-md-10">
+                        <select class="form-control notFast" id="organization" name="organization" data-flowOrganization data-target='schema'>
+                            {{# each organizations }} {{#if_equal ../flowtemplate.organization this.[0] }}
+                            <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
+                            {{else}}
+                            <option value="{{ this.[0] }}">{{ this.[1] }}</option>
+                            {{/if_equal}} {{/ each}}
+                        </select>
+                    </div>
+                </div>
 
-          </div>
-          <div class="form-row form-group">
-          <div class="form-row col-md-4">
-            <label for="title" class="col-md-2 col-form-label col-form-label-sm">Tip</label>
-            <div class="col-md-10">
-                <select class="form-control" id="formType" name="formType" data-flowFormType>
-                    {{# each formTypes }} {{#if_equal ../flowtemplate.formType this.[0] }}
-                    <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
-                    {{else}}
-                    <option value="{{ this.[0] }}">{{ this.[1] }}</option>
-                    {{/if_equal}} {{/ each}}
-                  </select>
             </div>
-          </div>
+            <div class="form-row form-group">
+                <div class="form-row col-md-4">
+                    <label for="title" class="col-md-2 col-form-label col-form-label-sm">Tip</label>
+                    <div class="col-md-10">
+                        <select class="form-control notFast" id="formType" name="formType" data-flowFormType>
+                            {{# each formTypes }} {{#if_equal ../flowtemplate.formType this.[0] }}
+                            <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
+                            {{else}}
+                            <option value="{{ this.[0] }}">{{ this.[1] }}</option>
+                            {{/if_equal}} {{/ each}}
+                        </select>
+                    </div>
+                </div>
 
-          <div class="form-row col-md-4">
-            <label for="title" class="col-md-2 col-form-label col-form-label-sm">Form</label>
-            <div class="col-md-10">
-                <select class="form-control notFast" id="form" name="form" data-flowForm data-target="form">
-                    {{# each forms }} {{#if_equal ../flowtemplate.form this.[0] }}
-                    <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
-                    {{else}}
-                    <option value="{{ this.[0] }}">{{ this.[1] }}</option>
-                    {{/if_equal}} {{/ each}}
-                  </select>
+                <div class="form-row col-md-4">
+                    <label for="title" class="col-md-2 col-form-label col-form-label-sm">Form</label>
+                    <div class="col-md-10">
+                        <select class="form-control notFast" id="form" name="form" data-flowForm data-target="form">
+                            {{# each forms }} {{#if_equal ../flowtemplate.form this.[0] }}
+                            <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
+                            {{else}}
+                            <option value="{{ this.[0] }}">{{ this.[1] }}</option>
+                            {{/if_equal}} {{/ each}}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row col-md-4">
+                    <label for="title" class="col-md-2 col-form-label col-form-label-sm">F.Ver.</label>
+                    <div class="col-md-10">
+                        <select class="form-control notFast" id="formVer" name="formVer" data-flowFormVer>
+                            {{# each formVers }} {{#if_equal ../flowtemplate.formVer this.[0] }}
+                            <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
+                            {{else}}
+                            <option value="{{ this.[0] }}">{{ this.[1] }}</option>
+                            {{/if_equal}} {{/ each}}
+                        </select>
+                    </div>
+                </div>
+
             </div>
-          </div>
-
-          <div class="form-row col-md-4">
-            <label for="title" class="col-md-2 col-form-label col-form-label-sm">F.Ver.</label>
-            <div class="col-md-10">
-                <select class="form-control notFast" id="formVer" name="formVer" data-flowFormVer>
-                    {{# each formVers }} {{#if_equal ../flowtemplate.formVer this.[0] }}
-                    <option value="{{ this.[0] }}" selected="selected">{{ this.[1] }}</option>
-                    {{else}}
-                    <option value="{{ this.[0] }}">{{ this.[1] }}</option>
-                    {{/if_equal}} {{/ each}}
-                  </select>
-            </div>
-          </div>
-
-          </div>
-          </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-row">
+                    <label for="title" class="col-md-2 col-form-label col-form-label-sm">Açıklama</label>
+                    <div class="col-md-10">
+                        <textarea class="form-control form-control-sm" id="description" name="description" data-flowDescription placeholder="Açıklama giriniz." rows="4">{{flowtemplate.description}}</textarea>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
 <div style="position: relative;">
-<div class="taskbuttons" data-taskbuttons>
+    <div class="taskbuttons" data-taskbuttons>
         <div class="menu_button_container">
             <div class="btn-oval" data-flowbtn data-optiontype="t-oval" data-flowtype="manual" title="Manual Adım">
                 Manuel Adım
@@ -149,7 +162,7 @@
         </div>
     </div>
     <div id="main">
-        
+
         <!-- demo -->
         <div class="demo" id="FlowScene">
             <div class="startpoint point node" style="left: 150px; top:20px" data-nodetype="startpoint" id="flowchartStartpoint" data-title="Başlangıç">Başlangıç</div>
@@ -171,7 +184,9 @@
                     <a class="nav-link active" id="genel-tab" data-toggle="tab" href="#genel" role="tab" aria-controls="genel" aria-selected="true">Genel</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="atanan-tab" data-toggle="tab" href="#atanan" role="tab" aria-controls="atanan" aria-selected="false">Atanan Kişi</a>
+                    <a class="nav-link" id="atanan-tab" data-toggle="tab" href="#atanan" role="tab" aria-controls="atanan" aria-selected="false">Atanan
+                        Kişi
+                    </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="zamanlayici-tab" data-toggle="tab" href="#zamanlayici" role="tab" aria-controls="zamanlayici" aria-selected="false">Zamanlayıcı</a>
@@ -194,7 +209,8 @@
                             <div class="form-group row">
                                 <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Şema :</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control form-control-sm notFast" data-trigger="user,department" data-trigger-method="getOrganizationUsers,getOrganizationDepartments" data-target="schema" data-field="schema">
+                                    <select class="form-control form-control-sm notFast" data-trigger="user,department" data-trigger-method="getOrganizationUsers,getOrganizationDepartments"
+                                        data-target="schema" data-field="schema">
                                         <option value="">Lütfen Seçin</option>
                                     </select>
                                 </div>
@@ -203,7 +219,8 @@
                                 <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Form :
                                 </label>
                                 <div class="col-sm-10">
-                                    <select class="form-control form-control-sm notFast" data-trigger="formVer,formFields" data-trigger-method="getFormVer,getFormFields" data-target="form" data-field="form">
+                                    <select class="form-control form-control-sm notFast" data-trigger="formVer,formFields" data-trigger-method="getFormVer,getFormFields"
+                                        data-target="form" data-field="form">
                                         <option value="">Lütfen Seçin</option>
                                     </select>
                                 </div>
@@ -308,17 +325,17 @@
                         </div>
                         <div data-sub-section="users" class="d-none">
 
-                        <label for="colFormLabelSm" class="col-form-label col-form-label-sm">Kullanıcılar :
-                        </label>
+                            <label for="colFormLabelSm" class="col-form-label col-form-label-sm">Kullanıcılar :
+                            </label>
 
-                        <select class="form-control form-control-sm notFast" data-target="user" data-field="assignedUser">
-                            <option value="">Lütfen Seçin</option>
-                        </select>
+                            <select class="form-control form-control-sm notFast" data-target="user" data-field="assignedUser">
+                                <option value="">Lütfen Seçin</option>
+                            </select>
 
 
+                        </div>
                     </div>
-                    </div>
-                    
+
                     <div data-section="group" class="d-none">
 
                         <label for="colFormLabelSm" class="col-form-label col-form-label-sm">Gruplar :
@@ -510,7 +527,9 @@
                     <a class="nav-link active" id="genel3-tab" data-toggle="tab" href="#genel3" role="tab" aria-controls="genel3" aria-selected="true">Genel</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="datasync-tab" data-toggle="tab" href="#datasync" role="tab" aria-controls="datasync" aria-selected="false">Veri Eşleme</a>
+                    <a class="nav-link" id="datasync-tab" data-toggle="tab" href="#datasync" role="tab" aria-controls="datasync" aria-selected="false">Veri
+                        Eşleme
+                    </a>
                 </li>
             </ul>
             <div class="tab-content">
@@ -592,7 +611,9 @@
                     <a class="nav-link active" id="genel4-tab" data-toggle="tab" href="#genel4" role="tab" aria-controls="genel4" aria-selected="true">Genel</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="webservice-tab" data-toggle="tab" href="#webservice" role="tab" aria-controls="webservice" aria-selected="false">Web Service</a>
+                    <a class="nav-link" id="webservice-tab" data-toggle="tab" href="#webservice" role="tab" aria-controls="webservice" aria-selected="false">Web
+                        Service
+                    </a>
                 </li>
             </ul>
             <div class="tab-content">
@@ -607,14 +628,16 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Servis Adı :
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Servis Adı
+                                    :
                                 </label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control form-control-sm" placeholder="Servis Adı" data-field="serviceName">
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Client Adı :
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Client Adı
+                                    :
                                 </label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control form-control-sm" placeholder="Client Adı" data-field="clientName">
@@ -772,7 +795,9 @@
                     <a class="nav-link active" id="genel7-tab" data-toggle="tab" href="#genel7" role="tab" aria-controls="genel7" aria-selected="true">Genel</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="email-tab" data-toggle="tab" href="#email" role="tab" aria-controls="email" aria-selected="false">Email Ayarları</a>
+                    <a class="nav-link" id="email-tab" data-toggle="tab" href="#email" role="tab" aria-controls="email" aria-selected="false">Email
+                        Ayarları
+                    </a>
                 </li>
             </ul>
             <div class="tab-content">
@@ -817,7 +842,8 @@
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="assignmentRule" id="EmailPrevUserManager" data-field="assignmentRule"
                                     value="3" data-sub-rel>
-                                <label class="form-check-label col-form-label-sm" for="EmailPrevUserManager">Önceki Kullanıcının Yöneticisi
+                                <label class="form-check-label col-form-label-sm" for="EmailPrevUserManager">Önceki Kullanıcının
+                                    Yöneticisi
                                 </label>
                             </div>
                             <div class="form-check">
@@ -828,7 +854,8 @@
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="assignmentRule" id="EmailFlowOwnerManager" data-field="assignmentRule"
                                     value="5" data-sub-rel>
-                                <label class="form-check-label col-form-label-sm" for="EmailFlowOwnerManager">Akış Sahibi Yöneticisi
+                                <label class="form-check-label col-form-label-sm" for="EmailFlowOwnerManager">Akış Sahibi
+                                    Yöneticisi
                                 </label>
                             </div>
 
@@ -841,11 +868,6 @@
                                 </label>
 
                                 <select class="custom-select custom-select-sm notFast" size="7">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
                                 </select>
 
 
@@ -857,11 +879,6 @@
                             </label>
 
                             <select class="custom-select custom-select-sm notFast" size="7">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
                             </select>
 
                             <div class="alert alert-warning" role="alert">Seçilen form alanı kullanıcı bilgisi içermelidir.
@@ -888,9 +905,6 @@
                                 <div class="col-sm-11">
                                     <label for="colFormLabelSm" class="col-form-label col-form-label-sm">Seçilenler :</label>
                                     <select class="custom-select custom-select-sm notFast" size="7">
-                                        <option value="a@b.com">a@b.com</option>
-                                        <option value="a@b.com">a@b.com</option>
-                                        <option value="a@b.com">a@b.com</option>
                                     </select>
                                 </div>
                             </div>
@@ -922,7 +936,9 @@
                     <a class="nav-link active" id="genel8-tab" data-toggle="tab" href="#genel8" role="tab" aria-controls="genel8" aria-selected="true">Genel</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="message-tab" data-toggle="tab" href="#message" role="tab" aria-controls="message" aria-selected="false">Mesaj Ayarları</a>
+                    <a class="nav-link" id="message-tab" data-toggle="tab" href="#message" role="tab" aria-controls="message" aria-selected="false">Mesaj
+                        Ayarları
+                    </a>
                 </li>
             </ul>
             <div class="tab-content">
@@ -967,7 +983,8 @@
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="assignmentRule" id="EmailPrevUserManager" data-field="assignmentRule"
                                     value="3" data-sub-rel>
-                                <label class="form-check-label col-form-label-sm" for="EmailPrevUserManager">Önceki Kullanıcının Yöneticisi
+                                <label class="form-check-label col-form-label-sm" for="EmailPrevUserManager">Önceki Kullanıcının
+                                    Yöneticisi
                                 </label>
                             </div>
                             <div class="form-check">
@@ -978,7 +995,8 @@
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="assignmentRule" id="EmailFlowOwnerManager" data-field="assignmentRule"
                                     value="5" data-sub-rel>
-                                <label class="form-check-label col-form-label-sm" for="EmailFlowOwnerManager">Akış Sahibi Yöneticisi
+                                <label class="form-check-label col-form-label-sm" for="EmailFlowOwnerManager">Akış Sahibi
+                                    Yöneticisi
                                 </label>
                             </div>
 
@@ -991,11 +1009,6 @@
                                 </label>
 
                                 <select class="custom-select custom-select-sm notFast" size="7">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
                                 </select>
 
 
@@ -1006,11 +1019,6 @@
                             </label>
 
                             <select class="custom-select custom-select-sm notFast" size="7">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
                             </select>
 
                         </div>
@@ -1019,11 +1027,6 @@
                             </label>
 
                             <select class="custom-select custom-select-sm notFast" size="7">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
                             </select>
 
                             <div class="alert alert-warning" role="alert">Seçilen form alanı kullanıcı bilgisi içermelidir.
@@ -1039,9 +1042,6 @@
                                 <div class="col-sm-11">
                                     <label for="colFormLabelSm" class="col-form-label col-form-label-sm">Seçilenler :</label>
                                     <select class="custom-select custom-select-sm notFast" size="7">
-                                        <option value="kullanici 1">kullanici 1</option>
-                                        <option value="kullanici 2">kullanici 2</option>
-                                        <option value="kullanici 3">kullanici 3</option>
                                     </select>
                                 </div>
                             </div>
@@ -1117,4 +1117,6 @@
         {{!-- <button id="loadButton" class="button menu_button">Load</button> --}}
     </div>
 
-    </div>
+</div>
+<input type="hidden" data-json data-edit="{{ edit }}" id="flowtemplate" name="flowtemplate" value="{{ jsonStringify flowtemplate }}" />
+<input type="hidden" id="flowTemplateId" name="flowTemplateId" value="{{ flowTemplateId }}" />

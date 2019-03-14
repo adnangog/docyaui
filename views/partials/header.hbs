@@ -1,52 +1,89 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light headerz">
-  <a class="navbar-brand" href="#"><i class="fas fa-file-signature"></i> Docya</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
+  <nav class="navbar navbar-expand-sm navbar-dark bg-dark headerz">
+    <a class="navbar-brand" href="#"><i class="fas fa-file-signature"></i> Docya</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav ml-auto">
-      <li class="nav-item active">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item  {{#ifCond mainMenu '===' 0}}active{{/ifCond}}">
         <a class="nav-link" href="/">Anasayfa <span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <li class="nav-item dropdown {{#ifCond mainMenu '===' 1}}active{{/ifCond}}">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
           Tanımlamalar
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="/users">Kullanıcılar</a>
-          <a class="dropdown-item" href="/authorities">Yetkiler</a>
-          <a class="dropdown-item" href="/groups">Gruplar</a>
-          <a class="dropdown-item" href="/folders">Klasörler</a>
-          <a class="dropdown-item" href="/departments">Departmanlar</a>
-          <a class="dropdown-item" href="/documents/types">Döküman Tipleri</a>
-          <a class="dropdown-item" href="/documents">Dökümanlar</a>
-          <a class="dropdown-item" href="/forms">Formlar</a>
-          <a class="dropdown-item" href="/cardtemplates">Kart Taslakları</a>
+          <a class="dropdown-item" href="/users"><i class="fas fa-users"></i> Kullanıcılar</a>
+          <a class="dropdown-item" href="/authorities"><i class="fas fa-unlock-alt"></i> Yetkiler</a>
+          <a class="dropdown-item" href="/authorities/set"><i class="fas fa-unlock-alt"></i> Yetki Setleri</a>
+          <a class="dropdown-item" href="/groups"><i class="fas fa-project-diagram"></i> Gruplar</a>
+          <a class="dropdown-item" href="/folders"><i class="fas fa-folder-open"></i> Klasörler</a>
+          <a class="dropdown-item" href="/departments"><i class="fas fa-vector-square"></i> Departmanlar</a>
+          <a class="dropdown-item" href="/organizations"><i class="fas fa-project-diagram"></i> Organizasyon Şemaları</a>
+          <a class="dropdown-item" href="/documents/types"><i class="fas fa-file-invoice"></i> Döküman Tipleri</a>
+          <a class="dropdown-item" href="/documents"><i class="fas fa-file-invoice"></i> Dökümanlar</a>
+          <a class="dropdown-item" href="/lists"><i class="fas fa-file-alt"></i> Listeler</a>
+          <a class="dropdown-item" href="/formTypes"><i class="fas fa-file-alt"></i> Form Tipleri</a>
+          <a class="dropdown-item" href="/forms"><i class="fas fa-file-alt"></i> Formlar</a>
+          <a class="dropdown-item" href="/cardtemplates"><i class="fas fa-archive"></i> Kart Taslakları</a>
+          <a class="dropdown-item" href="/flowtemplates"><i class="fas fa-archive"></i> İş Akışı Taslakları</a>
         </div>
       </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <li class="nav-item dropdown {{#ifCond mainMenu '===' 2}}active{{/ifCond}}">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          Dökümanlarım
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          {{# each menucards}}
+          <a class="dropdown-item" href="#">{{this.name}}</a>
+        {{/ each}}
+        </div>
+      </li>
+      <li class="nav-item dropdown {{#ifCond mainMenu '===' 3}}active{{/ifCond}}">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
           Dosya Kartları
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="/forms">Dosya kartlari</a>
-          <a class="dropdown-item" href="#">Tercihler</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Cikis</a>
+          {{# each menucards.data}}
+          <a class="dropdown-item" href="/cards/{{this.[0]}}"><i class="fas fa-file-invoice"></i> {{this.[1]}}</a>
+        {{/ each}}
         </div>
       </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Kullanıcı İşlemleri
+      <li class="nav-item dropdown {{#ifCond mainMenu '===' 4}}active{{/ifCond}}">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          İş Akışları
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Kullanıcı bilgileri</a>
-          <a class="dropdown-item" href="#">Tercihler</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="/login/logout">Çıkış</a>
+          {{# each menuflowtemplates.data}}
+          <a class="dropdown-item" href="/flows/{{this.[0]}}"><i class="fas fa-file-invoice"></i> {{this.[1]}}</a>
+        {{/ each}}
         </div>
       </li>
     </ul>
   </div>
+  {{#if isLogged}}
+  <div class="collapse navbar-collapse" id="navbarUserContent">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item dropdown {{#ifCond mainMenu '===' 5}}active{{/ifCond}}">
+        <a class="nav-link dropdown-toggle header-container" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          <div class="header-avatar"><img src="{{ avatar }}" /></div>
+          {{ userName }}
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/users/settings"><i class="fas fa-user"></i> Kullanıcı Ayarları</a>
+          <a class="dropdown-item" href="/users/settings"><i class="fas fa-sliders-h"></i> Tercihler</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/login/logout"><i class="fas fa-sign-out-alt"></i> Çıkış</a>
+        </div>
+      </li>
+      </ul>
+      </div>
+      {{/if}}
 </nav>
